@@ -1,8 +1,11 @@
 using GameStore.Payment.Api;
+using GameStore.Payment.Core.GameClient;
 using GameStore.Payment.Infraestructure.Data;
+using GameStore.Payment.Tests.Api.Mocks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GameStore.Payment.Tests.Api;
@@ -11,6 +14,16 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureAppConfiguration((context, config) =>
+        {
+            var testConfig = new Dictionary<string, string?>
+            {
+                { "GameApplicationUrl", "https://mockurl.com" },
+            };
+
+            config.AddInMemoryCollection(testConfig);
+        });
+
         builder.ConfigureServices(services =>
         {
             RemoveDbContextServiceRegistration(services);
@@ -20,6 +33,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 options.UseInMemoryDatabase(Guid.NewGuid().ToString());
                 options.EnableSensitiveDataLogging();
             });
+
+            RemoveHttpClientServiceRegistration(services);
+            services.AddHttpClient<IGameServiceClient, MockGameServiceClient>();
         });
     }
 
@@ -30,5 +46,14 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             ?? throw new InvalidOperationException();
 
         services.Remove(dbContextDescriptor);
+    }
+
+    private static void RemoveHttpClientServiceRegistration(IServiceCollection services)
+    {
+        var httpClientDescriptor = services.SingleOrDefault(
+            d => d.ServiceType == typeof(IGameServiceClient))
+            ?? throw new InvalidOperationException();
+
+        services.Remove(httpClientDescriptor);
     }
 }

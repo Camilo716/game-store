@@ -1,4 +1,5 @@
 using GameStore.Payment.Core.Enums;
+using GameStore.Payment.Core.GameClient;
 using GameStore.Payment.Core.Interfaces;
 using GameStore.Payment.Core.Models;
 
@@ -6,9 +7,12 @@ namespace GameStore.Payment.Core.Services;
 
 public class OrderService(
     IUnitOfWork unitOfWork,
+    IGameServiceClient gameServiceClient,
     IDateTimeProvider dateTimeProvider)
     : IOrderService
 {
+    private IGameServiceClient GameServiceClient => gameServiceClient;
+
     private IUnitOfWork UnitOfWork => unitOfWork;
 
     private IDateTimeProvider DateTimeProvider => dateTimeProvider;
@@ -28,18 +32,21 @@ public class OrderService(
         ]);
     }
 
-    public async Task AddGameToCartAsync(Guid gameId)
+    public async Task AddGameToCartAsync(string gameKey)
     {
         Order cart = (await GetCartAsync()).FirstOrDefault();
         cart ??= await CreateNewOrderAsync();
 
+        Game game = await GameServiceClient.GetByKeyAsync("key")
+            ?? throw new InvalidOperationException($"Game {gameKey} not found");
+
         OrderGame? existingGameInOrder = (await UnitOfWork.OrderGameRepository
             .GetByOrderIdAsync(cart.Id))
-            .FirstOrDefault(orderGame => orderGame.ProductId == gameId);
+            .FirstOrDefault(orderGame => orderGame.ProductId == game.Id);
 
         if (existingGameInOrder is null)
         {
-            await AddOrderGameToOrderAsync(gameId, cart);
+            await AddOrderGameToOrderAsync(game, cart);
         }
         else
         {
@@ -67,14 +74,15 @@ public class OrderService(
         return order;
     }
 
-    private async Task AddOrderGameToOrderAsync(Guid gameId, Order cart)
+    private async Task AddOrderGameToOrderAsync(Game game, Order cart)
     {
+        const int quantity = 1;
         OrderGame orderGame = new()
         {
             OrderId = cart.Id,
-            ProductId = gameId,
-            Quantity = 1,
-            Price = 1,
+            ProductId = game.Id,
+            Quantity = quantity,
+            Price = game.Price * quantity,
         };
 
         await UnitOfWork.OrderGameRepository.InsertAsync(orderGame);

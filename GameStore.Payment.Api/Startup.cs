@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using GameStore.Payment.Core.GameClient;
 using GameStore.Payment.Core.Interfaces;
 using GameStore.Payment.Core.Services;
 using GameStore.Payment.Infraestructure.Data;
@@ -20,6 +21,15 @@ public class Startup(IConfiguration configuration)
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOrderService, OrderService>();
+
+        services.AddHttpClient<IGameServiceClient, GameServiceClient>(client =>
+        {
+            string baseUrl = Configuration
+                .GetValue<string>("GameApplicationUrl")
+                ?? throw new InvalidOperationException("GameApplicationUrl not configured.");
+
+            client.BaseAddress = new Uri(baseUrl);
+        });
 
         services.AddControllers()
             .AddJsonOptions(opt =>

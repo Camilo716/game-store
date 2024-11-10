@@ -12,10 +12,10 @@ public class GamesController(
     public IOrderService OrderService => orderService;
 
     [HttpPost]
-    [Route("{gameId}/buy")]
-    public async Task<ActionResult> AddGameToCart([FromRoute] Guid gameId)
+    [Route("{gameKey}/buy")]
+    public async Task<ActionResult> AddGameToCart([FromRoute] string gameKey)
     {
-        await OrderService.AddGameToCartAsync(gameId);
-        return Ok(gameId);
+        await OrderService.AddGameToCartAsync(gameKey);
+        return Ok();
     }
 }

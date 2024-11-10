@@ -1,4 +1,5 @@
 using GameStore.Payment.Core.Enums;
+using GameStore.Payment.Core.GameClient;
 using GameStore.Payment.Core.Interfaces;
 using GameStore.Payment.Core.Models;
 using GameStore.Payment.Core.Services;
@@ -13,7 +14,7 @@ public class OrderServiceTests
     public async Task GetCart_ReturnsOpenedOrders()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
+        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
         List<OrderStatus> orderCartStatuses =
         [
             OrderStatus.Open,
@@ -31,7 +32,7 @@ public class OrderServiceTests
     public async Task GetOrders_ReturnsPaidAndCancelledOrders()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
+        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
         List<OrderStatus> orderStatuses =
         [
             OrderStatus.Paid,
@@ -53,7 +54,7 @@ public class OrderServiceTests
         OrderGame createdOrderGame = null;
         Order existingOrder = OrderSeed.OpenedOrder;
         Mock<IUnitOfWork> unitOfWork = new();
-        Guid gameId = Guid.Parse("0a2bd33d-030a-4502-9806-c2fdd1b2c4fb");
+        Game game = GetGame();
 
         unitOfWork.Setup(m => m
             .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
@@ -63,14 +64,14 @@ public class OrderServiceTests
             .OrderGameRepository.InsertAsync(It.IsAny<OrderGame>()))
             .Callback<OrderGame>(og => createdOrderGame = og);
 
-        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
+        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
 
         // Act
-        await orderService.AddGameToCartAsync(gameId);
+        await orderService.AddGameToCartAsync(game.Key);
 
         // Assert
         Assert.Equal(OrderSeed.OpenedOrder.Id, createdOrderGame?.OrderId);
-        Assert.Equal(gameId, createdOrderGame?.ProductId);
+        Assert.Equal(game.Id, createdOrderGame?.ProductId);
     }
 
     [Fact]
@@ -80,7 +81,7 @@ public class OrderServiceTests
         Order createdOrder = null;
         OrderGame createdOrderGame = null;
         Mock<IUnitOfWork> unitOfWork = new();
-        Guid gameId = Guid.Parse("0a2bd33d-030a-4502-9806-c2fdd1b2c4fb");
+        Game game = GetGame();
 
         unitOfWork.Setup(m => m
             .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
@@ -98,15 +99,15 @@ public class OrderServiceTests
             .OrderGameRepository.InsertAsync(It.IsAny<OrderGame>()))
             .Callback<OrderGame>(og => createdOrderGame = og);
 
-        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
+        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
 
         // Act
-        await orderService.AddGameToCartAsync(gameId);
+        await orderService.AddGameToCartAsync(game.Key);
 
         // Assert
         Assert.NotNull(createdOrder);
         Assert.Equal(createdOrder.Id, createdOrderGame?.OrderId);
-        Assert.Equal(gameId, createdOrderGame?.ProductId);
+        Assert.Equal(game.Id, createdOrderGame?.ProductId);
     }
 
     [Fact]
@@ -116,7 +117,7 @@ public class OrderServiceTests
         Mock<IUnitOfWork> unitOfWork = new();
         Order existingOrder = OrderSeed.OpenedOrder;
         OrderGame existingOrderGame = OrderGameSeed.OrderGame1;
-        Guid gameId = existingOrderGame.ProductId;
+        Game game = GetGame();
 
         unitOfWork.Setup(m => m
             .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
@@ -130,10 +131,10 @@ public class OrderServiceTests
             .OrderGameRepository.Update(It.IsAny<OrderGame>()))
             .Callback<OrderGame>(og => existingOrderGame = og);
 
-        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
+        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
 
         // Act
-        await orderService.AddGameToCartAsync(gameId);
+        await orderService.AddGameToCartAsync(game.Key);
 
         // Assert
         Assert.Equal(OrderGameSeed.OrderGame1.Quantity + 1, existingOrderGame.Quantity);
@@ -149,4 +150,26 @@ public class OrderServiceTests
 
         return mock;
     }
+
+    private static Mock<IGameServiceClient> GetDummyGameServiceClientMock()
+    {
+        var mock = new Mock<IGameServiceClient>();
+
+        mock.Setup(m => m
+            .GetByKeyAsync(It.IsAny<string>()))
+                .ReturnsAsync(GetGame());
+
+        return mock;
+    }
+
+    private static Game GetGame() => new()
+    {
+        Id = Guid.Parse("0a2bd33d-030a-4502-9806-c2fdd1b2c4fb"),
+        Name = "Days Gone",
+        Key = "daysGone",
+        Description = "Description",
+        Price = 10.0,
+        UnitsInStock = 2,
+        Discount = 0,
+    };
 }

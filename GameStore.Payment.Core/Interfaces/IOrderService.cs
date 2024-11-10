@@ -8,5 +8,5 @@ public interface IOrderService
 
     Task<IEnumerable<Order>> GetOrdersAsync();
 
-    Task AddGameToCartAsync(Guid gameId);
+    Task AddGameToCartAsync(string gameKey);
 }
