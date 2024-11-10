@@ -6,9 +6,14 @@ namespace GameStore.Payment.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class OrdersController(IPaymentMethodProvider paymentMethodProvider) : ControllerBase
+public class OrdersController(
+    IPaymentMethodProvider paymentMethodProvider,
+    IOrderService orderService)
+    : ControllerBase
 {
     public IPaymentMethodProvider PaymentMethodProvider => paymentMethodProvider;
+
+    public IOrderService OrderService => orderService;
 
     [HttpGet]
     [Route("payment-methods")]
@@ -18,5 +23,14 @@ public class OrdersController(IPaymentMethodProvider paymentMethodProvider) : Co
             PaymentMethodProvider.GetPaymentMethods());
 
         return Ok(paymentMethods);
+    }
+
+    [HttpGet]
+    [Route("cart")]
+    public async Task<ActionResult<IEnumerable<Order>>> GetCartAsync()
+    {
+        IEnumerable<Order> cart = await OrderService.GetCartAsync();
+
+        return Ok(cart);
     }
 }
