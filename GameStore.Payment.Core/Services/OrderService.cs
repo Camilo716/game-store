@@ -32,12 +32,35 @@ public class OrderService(
         ]);
     }
 
+    public async Task DeleteGameFromCartAsync(string gameKey)
+    {
+        Order cart = (await GetCartAsync())
+            .FirstOrDefault()
+            ?? throw new InvalidOperationException($"Open cart not found");
+
+        Game game = await GameServiceClient.GetByKeyAsync(gameKey)
+            ?? throw new InvalidOperationException($"Game {gameKey} not found");
+
+        await unitOfWork.OrderGameRepository.DeleteByKeyAsync(cart.Id, game.Id);
+
+        IEnumerable<OrderGame> gamesInOrder = await unitOfWork.OrderGameRepository.GetByOrderIdAsync(cart.Id);
+
+        bool isLastGameInOrder = gamesInOrder.Count() == 1 && gamesInOrder.First().ProductId == game.Id;
+
+        if (isLastGameInOrder)
+        {
+            await unitOfWork.OrderRepository.DeleteByIdAsync(cart.Id);
+        }
+
+        await unitOfWork.SaveChangesAsync();
+    }
+
     public async Task AddGameToCartAsync(string gameKey)
     {
         Order cart = (await GetCartAsync()).FirstOrDefault();
         cart ??= await CreateNewOrderAsync();
 
-        Game game = await GameServiceClient.GetByKeyAsync("key")
+        Game game = await GameServiceClient.GetByKeyAsync(gameKey)
             ?? throw new InvalidOperationException($"Game {gameKey} not found");
 
         OrderGame? existingGameInOrder = (await UnitOfWork.OrderGameRepository

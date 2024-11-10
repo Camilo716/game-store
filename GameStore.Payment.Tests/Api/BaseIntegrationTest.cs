@@ -1,3 +1,4 @@
+using GameStore.Payment.Infraestructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GameStore.Payment.Tests.Api;
@@ -10,11 +11,15 @@ public class BaseIntegrationTest : IDisposable
         HttpClient = Factory.CreateClient();
 
         Scope = Factory.Services.CreateScope();
+        DbContext = Scope.ServiceProvider.GetRequiredService<GameStorePaymentDbContext>();
+        DbSeeder.SeedData(DbContext);
     }
 
     protected CustomWebApplicationFactory Factory { get; }
 
     protected HttpClient HttpClient { get; }
+
+    protected GameStorePaymentDbContext DbContext { get; }
 
     protected IServiceScope Scope { get; }
 

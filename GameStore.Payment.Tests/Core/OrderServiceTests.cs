@@ -14,7 +14,7 @@ public class OrderServiceTests
     public async Task GetCart_ReturnsOpenedOrders()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
+        OrderService orderService = GetOrderService(unitOfWork);
         List<OrderStatus> orderCartStatuses =
         [
             OrderStatus.Open,
@@ -32,7 +32,7 @@ public class OrderServiceTests
     public async Task GetOrders_ReturnsPaidAndCancelledOrders()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
+        OrderService orderService = GetOrderService(unitOfWork);
         List<OrderStatus> orderStatuses =
         [
             OrderStatus.Paid,
@@ -64,7 +64,7 @@ public class OrderServiceTests
             .OrderGameRepository.InsertAsync(It.IsAny<OrderGame>()))
             .Callback<OrderGame>(og => createdOrderGame = og);
 
-        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
+        OrderService orderService = GetOrderService(unitOfWork);
 
         // Act
         await orderService.AddGameToCartAsync(game.Key);
@@ -99,7 +99,7 @@ public class OrderServiceTests
             .OrderGameRepository.InsertAsync(It.IsAny<OrderGame>()))
             .Callback<OrderGame>(og => createdOrderGame = og);
 
-        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
+        OrderService orderService = GetOrderService(unitOfWork);
 
         // Act
         await orderService.AddGameToCartAsync(game.Key);
@@ -131,13 +131,66 @@ public class OrderServiceTests
             .OrderGameRepository.Update(It.IsAny<OrderGame>()))
             .Callback<OrderGame>(og => existingOrderGame = og);
 
-        var orderService = new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
+        OrderService orderService = GetOrderService(unitOfWork);
 
         // Act
         await orderService.AddGameToCartAsync(game.Key);
 
         // Assert
         Assert.Equal(OrderGameSeed.OrderGame1.Quantity + 1, existingOrderGame.Quantity);
+    }
+
+    [Fact]
+    public async Task DeleteGameFromCart_CorrectlyDeletesGameFromCart()
+    {
+        // Arrange
+        Mock<IUnitOfWork> unitOfWork = new();
+        Order existingOrder = OrderSeed.OpenedOrder;
+        Game game = GetGame();
+
+        unitOfWork.Setup(m => m
+            .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
+            .ReturnsAsync([existingOrder]);
+
+        unitOfWork.Setup(m => m.OrderGameRepository.DeleteByKeyAsync(It.IsAny<Guid>(), It.IsAny<Guid>()));
+
+        OrderService orderService = GetOrderService(unitOfWork);
+
+        // Act
+        await orderService.DeleteGameFromCartAsync(game.Key);
+
+        // Assert
+        unitOfWork.Verify(m => m.OrderGameRepository.DeleteByKeyAsync(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteGameFromCart_WhenIsTheLastGameInCart_AlsoDeletesOrder()
+    {
+        // Arrange
+        Mock<IUnitOfWork> unitOfWork = new();
+        Order existingOrder = OrderSeed.OpenedOrder;
+        OrderGame lastGameInCart = OrderGameSeed.OrderGame1;
+        Game game = GetGame();
+
+        unitOfWork.Setup(m => m
+            .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
+            .ReturnsAsync([existingOrder]);
+
+        unitOfWork.Setup(m => m
+            .OrderGameRepository.GetByOrderIdAsync(existingOrder.Id))
+            .ReturnsAsync([lastGameInCart]);
+
+        unitOfWork.Setup(m => m.OrderGameRepository.DeleteByKeyAsync(It.IsAny<Guid>(), It.IsAny<Guid>()));
+        unitOfWork.Setup(m => m.OrderRepository.DeleteByIdAsync(It.IsAny<Guid>()));
+
+        OrderService orderService = GetOrderService(unitOfWork);
+
+        // Act
+        await orderService.DeleteGameFromCartAsync(game.Key);
+
+        // Assert
+        unitOfWork.Verify(m => m.OrderGameRepository.DeleteByKeyAsync(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+        unitOfWork.Verify(m => m.OrderRepository.DeleteByIdAsync(It.IsAny<Guid>()), Times.Once);
     }
 
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
@@ -160,6 +213,11 @@ public class OrderServiceTests
                 .ReturnsAsync(GetGame());
 
         return mock;
+    }
+
+    private static OrderService GetOrderService(Mock<IUnitOfWork> unitOfWork)
+    {
+        return new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
     }
 
     private static Game GetGame() => new()

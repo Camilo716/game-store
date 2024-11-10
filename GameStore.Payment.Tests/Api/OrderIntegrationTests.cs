@@ -28,4 +28,15 @@ public class OrderIntegrationTests : BaseIntegrationTest
         Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
+
+    [Fact]
+    public async Task DeleteGameFromCart_ReturnsSuccess()
+    {
+        const string gameKey = "mockGameKey";
+
+        var response = await HttpClient.DeleteAsync($"api/orders/cart/{gameKey}");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
 }

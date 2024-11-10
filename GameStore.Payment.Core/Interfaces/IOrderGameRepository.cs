@@ -9,4 +9,6 @@ public interface IOrderGameRepository
     Task InsertAsync(OrderGame orderGame);
 
     void Update(OrderGame orderGame);
+
+    Task DeleteByKeyAsync(Guid orderId, Guid productId);
 }

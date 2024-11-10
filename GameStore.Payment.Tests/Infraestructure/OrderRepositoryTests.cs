@@ -53,4 +53,17 @@ public class OrderRepositoryTests
         Assert.NotNull(orders);
         Assert.All(orders, o => Assert.Equal(OrderStatus.Open, o.Status));
     }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesOrderInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        Guid id = OrderSeed.GetOrders().First().Id;
+
+        await unitOfWork.OrderRepository.DeleteByIdAsync(id);
+        await unitOfWork.SaveChangesAsync();
+
+        Assert.Equal(OrderSeed.GetOrders().Count - 1, dbContext.Orders.Count());
+    }
 }

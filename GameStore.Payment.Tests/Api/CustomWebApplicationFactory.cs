@@ -14,6 +14,12 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        ConfigureAppConfiguration(builder);
+        ConfigureService(builder);
+    }
+
+    private static void ConfigureAppConfiguration(IWebHostBuilder builder)
+    {
         builder.ConfigureAppConfiguration((context, config) =>
         {
             var testConfig = new Dictionary<string, string?>
@@ -23,7 +29,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
             config.AddInMemoryCollection(testConfig);
         });
+    }
 
+    private static void ConfigureService(IWebHostBuilder builder)
+    {
         builder.ConfigureServices(services =>
         {
             RemoveDbContextServiceRegistration(services);

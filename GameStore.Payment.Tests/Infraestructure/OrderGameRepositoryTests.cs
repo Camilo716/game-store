@@ -57,4 +57,18 @@ public class OrderGameRepositoryTests
             OrderGameSeed.OrderGame1.OrderId, OrderGameSeed.OrderGame1.ProductId);
         Assert.Equal(orderGame, updatedOrderGame);
     }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesOrderGameInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        Guid orderId = OrderGameSeed.OrderGame1.OrderId;
+        Guid productId = OrderGameSeed.OrderGame1.ProductId;
+
+        await unitOfWork.OrderGameRepository.DeleteByKeyAsync(orderId, productId);
+        await unitOfWork.SaveChangesAsync();
+
+        Assert.Equal(OrderGameSeed.GetOrderGames().Count - 1, dbContext.OrderGames.Count());
+    }
 }

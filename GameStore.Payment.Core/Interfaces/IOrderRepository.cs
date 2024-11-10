@@ -10,4 +10,6 @@ public interface IOrderRepository
     Task<IEnumerable<Order>> GetByStatusAsync(IEnumerable<OrderStatus> status);
 
     Task InsertAsync(Order order);
+
+    Task DeleteByIdAsync(Guid id);
 }

@@ -26,6 +26,13 @@ public class OrdersController(
     }
 
     [HttpGet]
+    public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+    {
+        IEnumerable<Order> orders = await OrderService.GetOrdersAsync();
+        return Ok(orders);
+    }
+
+    [HttpGet]
     [Route("cart")]
     public async Task<ActionResult<IEnumerable<Order>>> GetCart()
     {
@@ -33,10 +40,11 @@ public class OrdersController(
         return Ok(cart);
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+    [HttpDelete]
+    [Route("cart/{gameKey}")]
+    public async Task<ActionResult> DeleteGameFromCart([FromRoute] string gameKey)
     {
-        IEnumerable<Order> orders = await OrderService.GetOrdersAsync();
-        return Ok(orders);
+        await OrderService.DeleteGameFromCartAsync(gameKey);
+        return Ok();
     }
 }

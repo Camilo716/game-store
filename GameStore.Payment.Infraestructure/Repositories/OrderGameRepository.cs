@@ -15,4 +15,13 @@ public class OrderGameRepository(GameStorePaymentDbContext dbContext)
             .Where(og => og.OrderId == orderId)
             .ToListAsync();
     }
+
+    public async Task DeleteByKeyAsync(Guid orderId, Guid productId)
+    {
+        var orderGame = await DbSet
+            .FindAsync(orderId, productId)
+            ?? throw new KeyNotFoundException();
+
+        DbContext.Remove(orderGame);
+    }
 }
