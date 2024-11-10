@@ -7,7 +7,11 @@ public class GameStorePaymentDbContext(DbContextOptions options) : DbContext(opt
 {
     public DbSet<Order> Orders { get; set; }
 
+    public DbSet<OrderGame> OrderGames { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<OrderGame>()
+            .HasKey(x => new { x.OrderId, x.ProductId });
     }
 }

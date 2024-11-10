@@ -13,7 +13,7 @@ public class OrderServiceTests
     public async Task GetCart_ReturnsOpenedOrders()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-        var orderService = new OrderService(unitOfWork.Object);
+        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
         List<OrderStatus> orderCartStatuses =
         [
             OrderStatus.Open,
@@ -31,7 +31,7 @@ public class OrderServiceTests
     public async Task GetOrders_ReturnsPaidAndCancelledOrders()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-        var orderService = new OrderService(unitOfWork.Object);
+        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
         List<OrderStatus> orderStatuses =
         [
             OrderStatus.Paid,
@@ -44,6 +44,99 @@ public class OrderServiceTests
         unitOfWork.Verify(
             m => m.OrderRepository.GetByStatusAsync(orderStatuses),
             Times.Once());
+    }
+
+    [Fact]
+    public async Task AddGameToCart_WhenOrderExists_AddsOrderGameToOrder()
+    {
+        // Arrange
+        OrderGame createdOrderGame = null;
+        Order existingOrder = OrderSeed.OpenedOrder;
+        Mock<IUnitOfWork> unitOfWork = new();
+        Guid gameId = Guid.Parse("0a2bd33d-030a-4502-9806-c2fdd1b2c4fb");
+
+        unitOfWork.Setup(m => m
+            .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
+            .ReturnsAsync([existingOrder]);
+
+        unitOfWork.Setup(m => m
+            .OrderGameRepository.InsertAsync(It.IsAny<OrderGame>()))
+            .Callback<OrderGame>(og => createdOrderGame = og);
+
+        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
+
+        // Act
+        await orderService.AddGameToCartAsync(gameId);
+
+        // Assert
+        Assert.Equal(OrderSeed.OpenedOrder.Id, createdOrderGame?.OrderId);
+        Assert.Equal(gameId, createdOrderGame?.ProductId);
+    }
+
+    [Fact]
+    public async Task AddGameToCart_WhenOrderDoesNotExists_CreatesOrderBefore()
+    {
+        // Arrange
+        Order createdOrder = null;
+        OrderGame createdOrderGame = null;
+        Mock<IUnitOfWork> unitOfWork = new();
+        Guid gameId = Guid.Parse("0a2bd33d-030a-4502-9806-c2fdd1b2c4fb");
+
+        unitOfWork.Setup(m => m
+            .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
+            .ReturnsAsync([]); // Order does not exists
+
+        unitOfWork.Setup(m => m
+            .OrderGameRepository.GetByOrderIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync([]);
+
+        unitOfWork.Setup(m => m
+            .OrderRepository.InsertAsync(It.IsAny<Order>()))
+            .Callback<Order>(o => createdOrder = o);
+
+        unitOfWork.Setup(m => m
+            .OrderGameRepository.InsertAsync(It.IsAny<OrderGame>()))
+            .Callback<OrderGame>(og => createdOrderGame = og);
+
+        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
+
+        // Act
+        await orderService.AddGameToCartAsync(gameId);
+
+        // Assert
+        Assert.NotNull(createdOrder);
+        Assert.Equal(createdOrder.Id, createdOrderGame?.OrderId);
+        Assert.Equal(gameId, createdOrderGame?.ProductId);
+    }
+
+    [Fact]
+    public async Task AddGameToCart_WhenGameAlreadyExistsInOrder_IncreasesQuantity()
+    {
+        // Arrange
+        Mock<IUnitOfWork> unitOfWork = new();
+        Order existingOrder = OrderSeed.OpenedOrder;
+        OrderGame existingOrderGame = OrderGameSeed.OrderGame1;
+        Guid gameId = existingOrderGame.ProductId;
+
+        unitOfWork.Setup(m => m
+            .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
+            .ReturnsAsync([existingOrder]);
+
+        unitOfWork.Setup(m => m
+            .OrderGameRepository.GetByOrderIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync([existingOrderGame]); // Order already has the game
+
+        unitOfWork.Setup(m => m
+            .OrderGameRepository.Update(It.IsAny<OrderGame>()))
+            .Callback<OrderGame>(og => existingOrderGame = og);
+
+        var orderService = new OrderService(unitOfWork.Object, new DateTimeProvider());
+
+        // Act
+        await orderService.AddGameToCartAsync(gameId);
+
+        // Assert
+        Assert.Equal(OrderGameSeed.OrderGame1.Quantity + 1, existingOrderGame.Quantity);
     }
 
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()

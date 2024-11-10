@@ -16,6 +16,8 @@ public class Startup(IConfiguration configuration)
         Infraestructure.Dependences.ConfigureServices(Configuration, services);
 
         services.AddScoped<IPaymentMethodProvider, PaymentMethodProvider>();
+        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOrderService, OrderService>();
 
