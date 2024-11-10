@@ -1,0 +1,23 @@
+<ng-container [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Type</mat-label>
+      <input matInput placeholder="Type" formControlName="type" />
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onSave()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-container>

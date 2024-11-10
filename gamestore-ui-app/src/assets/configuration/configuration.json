@@ -1,0 +1,10 @@
+{
+  "baseApiUrl": "http://localhost:5080/api/",
+
+  "gamesApiUrl": "games",
+  "genresApiUrl": "genres",
+  "platformsApiUrl": "platforms",
+
+  "publishersApiUrl": "publishers",
+  "publisherApiUrl": "publisher"
+}

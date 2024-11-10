@@ -1,0 +1,90 @@
+<ng-container [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field class="p-3 w-4/12">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name" />
+    </mat-form-field>
+    <mat-form-field class="p-3 w-4/12">
+      <mat-label>Key</mat-label>
+      <input matInput placeholder="Key" formControlName="key" />
+    </mat-form-field>
+    <mat-form-field class="p-3 w-4/12">
+      <mat-label>Publisher</mat-label>
+      <mat-select formControlName="publisherId">
+        <mat-option></mat-option>
+        <mat-option
+          *ngFor="let publisher of allPublishers"
+          [value]="publisher.id"
+        >
+          {{ publisher.companyName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="p-3 w-4/12">
+      <mat-label>Price</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Price"
+        formControlName="price"
+      />
+    </mat-form-field>
+    <mat-form-field class="p-3 w-4/12">
+      <mat-label>Units in Stock</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Units in Stock"
+        formControlName="unitsInStock"
+      />
+    </mat-form-field>
+    <mat-form-field class="p-3 w-4/12">
+      <mat-label>Discount</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Discount"
+        formControlName="discount"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Description" formControlName="description" />
+    </mat-form-field>
+
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Genres</mat-label>
+      <mat-select formControlName="genres" multiple>
+        <mat-option *ngFor="let genre of allGenres" [value]="genre.id">
+          {{ genre.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Platforms</mat-label>
+      <mat-select formControlName="platforms" multiple>
+        <mat-option *ngFor="let platform of allPlatforms" [value]="platform.id">
+          {{ platform.type }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="flex justify-end gap-1">
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onSave()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-container>
