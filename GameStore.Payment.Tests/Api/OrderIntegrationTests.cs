@@ -19,4 +19,13 @@ public class OrderIntegrationTests : BaseIntegrationTest
         Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
+
+    [Fact]
+    public async Task GetOrders_ReturnsSuccess()
+    {
+        var response = await HttpClient.GetAsync("api/orders");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
 }

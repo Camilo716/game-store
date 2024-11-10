@@ -27,10 +27,16 @@ public class OrdersController(
 
     [HttpGet]
     [Route("cart")]
-    public async Task<ActionResult<IEnumerable<Order>>> GetCartAsync()
+    public async Task<ActionResult<IEnumerable<Order>>> GetCart()
     {
         IEnumerable<Order> cart = await OrderService.GetCartAsync();
-
         return Ok(cart);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+    {
+        IEnumerable<Order> orders = await OrderService.GetOrdersAsync();
+        return Ok(orders);
     }
 }

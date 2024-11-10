@@ -10,10 +10,10 @@ public class OrderRepository(GameStorePaymentDbContext dbContext)
     : BaseRepository<Order>(dbContext),
     IOrderRepository
 {
-    public async Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status)
+    public async Task<IEnumerable<Order>> GetByStatusAsync(IEnumerable<OrderStatus> status)
     {
         return await DbSet
-            .Where(order => order.Status == status)
+            .Where(order => status.Contains(order.Status))
             .ToListAsync();
     }
 }

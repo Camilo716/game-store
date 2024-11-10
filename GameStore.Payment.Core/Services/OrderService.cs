@@ -11,6 +11,16 @@ public class OrderService(IUnitOfWork unitOfWork)
 
     public async Task<IEnumerable<Order>> GetCartAsync()
     {
-        return await _unitOfWork.OrderRepository.GetByStatusAsync(OrderStatus.Open);
+        return await _unitOfWork.OrderRepository.GetByStatusAsync([
+            OrderStatus.Open
+        ]);
+    }
+
+    public async Task<IEnumerable<Order>> GetOrdersAsync()
+    {
+        return await _unitOfWork.OrderRepository.GetByStatusAsync([
+            OrderStatus.Paid,
+            OrderStatus.Cancelled,
+        ]);
     }
 }

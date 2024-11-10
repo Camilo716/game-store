@@ -10,8 +10,12 @@ public class OrderRepositoryTests
     {
         using var dbContext = UnitTestHelper.GetUnitTestDbContext();
         var unitOfWork = new UnitOfWork(dbContext);
+        List<OrderStatus> orderStatuses =
+        [
+            OrderStatus.Open
+        ];
 
-        var orders = await unitOfWork.OrderRepository.GetByStatusAsync(OrderStatus.Open);
+        var orders = await unitOfWork.OrderRepository.GetByStatusAsync(orderStatuses);
 
         Assert.NotNull(orders);
         Assert.All(orders, o => Assert.Equal(OrderStatus.Open, o.Status));

@@ -5,5 +5,5 @@ namespace GameStore.Payment.Core.Interfaces;
 
 public interface IOrderRepository
 {
-    Task<IEnumerable<Order>> GetByStatusAsync(OrderStatus status);
+    Task<IEnumerable<Order>> GetByStatusAsync(IEnumerable<OrderStatus> status);
 }
