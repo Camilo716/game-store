@@ -1,0 +1,13 @@
+namespace GameStore.Payment.Tests.Api;
+
+public class OrderIntegrationTests : BaseIntegrationTest
+{
+    [Fact]
+    public async Task GetPaymentMethods_ReturnsSuccess()
+    {
+        var response = await HttpClient.GetAsync("api/orders/payment-methods");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
+}

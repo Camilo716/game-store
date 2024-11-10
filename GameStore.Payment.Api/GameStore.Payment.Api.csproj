@@ -18,9 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameStore.Core\GameStore.Payment.Core.csproj" />
-    <ProjectReference
-      Include="..\GameStore.Infraestructure\GameStore.Payment.Infraestructure.csproj" />
+    <ProjectReference Include="..\GameStore.Payment.Core\GameStore.Payment.Core.csproj" />
+    <ProjectReference Include="..\GameStore.Payment.Infraestructure\GameStore.Payment.Infraestructure.csproj" />
   </ItemGroup>
 
 </Project>

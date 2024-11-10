@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using GameStore.Payment.Core.Interfaces;
+using GameStore.Payment.Core.Services;
 
 namespace GameStore.Payment.Api;
 
@@ -9,6 +11,8 @@ public class Startup(IConfiguration configuration)
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSwaggerGen();
+
+        services.AddScoped<IPaymentMethodProvider, PaymentMethodProvider>();
 
         services.AddControllers()
             .AddJsonOptions(opt =>
