@@ -1,3 +1,5 @@
+using GameStore.Payment.Tests.Seed;
+
 namespace GameStore.Payment.Tests.Api;
 
 public class OrderIntegrationTests : BaseIntegrationTest
@@ -24,6 +26,17 @@ public class OrderIntegrationTests : BaseIntegrationTest
     public async Task GetOrders_ReturnsSuccess()
     {
         var response = await HttpClient.GetAsync("api/orders");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task GetOrderDetails_ReturnsSuccess()
+    {
+        Guid orderId = OrderSeed.OpenedOrder.Id;
+
+        var response = await HttpClient.GetAsync($"api/orders/{orderId}/details");
 
         Assert.NotNull(response);
         response.EnsureSuccessStatusCode();

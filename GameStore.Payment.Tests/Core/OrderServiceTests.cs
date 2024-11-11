@@ -48,6 +48,21 @@ public class OrderServiceTests
     }
 
     [Fact]
+    public async Task GetOrderDetails_ReturnsCorrectOrderGames()
+    {
+        Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
+        OrderService orderService = GetOrderService(unitOfWork);
+        Guid orderId = OrderSeed.OpenedOrder.Id;
+
+        IEnumerable<OrderGame> orderGames = await orderService.GetOrderDetailsAsync(orderId);
+
+        Assert.NotNull(orderGames);
+        unitOfWork.Verify(
+            m => m.OrderGameRepository.GetByOrderIdAsync(orderId),
+            Times.Once());
+    }
+
+    [Fact]
     public async Task AddGameToCart_WhenOrderExists_AddsOrderGameToOrder()
     {
         // Arrange
@@ -200,6 +215,10 @@ public class OrderServiceTests
         mock.Setup(m => m.OrderRepository
             .GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
             .ReturnsAsync(OrderSeed.GetOrders());
+
+        mock.Setup(m => m.OrderGameRepository
+            .GetByOrderIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync([OrderGameSeed.OrderGame1]);
 
         return mock;
     }

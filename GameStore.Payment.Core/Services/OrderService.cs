@@ -77,6 +77,11 @@ public class OrderService(
         }
     }
 
+    public async Task<IEnumerable<OrderGame>> GetOrderDetailsAsync(Guid orderId)
+    {
+        return await UnitOfWork.OrderGameRepository.GetByOrderIdAsync(orderId);
+    }
+
     private async Task IncreaseQuantityOfExistingOrderGame(OrderGame? orderGame)
     {
         orderGame.Quantity++;

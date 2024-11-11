@@ -11,4 +11,6 @@ public interface IOrderService
     Task AddGameToCartAsync(string gameKey);
 
     Task DeleteGameFromCartAsync(string gameKey);
+
+    Task<IEnumerable<OrderGame>> GetOrderDetailsAsync(Guid orderId);
 }

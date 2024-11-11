@@ -33,6 +33,14 @@ public class OrdersController(
     }
 
     [HttpGet]
+    [Route("{orderId}/details")]
+    public async Task<ActionResult<IEnumerable<OrderGame>>> GetOrderDetails([FromRoute] Guid orderId)
+    {
+        IEnumerable<OrderGame> orderGames = await OrderService.GetOrderDetailsAsync(orderId);
+        return Ok(orderGames);
+    }
+
+    [HttpGet]
     [Route("cart")]
     public async Task<ActionResult<IEnumerable<Order>>> GetCart()
     {
