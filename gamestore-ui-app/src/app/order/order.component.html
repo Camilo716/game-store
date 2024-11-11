@@ -1,0 +1,36 @@
+<mat-card style="padding: 20px; margin: 30px">
+  <mat-card-header style="padding: 20px">
+    <mat-card-title-group>
+      <mat-card-title class="text-gray-600">{{ title }}</mat-card-title>
+    </mat-card-title-group>
+    <div class="flex justify-between gap-3">
+      <button
+        mat-raised-button
+        class="bg-gray-500 hover:bg-gray-800 table-action-button text-white rounded-md"
+        (click)="loadOrders()"
+        matTooltip="Refresh"
+      >
+        <mat-icon>autorenew</mat-icon>
+      </button>
+    </div>
+  </mat-card-header>
+
+  <table mat-table [dataSource]="orders">
+    <ng-container
+      *ngFor="let column of columns"
+      [matColumnDef]="column.matColumnDef"
+    >
+      <th mat-header-cell *matHeaderCellDef>{{ column.text }}</th>
+      <td mat-cell *matCellDef="let row">
+        {{
+          column.parseFunction
+            ? column.parseFunction(row[column.data] ?? "")
+            : row[column.data]
+        }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</mat-card>

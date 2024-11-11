@@ -19,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pay',
@@ -45,7 +46,8 @@ export class PayComponent {
 
   constructor(
     private orderService: OrderService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     this.setPaymentMethods();
   }
@@ -63,7 +65,10 @@ export class PayComponent {
   confirmPayment() {
     this.orderService
       .payOrder(this.form.get('paymentMethod')?.value)
-      .subscribe(() => this.dialogRef.close());
+      .subscribe(() => {
+        this.router.navigate(['/order']);
+        this.dialogRef.close();
+      });
   }
 
   onCancel() {

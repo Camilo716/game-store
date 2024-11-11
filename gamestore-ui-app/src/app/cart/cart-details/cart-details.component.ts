@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { PayComponent } from './pay/pay.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-Order-form',

@@ -14,6 +14,10 @@ export class OrderService {
     return this.http.get(this.config.getCartApiUrl());
   }
 
+  getOrders(): Observable<any> {
+    return this.http.get(this.config.getOrdersApiUrl());
+  }
+
   getOrderDetailsById(orderId: string): Observable<any> {
     return this.http.get(this.config.getOrderDetailsApiUrl(orderId));
   }
