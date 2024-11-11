@@ -28,6 +28,14 @@ export class ReadonlyGameComponent implements OnInit {
     { matColumnDef: 'name', data: 'name', text: 'Name' },
     { matColumnDef: 'description', data: 'description', text: 'Description' },
     { matColumnDef: 'key', data: 'key', text: 'Key' },
+    { matColumnDef: 'price', data: 'price', text: 'Price' },
+    {
+      matColumnDef: 'unitsInStock',
+      data: 'unitsInStock',
+      text: 'Units in stock',
+    },
+    { matColumnDef: 'discount', data: 'discount', text: 'Discount' },
+    { matColumnDef: 'publisherId', data: 'publisherId', text: 'Publisher' },
   ];
 
   displayedColumns: string[] = [];
@@ -45,7 +53,12 @@ export class ReadonlyGameComponent implements OnInit {
     });
   }
 
+  addToCart(gameKey: string): void {
+    this.gameService.addToCart(gameKey).subscribe();
+  }
+
   setDisplayedColumns() {
     this.displayedColumns = this.columns.map((column) => column.matColumnDef);
+    this.displayedColumns.push('actions');
   }
 }

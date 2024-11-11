@@ -60,6 +60,10 @@ export class GameService {
     return this.http.post(`${this.config.addGameApiUrl()}`, request);
   }
 
+  addToCart(gameKey: string): Observable<any> {
+    return this.http.post(`${this.config.addToCartApiUrl(gameKey)}`, {});
+  }
+
   deleteGame(id: string): Observable<any> {
     return this.http.delete(this.config.deleteGameApiUrl(id));
   }

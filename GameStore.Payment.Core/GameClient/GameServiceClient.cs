@@ -6,6 +6,11 @@ public class GameServiceClient(
     HttpClient httpClient)
     : IGameServiceClient
 {
+    private static readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+    };
+
     private HttpClient HttpClient => httpClient;
 
     public async Task<Game> GetByKeyAsync(string key)
@@ -15,6 +20,6 @@ public class GameServiceClient(
         response.EnsureSuccessStatusCode();
 
         var content = await response.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<Game>(content);
+        return JsonSerializer.Deserialize<Game>(content, _jsonOptions);
     }
 }

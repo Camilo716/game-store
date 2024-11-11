@@ -114,6 +114,10 @@ export class ConfigService {
     return `${this.config.baseApiPaymentUrl}${this.config.ordersApiUrl}/cart`;
   }
 
+  addToCartApiUrl(gameKey: string): string {
+    return `${this.config.baseApiPaymentUrl}${this.config.gamesApiUrl}/${gameKey}/buy`;
+  }
+
   getOrderDetailsApiUrl(orderId: string): string {
     return `${this.config.baseApiPaymentUrl}${this.config.ordersApiUrl}/${orderId}/details`;
   }
