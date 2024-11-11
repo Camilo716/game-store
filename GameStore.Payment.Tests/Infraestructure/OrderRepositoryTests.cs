@@ -66,4 +66,19 @@ public class OrderRepositoryTests
 
         Assert.Equal(OrderSeed.GetOrders().Count - 1, dbContext.Orders.Count());
     }
+
+    [Fact]
+    public async Task Update_GivenValidOrder_UpdatesOrderInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        var order = await dbContext.Orders.FindAsync(OrderSeed.OpenedOrder.Id);
+        order.Status = OrderStatus.Paid;
+
+        unitOfWork.OrderRepository.Update(order);
+        await unitOfWork.SaveChangesAsync();
+
+        var updatedOrder = await dbContext.Orders.FindAsync(OrderSeed.OpenedOrder.Id);
+        Assert.Equal(OrderStatus.Paid, updatedOrder.Status);
+    }
 }

@@ -1,6 +1,7 @@
 using GameStore.Payment.Core.Dtos;
 using GameStore.Payment.Core.Models;
 using GameStore.Payment.Core.Services;
+using GameStore.Payment.Core.Services.Payment;
 
 namespace GameStore.Payment.Tests.Core;
 

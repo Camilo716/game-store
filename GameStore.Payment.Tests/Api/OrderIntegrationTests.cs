@@ -1,3 +1,5 @@
+using System.Net.Http.Json;
+using GameStore.Payment.Core.Dtos;
 using GameStore.Payment.Tests.Seed;
 
 namespace GameStore.Payment.Tests.Api;
@@ -48,6 +50,20 @@ public class OrderIntegrationTests : BaseIntegrationTest
         const string gameKey = "mockGameKey";
 
         var response = await HttpClient.DeleteAsync($"api/orders/cart/{gameKey}");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task PayOrder_ReturnsSuccess()
+    {
+        PaymentRequest request = new()
+        {
+            PaymentMethod = Payment.Core.Enums.PaymentMethod.Bank,
+        };
+
+        var response = await HttpClient.PostAsJsonAsync($"api/orders/payment", request);
 
         Assert.NotNull(response);
         response.EnsureSuccessStatusCode();

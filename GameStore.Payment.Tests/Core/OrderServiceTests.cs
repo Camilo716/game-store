@@ -1,10 +1,13 @@
+using GameStore.Payment.Core.Dtos;
 using GameStore.Payment.Core.Enums;
 using GameStore.Payment.Core.GameClient;
 using GameStore.Payment.Core.Interfaces;
 using GameStore.Payment.Core.Models;
 using GameStore.Payment.Core.Services;
+using GameStore.Payment.Core.Services.Payment;
 using GameStore.Payment.Tests.Seed;
 using Moq;
+using PaymentMethod = GameStore.Payment.Core.Enums.PaymentMethod;
 
 namespace GameStore.Payment.Tests.Core;
 
@@ -60,6 +63,36 @@ public class OrderServiceTests
         unitOfWork.Verify(
             m => m.OrderGameRepository.GetByOrderIdAsync(orderId),
             Times.Once());
+    }
+
+    [Fact]
+    public async Task PayOrder_UpdatesOrderStatus()
+    {
+        // Arrange
+        Mock<IUnitOfWork> unitOfWork = new();
+        Order updatedOrder = null;
+        Order order = OrderSeed.OpenedOrder;
+
+        unitOfWork.Setup(m => m
+            .OrderRepository.GetByStatusAsync(It.IsAny<IEnumerable<OrderStatus>>()))
+            .ReturnsAsync([order]);
+
+        unitOfWork.Setup(m => m
+            .OrderRepository.Update(It.IsAny<Order>()))
+            .Callback<Order>(o => updatedOrder = o);
+
+        OrderService orderService = GetOrderService(unitOfWork);
+
+        PaymentRequest paymentRequest = new()
+        {
+            PaymentMethod = PaymentMethod.Bank,
+        };
+
+        // Act
+        _ = await orderService.PayOrderAsync(paymentRequest);
+
+        // Assert
+        Assert.Equal(OrderStatus.Paid, updatedOrder.Status);
     }
 
     [Fact]
@@ -236,7 +269,18 @@ public class OrderServiceTests
 
     private static OrderService GetOrderService(Mock<IUnitOfWork> unitOfWork)
     {
-        return new OrderService(unitOfWork.Object, GetDummyGameServiceClientMock().Object, new DateTimeProvider());
+        Mock<IPaymentProcessor> paymentProcessorMock = new();
+        Mock<IPaymentProcessorFactory> paymentProcessorFactoryMock = new();
+
+        paymentProcessorFactoryMock.Setup(m => m
+            .CreateProcessor(It.IsAny<PaymentMethod>()))
+            .Returns(paymentProcessorMock.Object);
+
+        return new OrderService(
+            unitOfWork.Object,
+            GetDummyGameServiceClientMock().Object,
+            new DateTimeProvider(),
+            new PaymentService(paymentProcessorFactoryMock.Object));
     }
 
     private static Game GetGame() => new()

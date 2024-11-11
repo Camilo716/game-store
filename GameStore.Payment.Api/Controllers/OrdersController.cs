@@ -1,3 +1,4 @@
+using GameStore.Payment.Core.Dtos;
 using GameStore.Payment.Core.Interfaces;
 using GameStore.Payment.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -54,5 +55,13 @@ public class OrdersController(
     {
         await OrderService.DeleteGameFromCartAsync(gameKey);
         return Ok();
+    }
+
+    [HttpPost]
+    [Route("payment")]
+    public async Task<ActionResult<PaymentResponse>> PayOrderAsync([FromBody] PaymentRequest paymentRequest)
+    {
+        PaymentResponse paymentResponse = await OrderService.PayOrderAsync(paymentRequest);
+        return Ok(paymentResponse);
     }
 }

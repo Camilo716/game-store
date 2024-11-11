@@ -2,7 +2,7 @@ using GameStore.Payment.Core.Dtos;
 using GameStore.Payment.Core.Interfaces;
 using GameStore.Payment.Core.Models;
 
-namespace GameStore.Payment.Core.Services;
+namespace GameStore.Payment.Core.Services.Payment;
 
 public class PaymentCalculationService(
     DateTimeProvider dateTimeProvider)

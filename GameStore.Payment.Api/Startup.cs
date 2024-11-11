@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using GameStore.Payment.Core.GameClient;
 using GameStore.Payment.Core.Interfaces;
 using GameStore.Payment.Core.Services;
+using GameStore.Payment.Core.Services.Payment;
 using GameStore.Payment.Infraestructure.Data;
 
 namespace GameStore.Payment.Api;
@@ -21,6 +22,8 @@ public class Startup(IConfiguration configuration)
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IPaymentService, PaymentService>();
+        services.AddScoped<IPaymentProcessorFactory, PaymentProcessorFactory>();
 
         services.AddHttpClient<IGameServiceClient, GameServiceClient>(client =>
         {

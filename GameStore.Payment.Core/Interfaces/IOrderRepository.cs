@@ -12,4 +12,6 @@ public interface IOrderRepository
     Task InsertAsync(Order order);
 
     Task DeleteByIdAsync(Guid id);
+
+    void Update(Order order);
 }

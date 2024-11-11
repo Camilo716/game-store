@@ -1,3 +1,4 @@
+using GameStore.Payment.Core.Dtos;
 using GameStore.Payment.Core.Enums;
 using GameStore.Payment.Core.GameClient;
 using GameStore.Payment.Core.Interfaces;
@@ -8,7 +9,8 @@ namespace GameStore.Payment.Core.Services;
 public class OrderService(
     IUnitOfWork unitOfWork,
     IGameServiceClient gameServiceClient,
-    IDateTimeProvider dateTimeProvider)
+    IDateTimeProvider dateTimeProvider,
+    IPaymentService paymentService)
     : IOrderService
 {
     private IGameServiceClient GameServiceClient => gameServiceClient;
@@ -16,6 +18,8 @@ public class OrderService(
     private IUnitOfWork UnitOfWork => unitOfWork;
 
     private IDateTimeProvider DateTimeProvider => dateTimeProvider;
+
+    private IPaymentService PaymentService => paymentService;
 
     public async Task<IEnumerable<Order>> GetCartAsync()
     {
@@ -53,6 +57,20 @@ public class OrderService(
         }
 
         await unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task<PaymentResponse> PayOrderAsync(PaymentRequest paymentRequest)
+    {
+        Order cart = (await GetCartAsync())
+            .FirstOrDefault()
+            ?? throw new InvalidOperationException($"Open cart not found");
+
+        cart.Status = OrderStatus.Paid;
+
+        UnitOfWork.OrderRepository.Update(cart);
+        await UnitOfWork.SaveChangesAsync();
+
+        return await PaymentService.HandlePaymentAsync(paymentRequest, cart);
     }
 
     public async Task AddGameToCartAsync(string gameKey)
