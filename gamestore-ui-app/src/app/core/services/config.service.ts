@@ -109,4 +109,12 @@ export class ConfigService {
   addPublisherApiUrl(): string {
     return `${this.config.baseApiUrl}${this.config.publishersApiUrl}`;
   }
+
+  getCartApiUrl(): string {
+    return `${this.config.baseApiPaymentUrl}${this.config.ordersApiUrl}/cart`;
+  }
+
+  getOrderDetailsApiUrl(orderId: string): string {
+    return `${this.config.baseApiPaymentUrl}${this.config.ordersApiUrl}/${orderId}/details`;
+  }
 }

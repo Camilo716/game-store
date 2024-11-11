@@ -10,4 +10,8 @@ export const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.routes').then((m) => m.HOME_ROUTES),
   },
+  {
+    path: 'cart',
+    loadChildren: () => import('./cart/cart.routes').then((m) => m.CART_ROUTES),
+  },
 ];

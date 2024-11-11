@@ -1,10 +1,13 @@
 {
   "baseApiUrl": "http://localhost:5080/api/",
+  "baseApiPaymentUrl": "http://localhost:5242/api/",
 
   "gamesApiUrl": "games",
   "genresApiUrl": "genres",
   "platformsApiUrl": "platforms",
 
   "publishersApiUrl": "publishers",
-  "publisherApiUrl": "publisher"
+  "publisherApiUrl": "publisher",
+
+  "ordersApiUrl": "orders"
 }

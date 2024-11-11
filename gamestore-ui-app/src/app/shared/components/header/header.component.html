@@ -1,12 +1,30 @@
-<mat-toolbar class="flex justify-between items-center">
-  <a [routerLink]="''" style="text-decoration: none">
-    <span class="1 text-2xl text-indigo-500">Game Store</span>
-  </a>
-  <span>
-    <a [routerLink]="'/admin'">
-      <mat-icon class="text-1xl text-indigo-500" matTooltip="Admin Panel"
-        >admin_panel_settings</mat-icon
-      >
+<mat-toolbar class="flex justify-around items-center">
+  <div>
+    <a [routerLink]="''" style="text-decoration: none">
+      <span class="1 text-2xl font-semibold text-indigo-500">Game Store</span>
     </a>
-  </span>
+  </div>
+  <div class="flex gap-10">
+    <span>
+      <a [routerLink]="'/cart'">
+        <mat-icon class="text-1xl text-indigo-500" matTooltip="Shopping Cart"
+          >shopping_cart</mat-icon
+        >
+      </a>
+    </span>
+    <span class="">
+      <a [routerLink]="'/admin'">
+        <mat-icon class="text-1xl text-indigo-500" matTooltip="Orders History"
+          >history</mat-icon
+        >
+      </a>
+    </span>
+    <span>
+      <a [routerLink]="'/admin'">
+        <mat-icon class="text-1xl text-indigo-500" matTooltip="Admin Panel"
+          >admin_panel_settings</mat-icon
+        >
+      </a>
+    </span>
+  </div>
 </mat-toolbar>
