@@ -129,6 +129,7 @@ public class OrderService(
             ProductId = game.Id,
             Quantity = quantity,
             Price = game.Price * quantity,
+            Discount = game.Discount,
         };
 
         await UnitOfWork.OrderGameRepository.InsertAsync(orderGame);

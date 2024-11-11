@@ -1,0 +1,38 @@
+<div class="payment-method-selection p-10">
+  <h2 class="text-gray-600">Select a Payment Method</h2>
+
+  <form [formGroup]="form">
+    <div class="card-container p-5">
+      <div
+        class="payment-card"
+        *ngFor="let method of paymentMethods"
+        [class.selected]="form.get('paymentMethod')?.value === method"
+        (click)="form.get('paymentMethod')?.setValue(method)"
+      >
+        <img
+          [src]="'assets/images/' + method.imageUrl"
+          [alt]="method.title"
+          class="payment-image"
+        />
+        <h3 class="payment-title">{{ method.title }}</h3>
+        <p class="payment-description">{{ method.description }}</p>
+      </div>
+    </div>
+
+    <div class="p-5">
+      <button
+        class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button
+        class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+        [disabled]="!form.valid"
+        (click)="confirmPayment()"
+      >
+        Confirm Payment
+      </button>
+    </div>
+  </form>
+</div>

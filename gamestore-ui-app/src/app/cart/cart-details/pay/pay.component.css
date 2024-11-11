@@ -1,0 +1,45 @@
+.payment-method-selection {
+  text-align: center;
+  margin: auto;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.payment-card {
+  cursor: pointer;
+  width: 150px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  text-align: center;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.payment-card:hover {
+  transform: scale(1.05);
+}
+
+.payment-card.selected {
+  border-color: #3f51b5;
+}
+
+.payment-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.payment-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.payment-description {
+  font-size: 14px;
+  color: #666;
+}

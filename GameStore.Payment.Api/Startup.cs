@@ -38,6 +38,7 @@ public class Startup(IConfiguration configuration)
             .AddJsonOptions(opt =>
             {
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             });
     }
 

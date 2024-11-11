@@ -1,3 +1,4 @@
+import { PaymentMethod } from './../models/payment-method';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
@@ -15,5 +16,26 @@ export class OrderService {
 
   getOrderDetailsById(orderId: string): Observable<any> {
     return this.http.get(this.config.getOrderDetailsApiUrl(orderId));
+  }
+
+  getPaymentMethods(): Observable<any> {
+    return this.http.get(this.config.getPaymentMethodApiUrl());
+  }
+
+  payOrder(paymentMethod: PaymentMethod) {
+    let request = {
+      PaymentMethod: this.mapPaymentMethodToKey(paymentMethod),
+    };
+    return this.http.post(this.config.payOrderApiUrl(), request);
+  }
+
+  mapPaymentMethodToKey(paymentMethod: PaymentMethod): number {
+    const map: { [key: string]: number } = {
+      Bank: 0,
+      'IBox terminal': 1,
+      Visa: 2,
+    };
+
+    return map[paymentMethod.title];
   }
 }

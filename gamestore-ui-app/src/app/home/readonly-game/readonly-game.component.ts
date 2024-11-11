@@ -6,6 +6,7 @@ import { Game } from '../../core/models/game';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-readonly-game',
@@ -40,7 +41,7 @@ export class ReadonlyGameComponent implements OnInit {
 
   displayedColumns: string[] = [];
 
-  constructor(private gameService: GameService) {}
+  constructor(private gameService: GameService, private router: Router) {}
 
   ngOnInit(): void {
     this.setDisplayedColumns();
@@ -54,7 +55,9 @@ export class ReadonlyGameComponent implements OnInit {
   }
 
   addToCart(gameKey: string): void {
-    this.gameService.addToCart(gameKey).subscribe();
+    this.gameService.addToCart(gameKey).subscribe(() => {
+      this.router.navigate(['/cart']);
+    });
   }
 
   setDisplayedColumns() {

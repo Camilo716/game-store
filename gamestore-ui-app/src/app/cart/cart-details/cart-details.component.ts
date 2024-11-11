@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogActions,
   MatDialogContent,
   MatDialogRef,
@@ -19,6 +20,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
+import { PayComponent } from './pay/pay.component';
 
 @Component({
   selector: 'app-Order-form',
@@ -44,6 +46,8 @@ export class CartDetailsComponent implements OnInit {
   title: string = 'Order Games';
   readonly dialogRef = inject(MatDialogRef<CartDetailsComponent>);
   readonly CartFormData = inject<CartFormData>(MAT_DIALOG_DATA);
+  readonly formDialog = inject(MatDialog);
+
   order: Order;
 
   orderGames: OrderGame[] = [];
@@ -71,7 +75,15 @@ export class CartDetailsComponent implements OnInit {
   }
 
   openPayDialog(): void {
-    // Navigate to pay component
+    const dialogRef = this.formDialog.open(PayComponent, {
+      data: {
+        order: this.order,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.dialogRef.close();
+    });
   }
 
   setOrderDetails(): void {

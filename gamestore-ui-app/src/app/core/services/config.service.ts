@@ -121,4 +121,12 @@ export class ConfigService {
   getOrderDetailsApiUrl(orderId: string): string {
     return `${this.config.baseApiPaymentUrl}${this.config.ordersApiUrl}/${orderId}/details`;
   }
+
+  getPaymentMethodApiUrl(): string {
+    return `${this.config.baseApiPaymentUrl}${this.config.ordersApiUrl}/payment-methods`;
+  }
+
+  payOrderApiUrl(): string {
+    return `${this.config.baseApiPaymentUrl}${this.config.ordersApiUrl}/payment`;
+  }
 }
