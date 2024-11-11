@@ -6,13 +6,13 @@ namespace GameStore.Payment.Core.Services.Payment;
 
 public class PaymentProcessorFactory : IPaymentProcessorFactory
 {
-    public IPaymentProcessor CreateProcessor(PaymentMethod method)
+    public IPaymentProcessor CreateProcessor(PaymentMethods method)
     {
         return method switch
         {
-            PaymentMethod.Bank => new BankPaymentProcessor(),
-            PaymentMethod.IBox => new BoxPaymentProcessor(),
-            PaymentMethod.Visa => new VisaPaymentProcessor(),
+            PaymentMethods.Bank => new BankPaymentProcessor(),
+            PaymentMethods.IBox => new BoxPaymentProcessor(),
+            PaymentMethods.Visa => new VisaPaymentProcessor(),
             _ => throw new ArgumentException("Unsupported payment method"),
         };
     }

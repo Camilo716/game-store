@@ -4,5 +4,5 @@ namespace GameStore.Payment.Core.Interfaces;
 
 public interface IPaymentProcessorFactory
 {
-    IPaymentProcessor CreateProcessor(PaymentMethod method);
+    IPaymentProcessor CreateProcessor(PaymentMethods method);
 }

@@ -4,7 +4,7 @@ namespace GameStore.Payment.Core.Dtos;
 
 public class PaymentRequest
 {
-    public PaymentMethod PaymentMethod { get; set; }
+    public PaymentMethods PaymentMethod { get; set; }
 
     public CardDetails? CardDetails { get; set; }
 }

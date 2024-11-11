@@ -7,7 +7,7 @@ using GameStore.Payment.Core.Services;
 using GameStore.Payment.Core.Services.Payment;
 using GameStore.Payment.Tests.Seed;
 using Moq;
-using PaymentMethod = GameStore.Payment.Core.Enums.PaymentMethod;
+using PaymentMethods = GameStore.Payment.Core.Enums.PaymentMethods;
 
 namespace GameStore.Payment.Tests.Core;
 
@@ -85,7 +85,7 @@ public class OrderServiceTests
 
         PaymentRequest paymentRequest = new()
         {
-            PaymentMethod = PaymentMethod.Bank,
+            PaymentMethod = PaymentMethods.Bank,
         };
 
         // Act
@@ -273,7 +273,7 @@ public class OrderServiceTests
         Mock<IPaymentProcessorFactory> paymentProcessorFactoryMock = new();
 
         paymentProcessorFactoryMock.Setup(m => m
-            .CreateProcessor(It.IsAny<PaymentMethod>()))
+            .CreateProcessor(It.IsAny<PaymentMethods>()))
             .Returns(paymentProcessorMock.Object);
 
         return new OrderService(

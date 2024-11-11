@@ -60,7 +60,7 @@ public class OrderIntegrationTests : BaseIntegrationTest
     {
         PaymentRequest request = new()
         {
-            PaymentMethod = Payment.Core.Enums.PaymentMethod.Bank,
+            PaymentMethod = Payment.Core.Enums.PaymentMethods.Bank,
         };
 
         var response = await HttpClient.PostAsJsonAsync($"api/orders/payment", request);

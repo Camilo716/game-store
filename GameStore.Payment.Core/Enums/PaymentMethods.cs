@@ -1,6 +1,6 @@
 namespace GameStore.Payment.Core.Enums;
 
-public enum PaymentMethod
+public enum PaymentMethods
 {
     Bank,
     IBox,
