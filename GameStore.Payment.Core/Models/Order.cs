@@ -11,4 +11,6 @@ public class Order
     public Guid CustomerId { get; set; }
 
     public OrderStatus Status { get; set; }
+
+    public IEnumerable<OrderGame> OrderGames { get; set; }
 }
