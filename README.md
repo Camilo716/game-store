@@ -1,260 +1,356 @@
-# Epic 5 - Payment methods
-Extend the functionality of the Game Store by adding the ability to buy a game.
+# Epic 9 - Authorization
+
 
 ## General requirements
-Please use the following Angular Front-end: [gamestore-ui-app](gamestore-ui-app)
-You should use the following [Microservice payment](microservice\publish)  
+
+Please use the following Angular Front-end: [gamestore-ui-app](gamestore-ui-app)  
+
+Existing [Authorization microservice](AuthService)
+
 System should support the following features: 
-* Add game to cart.
-* Get games from cart.
-* Get orders.
-* Get payment methods.
-* Perform payment with the selected method.
-
-### Entities
-**Order**
-* **Id:** Guid, required, unique
-* **Date:** DateTime, optional
-* **CustomerId:** Guid, required
-* **Status:** Enum, required
-
-**OrderGame**
-* **OrderId:** Guid, required
-* **ProductId:** Guid, required
-* **Price:** Double, required
-* **Quantity:** Int, required
-* **Discount:** Int, optional
-
-Product-Order combinations are unique.
+* User Management
+* Login
+* Roles Management 
+* Access by permissions 
+  
 
 ## Additional Requirements
-#### Payment  
-	Create a single endpoint for payment independently from the selected method.  
-	If the payment is processed successfully then the order must be marked as paid otherwise cancelled
+### Roles
+* The system should have the next default roles: Administrator, Manager, Moderator, User, and Guest (not authorized).  
+* Custom roles can be created additionally.
+* Multiple roles can be assigned to the user.  
 
 
-#### Payment Methods  
-	Allowed payment methods: “Bank”, “IBox terminal”, “Visa”.   
-	Only one method can be applied to an order to get paid.  
-	Each payment method contains a little picture (open-source pictures), title, short description.  
+#### Admin
+* Can manage users and roles.  
+* Can see deleted games.  
+* Can manage comments for the deleted game.  
+* Can edit a deleted game.  
 
 
-#### Customer  
-	Since we don’t have users yet, for Customer Id use a stub value.
+#### Manager
+* Can manage business entities: games, genres, publishers, platforms, etc.  
+* Can edit orders.  
+* Can view orders history.  
+* Can’t edit orders from history.  
+* Can change the status of an order from paid to shipped.  
+* Can't edit a deleted game.  
 
 
-#### Bank payment date of validity  
-	The date of validity – how long the invoice is valid. The value should be configurable by application settings.
+#### Moderator
+* Can manage game comments.
+* Can ban users from commenting.
+
+#### User
+* Can`t see deleted games.
+* Can’t buy a deleted game.
+* Can see the games in stock. 
+* Can comment game.
+
+#### Guest
+* Has read-only access.
+
+#### Comments
+* The username should be used as the commenter's name now.
+
+#### Order history
+* Order history displays orders older than 30 days by default.
 
 
-#### Order limitations  
-	User cannot order more games than available in the stock.
-
-
-#### Order statuses  
-Any order has the next possible statuses:
-* Open – games are in the cart.
-* Checkout – payment is started.
-* Paid – payment is performed successfully.
-* Cancelled – payment is performed with errors.
-
-
+#### Default Roles hierarchy
+	Default Roles at the top inherit all accepts and limitations from roles below if other behavior is not specified in the role description.
+	Admin => Manager => Moderator => User => Guest
 
 ## Task Description
 
-### E05 US1 - User story 1
+### E09 US1- User story 1
+Login endpoint.
 
-Add game in and delete from the cart 
-Add game in the cart endpoint.
 ```{xml} 
-Url: /games/{key}/buy
+Url: /users/login
 Type: POST
-Limitation: if the endpoint is called for the game which is already in the cart, then just increment the quantity
-Response: Success status code
-```
-
-Delete game from cart endpoint
-```{xml} 
-Url: /orders/cart/{key}
-Type: DELETE
-Response: Success status code
-```
-
-### E05 US2 - User story 2
-Get paid and cancelled orders endpoint.
-```{xml} 
-Url: /orders
-Type: GET
-Response example:
-[
-  {
-    "id": "5d8af81a-c146-4588-93bf-0e5c7e9e4a9e",
-    "customerId": "5aa1c97e-e6b3-497c-8e00-270e96aa0b63",
-    "date": "2023-11-20T11:03:26.0572863+02:00"
-  },
-  {
-    "id": "bec0ffb1-fb80-47ff-8720-2f9a544a55a2",
-    "customerId": "bfa70dfa-6b18-4f3f-b882-14af597396d4",
-    "date": "2023-11-18T11:03:26.0575052+02:00"
-  }
-]
-```
-
-Get order by id endpoint.
-```{xml} 
-Url: /orders/{id}
-Type: GET
-Response example:
+Request Example:
 {
-  "id": "5d8af81a-c146-4588-93bf-0e5c7e9e4a9e",
-  "customerId": "5aa1c97e-e6b3-497c-8e00-270e96aa0b63",
-  "date": "2023-11-20T11:03:26.0572863+02:00"
+  "model": {
+    "login": "UserName",
+    "password": "SuperSecuredPassword",
+    "internalAuth": true
+  }
+}
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 }
 ```
 
-### E05 US3 - User story 3
-Get order details endpoint.
+### E09 US2 - User story 2
+Check page access endpoint.
 ```{xml} 
-Url: /orders/{id}/details
+Url: /users/access
+Type: POST
+Request Example:
+{
+  "targetPage": "Genre",
+  "targetId": "84ea3383-08c2-48ba-9866-34c7e08e6e61"
+}
+```
+
+### E09 US3 - User story 3
+Get all users endpoint.
+```{xml} 
+Url: /users
 Type: GET
 Response Example:
 [
   {
-    "productId": "8ea595c2-765b-4190-b3da-da00540b2202",
-    "price": 100,
-    "quantity": 3,
-    "discount": 0
+    "name": "Vitalii",
+    "id": "454d4d01-406b-4a9b-9f8c-3fec63fc9266"
   },
   {
-    "productId": "c3a73173-fe0f-4771-a7eb-f2cd458d8303",
-    "price": 10,
-    "quantity": 5,
-    "discount": 0
-  },
-  {
-    "productId": "923a8bd8-b256-44f4-b972-a0d640d56ef4",
-    "price": 100,
-    "quantity": 1,
-    "discount": 10
+    "name": "John",
+    "id": "80fbf934-45e7-49a8-8ae2-868a70bed2bf"
   }
 ]
 ```
 
 
-### E05 US4 - User story 4
-Get cart endpoint.
-```{xml} 
-Url: /orders/cart
-Type: GET
-Hint: Cart is an order in the status Open, if such an order is not present in the database this should be created automatically during adding the first game to the cart. As a result, if the last game is deleted from the cart then the open order should be deleted automatically.
-Response example:
-[
-  {
-    "productId": "f6f698ee-41df-4594-b90c-3862e7d2cbee",
-    "price": 30,
-    "quantity": 1,
-    "discount": 0
-  },
-  {
-    "productId": "75396383-c1fa-4cbd-81c9-c874ae3a3e67",
-    "price": 100,
-    "quantity": 1,
-    "discount": 20
-  }
-]
-```
+### E09 US4 - User story 4
 
-### E05 US5 - User story 5
-Get payment methods endpoint.
+Get user by id endpoint.
 ```{xml} 
-Url: /orders/payment-methods
+Url: /users/{id}
 Type: GET
 Response Example:
 {
-  "paymentMethods": [
-    {
-      "imageUrl": "image link1",
-      "title": "Bank",
-      "description": "Some text 1"
-    },
-    {
-      "imageUrl": "image link2",
-      "title": "IBox terminal",
-      "description": "Some text 2"
-    },
-    {
-      "imageUrl": "image link3",
-      "title": "Visa",
-      "description": "Some text 3"
-    }
+  "name": "Vitalii",
+  "id": "a997674c-d34d-4074-81d2-fe27d739f55a"
+}
+```
+
+### E09 US5 - User story 5
+Delete user by id endpoint.
+```{xml} 
+Url: /users/{id}
+Type: DELETE
+```
+
+### E09 US6 - User story 6
+Get all roles endpoint.
+```{xml} 
+Url: /roles
+Type: GET
+Response Example:
+[
+  {
+    "name": "Admin",
+    "id": "529e960f-79c9-4e25-b3ef-a5ce8cbb42bc"
+  },
+  {
+    "name": "Manager",
+    "id": "765f9e20-fb70-4837-8b22-5d280ad9d2d2"
+  }
+]
+```
+
+### E09 US7 - User story 7
+Get role by id endpoint.
+```{xml} 
+Url: /roles/{id}
+Type: GET
+Response Example:
+{
+  "name": "Admin",
+  "id": "529e960f-79c9-4e25-b3ef-a5ce8cbb42bc"
+}
+```
+
+
+### E09 US8 - User story 8
+Delete role by id endpoint.
+```{xml} 
+Url: /roles/{id}
+Type: DELETE
+```
+
+### E09 US9 - User story 9
+Add user endpoint.
+```{xml} 
+Url: /users
+Type: POST
+Request Example:
+{
+  "user": {
+    "name": "test"
+  },
+  "roles": [
+    "529e960f-79c9-4e25-b3ef-a5ce8cbb42bc",
+    "765f9e20-fb70-4837-8b22-5d280ad9d2d2"
+  ],
+  "password": "testpassword"
+}
+```
+
+
+### E09 US10 - User story 10
+Update user endpoint.
+```{xml} 
+Url: /users
+Type: PUT
+Request Example:
+{
+  "user": {
+    "id": "9109858d-139b-4a13-a212-c3f6cf4ccc78",
+    "name": "Vitalii"
+  },
+  "roles": [
+    "765f9e20-fb70-4837-8b22-5d280ad9d2d2"
+  ],
+  "password": "updatedpassword"
+}
+```
+
+
+### E09 US11 - User story 11
+Get user roles endpoint.
+```{xml} 
+Url: /users/{id}/roles
+Type: GET
+Response Example:
+[
+  {
+    "name": "Admin",
+    "id": "484aeeeb-89d5-4ee7-b8c7-67c7d93292bb"
+  },
+  {
+    "name": "Manager",
+    "id": "548d6bec-635b-44ec-b719-baaf32758f12"
+  }
+]
+```
+
+### E09 US12 - User story 12
+Get permissions endpoint.
+```{xml} 
+Url: /roles/permissions
+Type: GET
+Response Example:
+[
+  "AddGame",
+  "DeleteGame",
+  "ViewGame",
+  "UpdateGame"
+]
+```
+
+### E09 US13 - User story 13
+Get role permissions endpoint.
+```{xml}
+Url: /roles/{id}/permissions
+Type: GET
+Response Example: 
+[
+  "ViewGame",
+  "UpdateGame"
+]
+```
+
+### E09 US14 - User story 14
+Add role endpoint.
+```{xml} 
+Url: /roles
+Type: POST
+Request example:
+{
+  "role": {
+    "name": "test role"
+  },
+  "permissions": [
+    "AddGame",
+    "ViewGame",
+    "UpdateGame"
   ]
 }
 ```
 
-### E05 US6 - User story 6
-"Bank" payment
-```{xml} 
-Url: /orders/payment
-Type: POST
-Request: {"method":"Bank"} 
-Flow: the system should return generated invoice file for download:
-File type: PDF
-The file content:
-User ID
-Order ID
-Creation date
-The date of validity – how long is the invoice is valid.
-Sum
+
+### E09 US15 - User story 15
+Update role endpoint.
+```{xml}
+Url: /roles
+Type: PUT
+Request example:
+{
+  "role": {
+    "id": "73e12b67-8f8e-4df9-bf0d-f1d7cb7296b4",
+    "name": "User"
+  },
+  "permissions": [
+    "ViewGame"
+  ]
+} 
 ```
 
-### E05 US7 - User story 7
-"IBox terminal" payment
-
-```{xml} 
-Url: /orders/payment
-Type: POST
-Request: {"method":"IBox terminal"}
-Integration: Integration with payment microservice is required 
-Flow: The system should handle requests with an IBox payment. 
-Response: should contain a user Id, invoice number (order ID), and sum.
+### E09 US16 - User story 16
+Get all games without filters endpoint.
+```{xml}
+Url: /games/all
+Type: GET
 Response Example:
-{
-  "userId": "24967e32-dec1-47b5-8ca6-478afa84c2be",
-  "orderId": "7dce8347-4181-4316-9210-302361340975",
-  "paymentDate": "2023-11-18T11:03:26.0575052+02:00",
-  "sum": 100
-}
+[
+  {
+    "id": "92753fa3-0207-4fd3-b892-0fafcb23d429",
+    "description": "Test Desc",
+    "key": "test1",
+    "name": "Test Name",
+    "price": 100,
+    "discount": 0,
+    "unitInStock": 100000
+  },
+  {
+    "id": "12649a00-ca90-4d5e-b088-045db9cf4d9c",
+    "description": "Test Desc 2",
+    "key": "test2",
+    "name": "Test Game2",
+    "price": 10,
+    "discount": 10,
+    "unitInStock": 9000
+  }
+]
 ```
 
-
-### E05 US8 - User story 8
-"Visa" payment
-```{xml} 
-Url: /orders/payment
-Type: POST
-Request:
+### E09 US17 - User story 17
+Update order detail quantity endpoint.
+```{xml}
+Url: /orders/details/{id}/quantity
+Type: PATCH
+Request Example:
 {
-  "method": "Visa",
-  "model": {
-    "holder": "Vitalii",
-    "cardNumber": "123321122344231",
-    "monthExpire": 10,
-    "yearExpire": 2030,
-    "cvv2": 111
-  }
+  "count": 3
 }
-Integration: Integration with payment microservice is required 
-Flow: The system should handle requests with card holder’s name, card number, Date of expiry (month and year), CVV2/CVC2
-Response: Success status code.
+```
+### E09 US18 - User story 18
+Delete order detail endpoint.
+```{xml}
+Url: /orders/details/{id}
+Type: DELETE 
+```
+### E09 US19 - User story 19
+Ship order endpoint.
+```{xml}
+Url: /orders/{id}/ship
+Type: POST 
+```
+
+### E09 US20 - User story 20
+Add game as the order detail endpoint.
+```{xml}
+Url: /orders/{id}/details/{key}
+Type: POST
 ```
  
-## Non-functional requirement
+## Optional requirements
 
-**E05 NFR1**  
-	Microservice - an additional project that must be run locally and integrated with the game store api for Visa and IBox payments.
-	You can investigate possible requests and results of microservice by calling the swagger endpoint.
-
-**E05 NFR2**  
-	Implement full tolerance payment acceptation.
-	As the microservice that accepts iBox and card payments can reject up to 10 % of the transactions.
-	A response validation must be implemented and an additional request must be sent in case of failure, the solution must be able to work with all responses of the Microservice.
+**E09 NFR1**  
+Implement claim-based authorization. 
+**E09 NFR2 [Optional]**
+Implement authentication with external microservice.  
