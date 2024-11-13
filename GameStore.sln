@@ -19,13 +19,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Payment.Infraestr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Payment.Tests", "GameStore.Payment.Tests\GameStore.Payment.Tests.csproj", "{1424697E-50D7-4187-9FE0-1DD87B4C8090}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Auth.Api", "GameStore.Auth.Api\GameStore.Auth.Api.csproj", "{BA8966A0-C5F8-4FB1-BEBA-D56A1E6E92F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Auth.Core", "GameStore.Auth.Core\GameStore.Auth.Core.csproj", "{9FED81C7-7F1D-4C99-9533-D188A2182482}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Auth.Infraestructure", "GameStore.Auth.Infraestructure\GameStore.Auth.Infraestructure.csproj", "{69C8B3D2-7DAC-4858-8EAA-039385F0C3EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore.Auth.Tests", "GameStore.Auth.Tests\GameStore.Auth.Tests.csproj", "{60110A78-E0EC-4792-ABC8-14B8E2BE52EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2F99404A-9FE0-47C1-B884-B8901AD8622C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -60,5 +65,24 @@ Global
 		{1424697E-50D7-4187-9FE0-1DD87B4C8090}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1424697E-50D7-4187-9FE0-1DD87B4C8090}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1424697E-50D7-4187-9FE0-1DD87B4C8090}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA8966A0-C5F8-4FB1-BEBA-D56A1E6E92F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA8966A0-C5F8-4FB1-BEBA-D56A1E6E92F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA8966A0-C5F8-4FB1-BEBA-D56A1E6E92F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA8966A0-C5F8-4FB1-BEBA-D56A1E6E92F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FED81C7-7F1D-4C99-9533-D188A2182482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FED81C7-7F1D-4C99-9533-D188A2182482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FED81C7-7F1D-4C99-9533-D188A2182482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FED81C7-7F1D-4C99-9533-D188A2182482}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C8B3D2-7DAC-4858-8EAA-039385F0C3EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C8B3D2-7DAC-4858-8EAA-039385F0C3EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C8B3D2-7DAC-4858-8EAA-039385F0C3EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C8B3D2-7DAC-4858-8EAA-039385F0C3EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60110A78-E0EC-4792-ABC8-14B8E2BE52EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60110A78-E0EC-4792-ABC8-14B8E2BE52EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60110A78-E0EC-4792-ABC8-14B8E2BE52EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60110A78-E0EC-4792-ABC8-14B8E2BE52EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
