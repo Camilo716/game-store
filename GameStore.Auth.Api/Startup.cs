@@ -9,6 +9,13 @@ public class Startup(IConfiguration configuration)
     {
         services.AddSwaggerGen();
 
+        Infraestructure.Dependences.ConfigureServices(Configuration, services);
+
+        services.AddSingleton(TimeProvider.System);
+        services.AddDataProtection();
+
+        services.AddEndpointsApiExplorer();
+
         services.AddControllers()
             .AddJsonOptions(opt =>
             {
@@ -31,9 +38,9 @@ public class Startup(IConfiguration configuration)
         app.UseCors(opt => opt
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
-                .WithExposedHeaders("x-total-numbers-of-games"));
+                .AllowAnyHeader());
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
