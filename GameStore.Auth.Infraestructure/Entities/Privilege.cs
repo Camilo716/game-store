@@ -6,7 +6,7 @@ public class Privilege
 
     public string Key { get; set; }
 
-    public List<RolePrivilege> RolePrivileges { get; set; } =
+    public List<Role> Roles { get; set; } =
     [
     ];
 }

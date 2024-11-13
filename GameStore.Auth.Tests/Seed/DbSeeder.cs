@@ -7,7 +7,7 @@ internal class DbSeeder
     {
         var privileges = PrivilegeSeed.GetPrivileges();
 
-        context.AddRange(privileges);
+        context.Privileges.AddRange(privileges);
         context.SaveChanges();
     }
 }

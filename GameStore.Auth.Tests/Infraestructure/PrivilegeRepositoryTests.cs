@@ -1,4 +1,4 @@
-using GameStore.Auth.Infraestructure.Repositories;
+using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Tests.Seed;
 
 namespace GameStore.Auth.Tests.Infraestructure;
@@ -9,9 +9,9 @@ public class PrivilegeRepositoryTests
     public async Task GetAll_ReturnsPrivilegesInDatabase()
     {
         using var dbContext = UnitTestHelper.GetUnitTestDbContext();
-        var privilegeRepository = new PrivilegeRepository(dbContext);
+        var unitOfWork = new UnitOfWork(dbContext, Mapper.Create());
 
-        var privilege = await privilegeRepository.GetAllAsync();
+        var privilege = await unitOfWork.PrivilegeRepository.GetAllAsync();
 
         Assert.NotNull(privilege);
         Assert.Equal(PrivilegeSeed.GetPrivileges().Count, privilege.Count());
