@@ -1,3 +1,4 @@
+using System.Security.Authentication;
 using GameStore.Auth.Core.Dtos;
 using GameStore.Auth.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,5 +15,23 @@ public class UsersController(IUserService userService) : ControllerBase
         Result result = await userService.CreateAsync(createUserRequest);
 
         return result.Success ? Ok() : BadRequest(result.Errors);
+    }
+
+    [HttpPost]
+    [Route("login")]
+    public async Task<ActionResult<AuthToken>> Login([FromBody] LoginRequest loginRequest)
+    {
+        AuthToken token;
+
+        try
+        {
+            token = await userService.LoginAsync(loginRequest);
+        }
+        catch (AuthenticationException ex)
+        {
+            return Unauthorized(ex.Message);
+        }
+
+        return Ok(token);
     }
 }
