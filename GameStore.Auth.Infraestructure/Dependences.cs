@@ -1,4 +1,7 @@
+using GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Infraestructure.Adapters;
 using GameStore.Auth.Infraestructure.Data;
+using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +17,13 @@ public static class Dependences
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
 
         services
-            .AddIdentityCore<IdentityUser>()
-            .AddEntityFrameworkStores<GameStoreAuthDbContext>();
+            .AddIdentityCore<User>()
+            .AddRoles<Role>()
+            .AddEntityFrameworkStores<GameStoreAuthDbContext>()
+            .AddUserManager<UserManager<User>>()
+            .AddRoleManager<RoleManager<Role>>();
+
+        services.AddScoped<IUserManager, UserManagerIdentityAdapter>();
+        services.AddScoped<IRoleManager, RoleManagerIdentityAdapter>();
     }
 }

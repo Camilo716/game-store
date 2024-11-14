@@ -19,6 +19,7 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddScoped<IPrivilegeService, PrivilegeService>();
+        services.AddScoped<IUserService, UserService>();
 
         services.AddEndpointsApiExplorer();
 

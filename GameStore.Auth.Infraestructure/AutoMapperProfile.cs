@@ -8,8 +8,13 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<Role, RoleModel>();
+        CreateMap<Role, RoleModel>()
+            .ReverseMap();
 
-        CreateMap<Privilege, PrivilegeModel>();
+        CreateMap<Privilege, PrivilegeModel>()
+            .ReverseMap();
+
+        CreateMap<User, UserModel>()
+            .ReverseMap();
     }
 }
