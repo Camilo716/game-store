@@ -9,4 +9,10 @@ public class Role : IdentityRole
     public List<Privilege> Privileges { get; set; } =
     [
     ];
+
+    public List<Role> ChildrenRoles { get; set; } =
+    [
+    ];
+
+    public Role? ParentRole { get; set; }
 }

@@ -1,3 +1,4 @@
+using GameStore.Auth.Infraestructure.Data.Seed;
 using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,5 +18,12 @@ public class GameStoreAuthDbContext(
         builder.Entity<Privilege>()
             .HasIndex(p => p.Key)
             .IsUnique();
+
+        builder.Entity<Role>()
+            .HasOne(p => p.ParentRole)
+            .WithMany(p => p.ChildrenRoles)
+            .HasForeignKey(p => p.ParentRoleId);
+
+        DbSeeder.Seed(builder);
     }
 }

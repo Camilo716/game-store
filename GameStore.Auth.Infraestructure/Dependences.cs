@@ -14,7 +14,8 @@ public static class Dependences
     public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
     {
         services.AddDbContext<GameStoreAuthDbContext>(opt =>
-            opt.UseSqlServer(configuration.GetConnectionString("Default")));
+            opt.UseSqlServer(configuration.GetConnectionString("Default"))
+            .EnableSensitiveDataLogging());
 
         services
             .AddIdentityCore<User>()
