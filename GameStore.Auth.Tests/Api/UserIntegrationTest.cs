@@ -26,6 +26,22 @@ public class UserIntegrationTest : BaseIntegrationTest
         Assert.Equal(UserSeed.GetUsers().Count + 1, DbContext.Users.Count());
     }
 
+    [Fact]
+    public async Task Login_GivenValidCredentials_ReturnsToken()
+    {
+        LoginRequest loginRequest = new()
+        {
+            Login = UserSeed.UserManager.UserName!,
+            Password = UserSeed.TestPassword,
+            InternalAuth = true,
+        };
+
+        var response = await HttpClient.PostAsJsonAsync("api/users/login", loginRequest);
+
+        Assert.NotNull(response);
+        EnsureSuccessStatusCode(response);
+    }
+
     private static void EnsureSuccessStatusCode(HttpResponseMessage response)
     {
         if (!response.IsSuccessStatusCode)

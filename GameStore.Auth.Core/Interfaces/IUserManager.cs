@@ -8,4 +8,6 @@ public interface IUserManager
     Task<Result> CreateAsync(UserModel userModel, string password);
 
     Task<Result> AddToRolesAsync(UserModel userModel, IEnumerable<string> roles);
+
+    Task<UserModel?> FindByNameAsync(string name);
 }

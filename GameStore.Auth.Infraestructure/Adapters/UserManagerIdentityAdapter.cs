@@ -32,6 +32,12 @@ public class UserManagerIdentityAdapter(
         return Result(result);
     }
 
+    public async Task<UserModel?> FindByNameAsync(string name)
+    {
+        User? user = await userManager.FindByNameAsync(name);
+        return user is null ? null : Mapper.Map<UserModel>(user);
+    }
+
     private static Result Result(IdentityResult result)
     {
         if (result.Succeeded)
