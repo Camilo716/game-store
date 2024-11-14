@@ -1,4 +1,8 @@
 using System.Text.Json.Serialization;
+using AutoMapper;
+using GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Core.Services;
+using GameStore.Auth.Infraestructure.Data;
 
 namespace GameStore.Auth.Api;
 public class Startup(IConfiguration configuration)
@@ -8,6 +12,16 @@ public class Startup(IConfiguration configuration)
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSwaggerGen();
+        services.AddAutoMapper(typeof(Infraestructure.AutoMapperProfile));
+
+        Infraestructure.Dependences.ConfigureServices(Configuration, services);
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IPrivilegeService, PrivilegeService>();
+        services.AddScoped<IUserService, UserService>();
+
+        services.AddEndpointsApiExplorer();
 
         services.AddControllers()
             .AddJsonOptions(opt =>
@@ -31,9 +45,9 @@ public class Startup(IConfiguration configuration)
         app.UseCors(opt => opt
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
-                .WithExposedHeaders("x-total-numbers-of-games"));
+                .AllowAnyHeader());
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
