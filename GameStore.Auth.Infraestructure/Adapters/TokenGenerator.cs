@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace GameStore.Auth.Infraestructure.Adapters;
 
-public class TokenGeneratorAdapter(IConfiguration configuration) : ITokenGenerator
+public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
 {
     private readonly string _secretKey = configuration["Jwt:SecretKey"]!;
     private readonly string _issuer = configuration["Jwt:Issuer"]!;

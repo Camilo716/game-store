@@ -51,6 +51,6 @@ public static class Dependences
         services.AddScoped<IUserManager, UserManagerIdentityAdapter>();
         services.AddScoped<IRoleManager, RoleManagerIdentityAdapter>();
         services.AddScoped<ISignInManager, SignInManagerIdentityAdapter>();
-        services.AddScoped<ITokenGenerator, TokenGeneratorAdapter>();
+        services.AddScoped<ITokenGenerator, TokenGenerator>();
     }
 }
