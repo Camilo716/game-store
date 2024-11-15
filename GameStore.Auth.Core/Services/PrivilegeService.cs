@@ -11,4 +11,9 @@ public class PrivilegeService(IUnitOfWork unitOfWork) : IPrivilegeService
     {
         return await UnitOfWork.PrivilegeRepository.GetAllAsync();
     }
+
+    public async Task<IEnumerable<PrivilegeModel>> GetByRoleIdAsync(string roleId)
+    {
+        return await UnitOfWork.PrivilegeRepository.GetByRoleIdAsync(roleId);
+    }
 }

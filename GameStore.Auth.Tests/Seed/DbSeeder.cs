@@ -24,14 +24,9 @@ internal class DbSeeder
         roles.ForEach(role =>
         {
             var privilegesOfRole = privileges.
-                Where(p => RolesIds(p).Contains(role.Id));
+                Where(p => role.Privileges.Select(p => p.Id).ToList().Contains(p.Id));
 
             role.Privileges = privilegesOfRole.ToList();
         });
-    }
-
-    private static List<string> RolesIds(Privilege p)
-    {
-        return p.Roles.Select(r => r.Id).ToList();
     }
 }

@@ -17,12 +17,19 @@ public static class PrivilegeSeed
         Key = "ViewGame",
     };
 
+    public static Privilege DeleteGame => new()
+    {
+        Id = Guid.Parse("00000000-0000-49c4-ac3b-c274840b92ee"),
+        Key = "DeleteGame",
+    };
+
     public static List<Privilege> GetPrivileges()
     {
         return
         [
             AddGame,
-            ViewGame
+            ViewGame,
+            DeleteGame
         ];
     }
 

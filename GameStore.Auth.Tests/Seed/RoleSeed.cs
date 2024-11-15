@@ -12,7 +12,30 @@ public static class RoleSeed
         NormalizedName = "ADMIN",
         Privileges =
         [
-            PrivilegeSeed.AddGame,
+            PrivilegeSeed.DeleteGame,
+        ],
+    };
+
+    public static Role Manager => new()
+    {
+        Id = "00000000-0000-0000-0000-000000000001",
+        Name = "Manager",
+        NormalizedName = "MANAGER",
+        ParentRoleId = Admin.Id,
+        Privileges =
+        [
+            PrivilegeSeed.AddGame
+        ],
+    };
+
+    public static Role Guest => new()
+    {
+        Id = "00000000-0000-0000-0000-0000000000R3",
+        Name = "Guest",
+        NormalizedName = "GUEST",
+        ParentRoleId = Manager.Id,
+        Privileges =
+        [
             PrivilegeSeed.ViewGame
         ],
     };
@@ -22,5 +45,7 @@ public static class RoleSeed
     public static List<Role> GetRoles() =>
     [
         Admin,
+        Manager,
+        Guest
     ];
 }

@@ -18,4 +18,12 @@ public class RolesController(
         var privileges = await PrivilegeService.GetAllAsync();
         return Ok(privileges);
     }
+
+    [HttpGet]
+    [Route("{id}/permissions")]
+    public async Task<ActionResult<IEnumerable<PrivilegeModel>>> GetPermissionsByRoleId([FromRoute] string id)
+    {
+        var privileges = await PrivilegeService.GetByRoleIdAsync(id);
+        return Ok(privileges);
+    }
 }
