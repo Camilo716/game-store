@@ -4,7 +4,6 @@ using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Core.Models;
 using GameStore.Auth.Core.Services;
 using GameStore.Auth.Tests.Seed;
-using Microsoft.IdentityModel.Tokens;
 using Moq;
 
 namespace GameStore.Auth.Tests.Core;
@@ -81,7 +80,7 @@ public class UserServiceTests
 
         AuthToken token = await userService.LoginAsync(loginRequest);
 
-        Assert.True(!token.Token.IsNullOrEmpty());
+        Assert.True(!string.IsNullOrEmpty(token.Token));
     }
 
     private static CreateUserRequest GetValidUserCreationRequest()

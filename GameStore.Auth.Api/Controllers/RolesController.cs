@@ -1,5 +1,7 @@
 using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Core.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore.Auth.Api.Controllers;
@@ -13,6 +15,7 @@ public class RolesController(
 
     [HttpGet]
     [Route("permissions")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public async Task<ActionResult<IEnumerable<PrivilegeModel>>> Get()
     {
         var privileges = await PrivilegeService.GetAllAsync();
