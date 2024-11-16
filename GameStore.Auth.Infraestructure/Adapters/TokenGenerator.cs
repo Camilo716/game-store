@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using GameStore.Auth.Core.Dtos;
 using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Core.Models;
@@ -11,31 +12,23 @@ namespace GameStore.Auth.Infraestructure.Adapters;
 public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
 {
     private readonly string _secretKey = configuration["Jwt:SecretKey"]!;
-    private readonly string _issuer = configuration["Jwt:Issuer"]!;
-    private readonly string _audience = configuration["Jwt:Audience"]!;
 
     public AuthToken GenerateToken(UserModel userModel)
     {
-        var claims = new[]
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_secretKey);
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            new Claim(JwtRegisteredClaimNames.Sub, userModel.Id),
-            new Claim(JwtRegisteredClaimNames.Name, userModel.UserName),
-            new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+            Subject = new ClaimsIdentity(
+            [
+                new(ClaimTypes.NameIdentifier, userModel.Id),
+            ]),
+
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
         };
 
-        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_secretKey));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _issuer,
-            audience: _audience,
-            claims: claims,
-            expires: DateTime.Now.AddHours(1),
-            signingCredentials: creds);
-
-        return new AuthToken()
-        {
-            Token = new JwtSecurityTokenHandler().WriteToken(token),
-        };
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return new AuthToken() { Token = tokenHandler.WriteToken(token) };
     }
 }

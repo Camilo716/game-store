@@ -23,20 +23,19 @@ public static class Dependences
 
         services.AddAuthentication(opt =>
         {
-            opt.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-            opt.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            opt.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
+            opt.DefaultChallengeScheme = IdentityConstants.BearerScheme;
         })
         .AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
+                LogValidationExceptions = true,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = configuration["Jwt:Issuer"],
-                ValidAudience = configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:SecretKey"]!)),
             };
         });
 
