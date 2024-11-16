@@ -1,8 +1,12 @@
 using System.Text;
+using GameStore.Auth.Core.Enums;
 using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Infraestructure.Adapters;
 using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Infraestructure.Entities;
+using GameStore.Auth.Infraestructure.Handlers;
+using GameStore.Auth.Infraestructure.Token;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +44,14 @@ public static class Dependences
             };
         });
 
+        services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+
+        services.AddAuthorizationBuilder()
+            .AddPolicy(nameof(Permissions.ViewRoles), policy =>
+                policy.Requirements.Add(new PermissionRequirement(nameof(Permissions.ViewRoles))));
+
+        services.AddAuthorization();
+
         services
             .AddIdentityCore<User>()
             .AddRoles<Role>()
@@ -52,5 +64,6 @@ public static class Dependences
         services.AddScoped<IRoleManager, RoleManagerIdentityAdapter>();
         services.AddScoped<ISignInManager, SignInManagerIdentityAdapter>();
         services.AddScoped<ITokenGenerator, TokenGenerator>();
+        services.AddScoped<ITokenValidator, TokenValidator>();
     }
 }

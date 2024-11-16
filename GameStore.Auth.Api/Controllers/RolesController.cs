@@ -1,3 +1,4 @@
+using GameStore.Auth.Core.Enums;
 using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,7 @@ public class RolesController(
 
     [HttpGet]
     [Route("permissions")]
-    [Authorize]
+    [Authorize(Policy = nameof(Permissions.ViewRoles))]
     public async Task<ActionResult<IEnumerable<PrivilegeModel>>> Get()
     {
         var privileges = await PrivilegeService.GetAllAsync();
