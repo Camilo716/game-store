@@ -25,8 +25,9 @@ public static class Dependences
         {
             opt.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
             opt.DefaultChallengeScheme = IdentityConstants.BearerScheme;
+            opt.DefaultScheme = IdentityConstants.BearerScheme;
         })
-        .AddJwtBearer(options =>
+        .AddJwtBearer(IdentityConstants.BearerScheme, options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
