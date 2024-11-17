@@ -5,23 +5,36 @@ using GameStore.Auth.Core.Dtos;
 using GameStore.Auth.Core.Enums;
 using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Core.Models;
+using GameStore.Auth.Infraestructure.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GameStore.Auth.Infraestructure.Token;
 
-public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
+public class TokenGenerator(
+    IConfiguration configuration,
+    UserManager<User> userManager,
+    RoleManager<Role> roleManager,
+    IUnitOfWork unitOfWork) : ITokenGenerator
 {
     private readonly string _secretKey = configuration["Jwt:SecretKey"]!;
 
-    public AuthToken GenerateToken(UserModel userModel)
+    public async Task<AuthToken> GenerateTokenAsync(UserModel userModel)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_secretKey);
 
+        List<Claim> claims =
+        [
+           new(ClaimTypes.NameIdentifier, userModel.Id),
+        ];
+
+        await AddUserPermissionsClaimsAsync(userModel, claims);
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(GetClaims(userModel)),
+            Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
         };
@@ -30,15 +43,52 @@ public class TokenGenerator(IConfiguration configuration) : ITokenGenerator
         return new AuthToken() { Token = tokenHandler.WriteToken(token) };
     }
 
-    private static List<Claim> GetClaims(UserModel userModel)
+    private async Task AddUserPermissionsClaimsAsync(UserModel userModel, List<Claim> claims)
     {
-        List<Claim> claims =
+        IEnumerable<string> permissions = await GetUserPermissionsAsync(userModel);
+
+        foreach (string permission in permissions)
+        {
+            claims.Add(new(nameof(ClaimType.Permission), permission));
+        }
+    }
+
+    private async Task<IEnumerable<string>> GetUserPermissionsAsync(UserModel userModel)
+    {
+        User user = await userManager.FindByIdAsync(userModel.Id)
+            ?? throw new InvalidOperationException($"User {userModel.Id} not found.");
+
+        var roles = await userManager.GetRolesAsync(user);
+
+        if (!roles?.Any() ?? true)
+        {
+            return
+            [
+            ];
+        }
+
+        List<string> permissions =
         [
-            new(ClaimTypes.NameIdentifier, userModel.Id),
         ];
 
-        // TODO: Read permissions from user role
-        claims.Add(new(nameof(ClaimType.Permission), nameof(Permissions.ViewRoles)));
-        return claims;
+        foreach (string roleName in roles)
+        {
+            await AddRolePermissions(permissions, roleName);
+        }
+
+        return permissions.Distinct();
+    }
+
+    private async Task AddRolePermissions(List<string> permissions, string roleName)
+    {
+        var role = await roleManager.FindByNameAsync(roleName);
+
+        if (role is null)
+        {
+            return;
+        }
+
+        var rolePermissions = await unitOfWork.PrivilegeRepository.GetByRoleIdAsync(role.Id);
+        permissions.AddRange(rolePermissions.Select(x => x.Key));
     }
 }

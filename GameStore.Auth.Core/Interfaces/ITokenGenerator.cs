@@ -5,5 +5,5 @@ namespace GameStore.Auth.Core.Interfaces;
 
 public interface ITokenGenerator
 {
-    AuthToken GenerateToken(UserModel userModel);
+    Task<AuthToken> GenerateTokenAsync(UserModel userModel);
 }

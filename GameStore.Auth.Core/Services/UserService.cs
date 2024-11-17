@@ -40,7 +40,7 @@ public class UserService(
 
         return !result.Success
             ? throw new AuthenticationException(result.Errors.ToString())
-            : tokenGenerator.GenerateToken(userModel);
+            : await tokenGenerator.GenerateTokenAsync(userModel);
     }
 
     private async Task<List<string>> GetRoleNames(IEnumerable<string> rolesIds)
