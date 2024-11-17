@@ -58,6 +58,43 @@ public class UserService(
             : await tokenGenerator.GenerateTokenAsync(userModel);
     }
 
+    public async Task<Result> UpdateAsync(CreateUserRequest updateUserRequest)
+    {
+        UserModel user = updateUserRequest.User;
+
+        Result createResult = await userManager.UpdateAsync(user, updateUserRequest.Password);
+
+        if (!createResult.Success)
+        {
+            return createResult;
+        }
+
+        Result updateRolesResult = await UpdateUserRolesAsync(updateUserRequest, user);
+
+        return updateRolesResult;
+    }
+
+    private async Task<Result> UpdateUserRolesAsync(CreateUserRequest updateUserRequest, UserModel user)
+    {
+        var currentRolesIds = (await userManager.GetUserRolesAsync(user.Id)).Select(r => r.Id);
+        List<string> currentRolesNames = await GetRoleNames(currentRolesIds);
+        List<string> newRolesNames = await GetRoleNames(updateUserRequest.Roles);
+
+        var rolesToAdd = newRolesNames.Except(currentRolesNames).ToList();
+        var rolesToRemove = currentRolesNames.Except(newRolesNames).ToList();
+
+        Result removeResult = await userManager.RemoveFromRolesAsync(user, rolesToRemove);
+
+        if (!removeResult.Success)
+        {
+            return removeResult;
+        }
+
+        Result addResult = await userManager.AddToRolesAsync(user, rolesToAdd);
+
+        return addResult;
+    }
+
     private async Task<List<string>> GetRoleNames(IEnumerable<string> rolesIds)
     {
         List<string> roles =

@@ -14,4 +14,6 @@ public interface IUserService
     Task DeleteByIdAsync(string id);
 
     Task<IEnumerable<RoleModel>> GetUserRolesAsync(string id);
+
+    Task<Result> UpdateAsync(CreateUserRequest updateUserRequest);
 }
