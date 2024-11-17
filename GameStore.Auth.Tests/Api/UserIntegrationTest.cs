@@ -28,6 +28,25 @@ public class UserIntegrationTest : BaseIntegrationTest
     }
 
     [Fact]
+    public async Task Put_GivenValidUser_UpdatesUser()
+    {
+        CreateUserRequest request = new()
+        {
+            User = new UserModel() { Id = UserSeed.UserManager.Id, UserName = "newName" },
+            Roles =
+            [
+               RoleSeed.Manager.Id,
+            ],
+            Password = "newPassword123!",
+        };
+
+        var response = await HttpClient.PutAsJsonAsync("api/Users", request);
+
+        Assert.NotNull(response);
+        EnsureSuccessStatusCode(response);
+    }
+
+    [Fact]
     public async Task Login_GivenValidCredentials_ReturnsToken()
     {
         LoginRequest loginRequest = new()

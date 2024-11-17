@@ -18,6 +18,14 @@ public class UsersController(IUserService userService) : ControllerBase
         return result.Success ? Ok() : BadRequest(result.Errors);
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Put([FromBody] CreateUserRequest updateUserRequest)
+    {
+        Result result = await userService.UpdateAsync(updateUserRequest);
+
+        return result.Success ? Ok() : BadRequest(result.Errors);
+    }
+
     [HttpPost]
     [Route("login")]
     public async Task<ActionResult<AuthToken>> Login([FromBody] LoginRequest loginRequest)

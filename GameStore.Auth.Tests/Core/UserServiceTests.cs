@@ -23,6 +23,20 @@ public class UserServiceTests
     }
 
     [Fact]
+    public async Task UpdateUser_GivenValidCredentials_CreatesUser()
+    {
+        CreateUserRequest updateUserRequest = GetValidUserCreationRequest();
+        updateUserRequest.Password = "newPassword123!";
+
+        UserService userService = new(
+            GetDummyUserManager(), GetDummyRoleManager(), null, GetDummyTokenGenerator());
+
+        Result result = await userService.UpdateAsync(updateUserRequest);
+
+        Assert.True(result.Success);
+    }
+
+    [Fact]
     public async Task Login_GivenUnregisteredUser_ThrowsAuthenticationException()
     {
         LoginRequest loginRequest = new()
@@ -101,6 +115,15 @@ public class UserServiceTests
         Mock<IUserManager> userManager = new();
 
         userManager.Setup(r => r.CreateAsync(It.IsAny<UserModel>(), It.IsAny<string>()))
+            .ReturnsAsync(Result.SuccessResult());
+
+        userManager.Setup(r => r.UpdateAsync(It.IsAny<UserModel>(), It.IsAny<string>()))
+            .ReturnsAsync(Result.SuccessResult());
+
+        userManager.Setup(r => r.AddToRolesAsync(It.IsAny<UserModel>(), It.IsAny<IEnumerable<string>>()))
+            .ReturnsAsync(Result.SuccessResult());
+
+        userManager.Setup(r => r.RemoveFromRolesAsync(It.IsAny<UserModel>(), It.IsAny<List<string>>()))
             .ReturnsAsync(Result.SuccessResult());
 
         userManager.Setup(r => r.FindByNameAsync(It.IsAny<string>()))

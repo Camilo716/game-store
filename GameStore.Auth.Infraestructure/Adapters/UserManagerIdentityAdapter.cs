@@ -28,6 +28,17 @@ public class UserManagerIdentityAdapter(
             ?? throw new InvalidOperationException($"User {userModel.Id} not found");
 
         IdentityResult result = await userManager.AddToRolesAsync(user, roles);
+
+        return Result(result);
+    }
+
+    public async Task<Result> RemoveFromRolesAsync(UserModel userModel, List<string> roles)
+    {
+        User user = await dbContext.Users.FindAsync(userModel.Id)
+            ?? throw new InvalidOperationException($"User {userModel.Id} not found");
+
+        IdentityResult result = await userManager.RemoveFromRolesAsync(user, roles);
+
         return Result(result);
     }
 
@@ -64,6 +75,19 @@ public class UserManagerIdentityAdapter(
             ?? throw new InvalidOperationException($"User {id} not found");
 
         await userManager.DeleteAsync(user);
+    }
+
+    public async Task<Result> UpdateAsync(UserModel userModel, string password)
+    {
+        User user = await dbContext.Users.FindAsync(userModel.Id)
+            ?? throw new InvalidOperationException($"User {userModel.Id} not found");
+
+        user.PasswordHash = new PasswordHasher<User>().HashPassword(user, password);
+        user.UserName = userModel.UserName;
+
+        IdentityResult result = await userManager.UpdateAsync(user);
+
+        return Result(result);
     }
 
     private static Result Result(IdentityResult result)

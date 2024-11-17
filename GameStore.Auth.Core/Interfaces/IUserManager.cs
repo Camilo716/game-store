@@ -7,6 +7,8 @@ public interface IUserManager
 {
     Task<Result> CreateAsync(UserModel userModel, string password);
 
+    Task<Result> UpdateAsync(UserModel userModel, string password);
+
     Task<Result> AddToRolesAsync(UserModel userModel, IEnumerable<string> roles);
 
     Task<UserModel?> FindByNameAsync(string name);
@@ -16,4 +18,6 @@ public interface IUserManager
     Task DeleteByIdAsync(string id);
 
     Task<IEnumerable<RoleModel>> GetUserRolesAsync(string id);
+
+    Task<Result> RemoveFromRolesAsync(UserModel userModel, List<string> roles);
 }
