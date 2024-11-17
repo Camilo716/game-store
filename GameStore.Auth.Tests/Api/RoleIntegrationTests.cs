@@ -23,4 +23,13 @@ public class RoleIntegrationTests : BaseIntegrationTest
         Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
     }
+
+    [Fact]
+    public async Task GetAll_WithoutPagination_ReturnsAllRoles()
+    {
+        var response = await HttpClient.GetAsync("api/roles");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
 }
