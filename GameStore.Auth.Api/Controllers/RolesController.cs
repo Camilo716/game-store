@@ -37,4 +37,12 @@ public class RolesController(
         var privileges = await PrivilegeService.GetByRoleIdAsync(id);
         return Ok(privileges);
     }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<ActionResult> DeleteAsync([FromRoute] string id)
+    {
+        await roleService.DeleteByIdAsync(id);
+        return NoContent();
+    }
 }

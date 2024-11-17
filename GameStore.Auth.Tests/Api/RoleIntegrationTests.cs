@@ -1,3 +1,4 @@
+using System.Net;
 using GameStore.Auth.Tests.Seed;
 
 namespace GameStore.Auth.Tests.Api;
@@ -31,5 +32,16 @@ public class RoleIntegrationTests : BaseIntegrationTest
 
         Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesRole()
+    {
+        string id = RoleSeed.Admin.Id;
+
+        var response = await HttpClient.DeleteAsync($"api/roles/{id}");
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(RoleSeed.GetRoles().Count - 1, DbContext.Roles.Count());
     }
 }

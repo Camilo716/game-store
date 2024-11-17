@@ -44,6 +44,20 @@ public class UserManagerIdentityAdapter(
         return mapper.Map<IEnumerable<UserModel>>(users);
     }
 
+    public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string id)
+    {
+        var user = await userManager.FindByIdAsync(id)
+            ?? throw new InvalidOperationException($"User {id} not found");
+
+        IList<string> roles = await userManager.GetRolesAsync(user);
+
+        var dbRoles = await dbContext.Roles
+            .Where(r => roles.Contains(r.Name!))
+            .ToListAsync();
+
+        return mapper.Map<IEnumerable<RoleModel>>(dbRoles);
+    }
+
     public async Task DeleteByIdAsync(string id)
     {
         var user = await userManager.FindByIdAsync(id)

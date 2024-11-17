@@ -43,6 +43,14 @@ public class UsersController(IUserService userService) : ControllerBase
         return Ok(users);
     }
 
+    [HttpGet]
+    [Route("{id}/roles")]
+    public async Task<ActionResult<IEnumerable<RoleModel>>> GetUserRoles([FromRoute] string id)
+    {
+        var roles = await userService.GetUserRolesAsync(id);
+        return Ok(roles);
+    }
+
     [HttpDelete]
     [Route("{id}")]
     public async Task<ActionResult> Delete([FromRoute] string id)
