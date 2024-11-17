@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using GameStore.Auth.Core.Dtos;
 using GameStore.Auth.Core.Models;
@@ -49,6 +50,17 @@ public class UserIntegrationTest : BaseIntegrationTest
 
         Assert.NotNull(response);
         EnsureSuccessStatusCode(response);
+    }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesUser()
+    {
+        string id = UserSeed.UserManager.Id;
+
+        var response = await HttpClient.DeleteAsync($"api/users/{id}");
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(UserSeed.GetUsers().Count - 1, DbContext.Users.Count());
     }
 
     private static void EnsureSuccessStatusCode(HttpResponseMessage response)

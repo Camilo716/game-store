@@ -30,6 +30,11 @@ public class UserService(
         return Result.SuccessResult();
     }
 
+    public async Task DeleteByIdAsync(string id)
+    {
+        await userManager.DeleteByIdAsync(id);
+    }
+
     public async Task<IEnumerable<UserModel>> GetAllAsync()
     {
         return await userManager.GetAllAsync();

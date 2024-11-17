@@ -10,4 +10,6 @@ public interface IUserService
     Task<AuthToken> LoginAsync(LoginRequest loginRequest);
 
     Task<IEnumerable<UserModel>> GetAllAsync();
+
+    Task DeleteByIdAsync(string id);
 }
