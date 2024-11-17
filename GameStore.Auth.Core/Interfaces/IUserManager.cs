@@ -14,4 +14,6 @@ public interface IUserManager
     Task<IEnumerable<UserModel>> GetAllAsync();
 
     Task DeleteByIdAsync(string id);
+
+    Task<IEnumerable<RoleModel>> GetUserRolesAsync(string id);
 }

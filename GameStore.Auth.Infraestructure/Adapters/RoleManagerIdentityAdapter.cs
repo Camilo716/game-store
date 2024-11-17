@@ -23,4 +23,12 @@ public class RoleManagerIdentityAdapter(
         var roles = await roleManager.Roles.ToListAsync();
         return mapper.Map<IEnumerable<RoleModel>>(roles);
     }
+
+    public async Task DeleteByIdAsync(string id)
+    {
+        var role = await roleManager.FindByIdAsync(id)
+            ?? throw new InvalidOperationException($"Role {id} not found.");
+
+        await roleManager.DeleteAsync(role);
+    }
 }

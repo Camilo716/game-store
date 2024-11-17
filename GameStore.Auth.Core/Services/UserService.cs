@@ -40,6 +40,11 @@ public class UserService(
         return await userManager.GetAllAsync();
     }
 
+    public async Task<IEnumerable<RoleModel>> GetUserRolesAsync(string id)
+    {
+        return await userManager.GetUserRolesAsync(id);
+    }
+
     public async Task<AuthToken> LoginAsync(LoginRequest loginRequest)
     {
         UserModel userModel = await userManager.FindByNameAsync(loginRequest.Login)

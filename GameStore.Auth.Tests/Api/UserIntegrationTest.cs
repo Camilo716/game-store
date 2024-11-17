@@ -49,7 +49,18 @@ public class UserIntegrationTest : BaseIntegrationTest
         var response = await HttpClient.GetAsync("api/users");
 
         Assert.NotNull(response);
-        EnsureSuccessStatusCode(response);
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task GetUserRoles_ReturnsSuccess()
+    {
+        string id = UserSeed.UserManager.Id;
+
+        var response = await HttpClient.GetAsync($"api/users/{id}/roles");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
     }
 
     [Fact]
