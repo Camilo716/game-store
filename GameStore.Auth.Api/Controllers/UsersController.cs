@@ -1,6 +1,7 @@
 using System.Security.Authentication;
 using GameStore.Auth.Core.Dtos;
 using GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore.Auth.Api.Controllers;
@@ -33,5 +34,12 @@ public class UsersController(IUserService userService) : ControllerBase
         }
 
         return Ok(token);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserModel>>> Get()
+    {
+        var users = await userService.GetAllAsync();
+        return Ok(users);
     }
 }

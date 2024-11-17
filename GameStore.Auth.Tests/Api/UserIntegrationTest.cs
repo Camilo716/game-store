@@ -42,6 +42,15 @@ public class UserIntegrationTest : BaseIntegrationTest
         EnsureSuccessStatusCode(response);
     }
 
+    [Fact]
+    public async Task GetAll_WithoutPagination_ReturnsSuccess()
+    {
+        var response = await HttpClient.GetAsync("api/users");
+
+        Assert.NotNull(response);
+        EnsureSuccessStatusCode(response);
+    }
+
     private static void EnsureSuccessStatusCode(HttpResponseMessage response)
     {
         if (!response.IsSuccessStatusCode)

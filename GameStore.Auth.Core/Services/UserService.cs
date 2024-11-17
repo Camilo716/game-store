@@ -30,6 +30,11 @@ public class UserService(
         return Result.SuccessResult();
     }
 
+    public async Task<IEnumerable<UserModel>> GetAllAsync()
+    {
+        return await userManager.GetAllAsync();
+    }
+
     public async Task<AuthToken> LoginAsync(LoginRequest loginRequest)
     {
         UserModel userModel = await userManager.FindByNameAsync(loginRequest.Login)

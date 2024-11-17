@@ -10,4 +10,6 @@ public interface IUserManager
     Task<Result> AddToRolesAsync(UserModel userModel, IEnumerable<string> roles);
 
     Task<UserModel?> FindByNameAsync(string name);
+
+    Task<IEnumerable<UserModel>> GetAllAsync();
 }

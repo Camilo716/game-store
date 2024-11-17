@@ -5,6 +5,7 @@ using GameStore.Auth.Core.Models;
 using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Auth.Infraestructure.Adapters;
 
@@ -36,6 +37,13 @@ public class UserManagerIdentityAdapter(
     {
         User? user = await userManager.FindByNameAsync(name);
         return user is null ? null : Mapper.Map<UserModel>(user);
+    }
+
+    public async Task<IEnumerable<UserModel>> GetAllAsync()
+    {
+        var users = await userManager.Users.ToListAsync();
+
+        return Mapper.Map<IEnumerable<UserModel>>(users);
     }
 
     private static Result Result(IdentityResult result)
