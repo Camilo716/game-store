@@ -133,8 +133,8 @@ public class UserServiceTests
     {
         Mock<ITokenGenerator> tokenGenerator = new();
 
-        tokenGenerator.Setup(tg => tg.GenerateToken(It.IsAny<UserModel>()))
-            .Returns(new AuthToken() { Token = "AwesomeToken" });
+        tokenGenerator.Setup(tg => tg.GenerateTokenAsync(It.IsAny<UserModel>()))
+            .ReturnsAsync(new AuthToken() { Token = "AwesomeToken" });
 
         return tokenGenerator.Object;
     }

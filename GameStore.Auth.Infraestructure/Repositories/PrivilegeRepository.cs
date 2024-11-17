@@ -21,28 +21,36 @@ public class PrivilegeRepository(GameStoreAuthDbContext dbContext, IMapper mappe
 
     public async Task<IEnumerable<PrivilegeModel>> GetByRoleIdAsync(string roleId)
     {
-        var role = await DbContext.Roles
-            .Include(r => r.Privileges)
-            .FirstOrDefaultAsync(r => r.Id == roleId)
-            ?? throw new InvalidOperationException($"Role {roleId} not found.");
+        Role role = await GetRoleWithDetailsAsync(roleId);
 
         var privileges = new HashSet<Privilege>(role.Privileges);
 
-        CollectChildPrivileges(role, privileges);
+        await CollectChildPrivileges(role, privileges);
 
         return mapper.Map<IEnumerable<PrivilegeModel>>(privileges);
     }
 
-    private static void CollectChildPrivileges(Role role, HashSet<Privilege> privilegeSet)
+    private async Task CollectChildPrivileges(Role role, HashSet<Privilege> privilegeSet)
     {
         foreach (var childRole in role.ChildrenRoles)
         {
-            foreach (var privilege in childRole.Privileges)
+            Role childRoleWithDetails = await GetRoleWithDetailsAsync(childRole.Id);
+
+            foreach (var privilege in childRoleWithDetails.Privileges)
             {
                 privilegeSet.Add(privilege);
             }
 
-            CollectChildPrivileges(childRole, privilegeSet);
+            await CollectChildPrivileges(childRoleWithDetails, privilegeSet);
         }
+    }
+
+    private async Task<Role> GetRoleWithDetailsAsync(string roleId)
+    {
+        return await DbContext.Roles
+            .Include(r => r.Privileges)
+            .Include(r => r.ChildrenRoles)
+            .FirstOrDefaultAsync(r => r.Id == roleId)
+            ?? throw new InvalidOperationException($"Role {roleId} not found.");
     }
 }
