@@ -9,14 +9,22 @@ namespace GameStore.Auth.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class RolesController(
-    IPrivilegeService privilegeService) : ControllerBase
+    IPrivilegeService privilegeService,
+    IRoleService roleService) : ControllerBase
 {
     public IPrivilegeService PrivilegeService => privilegeService;
 
     [HttpGet]
+    public async Task<ActionResult<IEnumerable<RoleModel>>> Get()
+    {
+        var roles = await roleService.GetAllAsync();
+        return Ok(roles);
+    }
+
+    [HttpGet]
     [Route("permissions")]
     [Authorize(Policy = nameof(Permissions.ViewRoles))]
-    public async Task<ActionResult<IEnumerable<PrivilegeModel>>> Get()
+    public async Task<ActionResult<IEnumerable<PrivilegeModel>>> GetPermissions()
     {
         var privileges = await PrivilegeService.GetAllAsync();
         return Ok(privileges);

@@ -20,6 +20,7 @@ public class Startup(IConfiguration configuration)
 
         services.AddScoped<IPrivilegeService, PrivilegeService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IRoleService, RoleService>();
 
         services.AddEndpointsApiExplorer();
 

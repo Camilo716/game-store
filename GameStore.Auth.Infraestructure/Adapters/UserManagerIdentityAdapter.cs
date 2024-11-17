@@ -15,11 +15,9 @@ public class UserManagerIdentityAdapter(
     GameStoreAuthDbContext dbContext)
     : IUserManager
 {
-    public IMapper Mapper => mapper;
-
     public async Task<Result> CreateAsync(UserModel userModel, string password)
     {
-        User user = Mapper.Map<User>(userModel);
+        User user = mapper.Map<User>(userModel);
         IdentityResult result = await userManager.CreateAsync(user, password);
         return Result(result);
     }
@@ -36,14 +34,14 @@ public class UserManagerIdentityAdapter(
     public async Task<UserModel?> FindByNameAsync(string name)
     {
         User? user = await userManager.FindByNameAsync(name);
-        return user is null ? null : Mapper.Map<UserModel>(user);
+        return user is null ? null : mapper.Map<UserModel>(user);
     }
 
     public async Task<IEnumerable<UserModel>> GetAllAsync()
     {
         var users = await userManager.Users.ToListAsync();
 
-        return Mapper.Map<IEnumerable<UserModel>>(users);
+        return mapper.Map<IEnumerable<UserModel>>(users);
     }
 
     public async Task DeleteByIdAsync(string id)

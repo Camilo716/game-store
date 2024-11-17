@@ -2,9 +2,7 @@ using GameStore.Auth.Core.Models;
 
 namespace GameStore.Auth.Core.Interfaces;
 
-public interface IRoleManager
+public interface IRoleService
 {
-    Task<RoleModel?> FindByIdAsync(string id);
-
     Task<IEnumerable<RoleModel>> GetAllAsync();
 }
