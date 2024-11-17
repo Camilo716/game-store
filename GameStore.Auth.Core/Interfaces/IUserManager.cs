@@ -12,4 +12,6 @@ public interface IUserManager
     Task<UserModel?> FindByNameAsync(string name);
 
     Task<IEnumerable<UserModel>> GetAllAsync();
+
+    Task DeleteByIdAsync(string id);
 }

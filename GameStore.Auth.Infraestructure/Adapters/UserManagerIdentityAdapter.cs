@@ -46,6 +46,14 @@ public class UserManagerIdentityAdapter(
         return Mapper.Map<IEnumerable<UserModel>>(users);
     }
 
+    public async Task DeleteByIdAsync(string id)
+    {
+        var user = await userManager.FindByIdAsync(id)
+            ?? throw new InvalidOperationException($"User {id} not found");
+
+        await userManager.DeleteAsync(user);
+    }
+
     private static Result Result(IdentityResult result)
     {
         if (result.Succeeded)
