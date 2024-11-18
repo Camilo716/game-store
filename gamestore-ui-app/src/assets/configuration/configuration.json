@@ -12,5 +12,7 @@
 
   "ordersApiUrl": "orders",
 
-  "usersApiUrl": "users"
+  "usersApiUrl": "users",
+
+  "rolesApiUrl": "roles"
 }

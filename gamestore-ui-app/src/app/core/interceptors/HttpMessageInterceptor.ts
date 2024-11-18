@@ -1,4 +1,4 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, tap, throwError } from 'rxjs';
@@ -18,12 +18,14 @@ export const HttpMessageInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     tap((event: any) => {
-      const shouldExclude = excludedEndpoints.some((endpoint) =>
-        req.url.includes(endpoint)
-      );
+      if (event instanceof HttpResponse) {
+        const shouldExclude = excludedEndpoints.some((endpoint) =>
+          req.url.includes(endpoint)
+        );
 
-      if (!shouldExclude && req.method !== 'GET') {
-        showMessage('Action completed successfully!');
+        if (!shouldExclude && req.method !== 'GET') {
+          showMessage('Action completed successfully!');
+        }
       }
     }),
     catchError((error) => {
@@ -35,7 +37,7 @@ export const HttpMessageInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => error);
       }
 
-      const authError = error.status >= 400 && error.status < 500;
+      const authError = error.status === 401 && error.status < 403;
       if (authError) {
         showMessage("You don't have permissions to perform this action.");
       }

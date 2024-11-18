@@ -137,4 +137,40 @@ export class ConfigService {
   loginApiUrl(): string {
     return `${this.config.baseApiAuth}${this.config.usersApiUrl}/login`;
   }
+
+  getUsersApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}`;
+  }
+
+  getUserRolesApiUrl(id: string): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}/${id}/roles`;
+  }
+
+  updateUserApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}`;
+  }
+
+  addUserApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}`;
+  }
+
+  deleteUserApiUrl(id: string): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}/${id}`;
+  }
+
+  getRolesApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.rolesApiUrl}`;
+  }
+
+  updateRoleApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.rolesApiUrl}`;
+  }
+
+  addRoleApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.rolesApiUrl}`;
+  }
+
+  deleteRoleApiUrl(id: string): string {
+    return `${this.config.baseApiAuth}${this.config.rolesApiUrl}/${id}`;
+  }
 }
