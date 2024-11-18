@@ -1,0 +1,37 @@
+<ng-container [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field class="p-3 w-full">
+      <mat-label>User Name</mat-label>
+      <input matInput placeholder="User Name" formControlName="userName" />
+    </mat-form-field>
+
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Password</mat-label>
+      <input matInput placeholder="Password" formControlName="password" />
+    </mat-form-field>
+
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Roles</mat-label>
+      <mat-select formControlName="roles" multiple>
+        <mat-option *ngFor="let role of allRoles" [value]="role.id">
+          {{ role.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onSave()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-container>
