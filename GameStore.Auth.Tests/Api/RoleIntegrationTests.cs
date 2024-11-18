@@ -36,6 +36,24 @@ public class RoleIntegrationTests : BaseIntegrationTest
     }
 
     [Fact]
+    public async Task Put_GivenValidRole_UpdatesRole()
+    {
+        CreateRoleRequest validRole = new()
+        {
+            Role = new RoleModel() { Id = RoleSeed.Admin.Id, Name = "AdminUpdated" },
+            Permissions =
+            [
+                PrivilegeSeed.AddGame.Id,
+            ],
+        };
+
+        var response = await HttpClient.PutAsJsonAsync("api/roles", validRole);
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
     public async Task GetPermissionsByRoleId_WithoutPagination_ReturnsSuccess()
     {
         var roleId = RoleSeed.Manager.Id;

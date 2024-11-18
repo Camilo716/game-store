@@ -28,4 +28,26 @@ public class RoleRepositoryTests
 
         Assert.Equal(RoleSeed.GetRoles().Count + 1, dbContext.Roles.Count());
     }
+
+    [Fact]
+    public async Task Update_GivenValidRole_UpdatesRoleInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext, Mapper.Create());
+
+        var roleUpdateRequest = new CreateRoleRequest
+        {
+            Role = new RoleModel { Id = RoleSeed.Admin.Id, Name = "AdminUpdated" },
+            Permissions =
+            [
+                PrivilegeSeed.AddGame.Id,
+            ],
+        };
+
+        unitOfWork.RoleRepository.Update(roleUpdateRequest);
+        await unitOfWork.SaveChangesAsync();
+
+        var updatedRole = await dbContext.Roles.FindAsync(roleUpdateRequest.Role.Id);
+        Assert.Equal(roleUpdateRequest.Role.Name, updatedRole.Name);
+    }
 }
