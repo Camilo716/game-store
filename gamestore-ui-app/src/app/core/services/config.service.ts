@@ -133,4 +133,8 @@ export class ConfigService {
   payOrderApiUrl(): string {
     return `${this.config.baseApiPaymentUrl}${this.config.ordersApiUrl}/payment`;
   }
+
+  loginApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}/login`;
+  }
 }
