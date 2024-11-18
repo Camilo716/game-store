@@ -33,7 +33,6 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    console.log('Entrando');
     if (!this.loginForm.valid) {
       return;
     }
