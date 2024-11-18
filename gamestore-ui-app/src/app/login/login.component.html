@@ -1,0 +1,45 @@
+<div class="min-h-full flex items-center justify-center">
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800 text-center">Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          placeholder="Enter your email"
+        />
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="mt-1 p-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          placeholder="Enter your password"
+        />
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
+          Password must be at least 6 characters.
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          class="w-full bg-indigo-600  text-white action-button"
+          [disabled]="loginForm.invalid"
+          (click)="onSubmit()"
+        >
+          Login
+        </button>
+        <div *ngIf="this.error" class="text-red-500 text-center text-sm mt-1">
+          {{ this.error }}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -19,4 +19,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./order/order.routes').then((m) => m.ORDER_ROUTES),
   },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./login/login.routes').then((m) => m.LOGIN_ROUTES),
+  },
 ];
