@@ -29,6 +29,13 @@ public class RolesController(
         return Ok();
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Put([FromBody] CreateRoleRequest update)
+    {
+        await roleService.UpdateAsync(update);
+        return Ok();
+    }
+
     [HttpGet]
     [Route("permissions")]
     [Authorize(Policy = nameof(Permissions.ViewRoles))]

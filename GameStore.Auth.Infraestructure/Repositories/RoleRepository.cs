@@ -20,7 +20,28 @@ public class RoleRepository(GameStoreAuthDbContext dbContext, IMapper mapper)
             .ToListAsync();
 
         role.Privileges = privileges;
+        role.NormalizedName = role.Name.Trim().ToUpperInvariant();
 
         await InsertAsync(role);
+    }
+
+    public async void Update(CreateRoleRequest roleUpdateRequest)
+    {
+        Role role = await DbSet
+            .Include(p => p.Privileges)
+            .FirstOrDefaultAsync(r => r.Id == roleUpdateRequest.Role.Id)
+            ?? throw new InvalidOperationException($"Role {roleUpdateRequest.Role.Id} not found.");
+
+        var privileges = await DbContext.Privileges
+            .Where(p => roleUpdateRequest.Permissions.Contains(p.Id))
+            .ToListAsync();
+
+        role.Name = roleUpdateRequest.Role.Name;
+        role.NormalizedName = role.Name.Trim().ToUpperInvariant();
+
+        role.Privileges.Clear();
+        role.Privileges = privileges;
+
+        Update(role);
     }
 }

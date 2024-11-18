@@ -10,4 +10,6 @@ public interface IRoleService
     Task DeleteByIdAsync(string id);
 
     Task InsertAync(CreateRoleRequest createRoleRequest);
+
+    Task UpdateAsync(CreateRoleRequest updateRequest);
 }
