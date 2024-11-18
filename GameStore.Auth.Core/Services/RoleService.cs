@@ -24,7 +24,7 @@ public class RoleService(IRoleManager roleManager, IUnitOfWork unitOfWork) : IRo
 
     public async Task UpdateAsync(CreateRoleRequest updateRequest)
     {
-        unitOfWork.RoleRepository.Update(updateRequest);
+        await unitOfWork.RoleRepository.UpdateAsync(updateRequest);
         await unitOfWork.SaveChangesAsync();
     }
 }

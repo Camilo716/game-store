@@ -11,14 +11,20 @@ export class RoleService {
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   getAllRoles(): Observable<any> {
-    let rolesApiUrl = this.config.getRolesApiUrl();
-    console.log(rolesApiUrl);
-    return this.http.get(rolesApiUrl);
+    return this.http.get(this.config.getRolesApiUrl());
+  }
+
+  getRolePermissions(roleId: string): Observable<any> {
+    return this.http.get(this.config.getRolePermissionsApiUrl(roleId));
+  }
+
+  getAllPermissions(): Observable<any> {
+    return this.http.get(this.config.getPermissionsApiUrl());
   }
 
   updateRole(roleData: Role, permissionsIds: string[]): Observable<any> {
     let request = {
-      Role: roleData,
+      role: roleData,
       permissions: permissionsIds,
     };
 
@@ -26,10 +32,13 @@ export class RoleService {
   }
 
   addRole(roleData: Role, permissionsIds: string[]): Observable<any> {
+    roleData.id = roleData.id != null ? roleData.id : roleData.name;
+
     let request = {
-      Role: roleData,
+      role: roleData,
       permissions: permissionsIds,
     };
+
     return this.http.post(`${this.config.addRoleApiUrl()}`, request);
   }
 

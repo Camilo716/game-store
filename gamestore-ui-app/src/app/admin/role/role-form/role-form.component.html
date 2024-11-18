@@ -1,0 +1,32 @@
+<ng-container [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Permissions</mat-label>
+      <mat-select formControlName="permissions" multiple>
+        <mat-option *ngFor="let permission of allPermissions" [value]="permission.id">
+          {{ permission.key }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onSave()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-container>

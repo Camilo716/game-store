@@ -25,7 +25,7 @@ public class RoleRepository(GameStoreAuthDbContext dbContext, IMapper mapper)
         await InsertAsync(role);
     }
 
-    public async void Update(CreateRoleRequest roleUpdateRequest)
+    public async Task UpdateAsync(CreateRoleRequest roleUpdateRequest)
     {
         Role role = await DbSet
             .Include(p => p.Privileges)
