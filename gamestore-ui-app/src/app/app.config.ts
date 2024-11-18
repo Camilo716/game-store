@@ -2,8 +2,9 @@ import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ConfigService } from './core/services/config.service';
+import { HttpMessageInterceptor } from './core/interceptors/HttpMessageInterceptor';
 
 export function initializeApp(
   configService: ConfigService
@@ -15,7 +16,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([HttpMessageInterceptor])),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
