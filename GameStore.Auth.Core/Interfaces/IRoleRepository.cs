@@ -6,5 +6,5 @@ public interface IRoleRepository
 {
     Task InsertAsync(CreateRoleRequest createRoleRequest);
 
-    void Update(CreateRoleRequest roleUpdateRequest);
+    Task UpdateAsync(CreateRoleRequest roleUpdateRequest);
 }

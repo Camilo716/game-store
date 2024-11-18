@@ -162,6 +162,14 @@ export class ConfigService {
     return `${this.config.baseApiAuth}${this.config.rolesApiUrl}`;
   }
 
+  getRolePermissionsApiUrl(roleId: string): string {
+    return `${this.config.baseApiAuth}${this.config.rolesApiUrl}/${roleId}/permissions`;
+  }
+
+  getPermissionsApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.rolesApiUrl}/permissions`;
+  }
+
   updateRoleApiUrl(): string {
     return `${this.config.baseApiAuth}${this.config.rolesApiUrl}`;
   }

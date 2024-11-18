@@ -44,7 +44,7 @@ public class RoleRepositoryTests
             ],
         };
 
-        unitOfWork.RoleRepository.Update(roleUpdateRequest);
+        await unitOfWork.RoleRepository.UpdateAsync(roleUpdateRequest);
         await unitOfWork.SaveChangesAsync();
 
         var updatedRole = await dbContext.Roles.FindAsync(roleUpdateRequest.Role.Id);

@@ -5,6 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ConfigService } from './core/services/config.service';
 import { HttpMessageInterceptor } from './core/interceptors/HttpMessageInterceptor';
+import { AuthInterceptor } from './core/interceptors/AuthInterceptor';
 
 export function initializeApp(
   configService: ConfigService
@@ -16,7 +17,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([HttpMessageInterceptor])),
+    provideHttpClient(
+      withInterceptors([HttpMessageInterceptor, AuthInterceptor])
+    ),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
