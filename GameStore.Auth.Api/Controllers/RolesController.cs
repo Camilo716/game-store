@@ -1,3 +1,4 @@
+using GameStore.Auth.Core.Dtos;
 using GameStore.Auth.Core.Enums;
 using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Core.Models;
@@ -19,6 +20,13 @@ public class RolesController(
     {
         var roles = await roleService.GetAllAsync();
         return Ok(roles);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] CreateRoleRequest createRoleRequest)
+    {
+        await roleService.InsertAync(createRoleRequest);
+        return Ok();
     }
 
     [HttpGet]

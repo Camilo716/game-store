@@ -1,4 +1,7 @@
 using System.Net;
+using System.Net.Http.Json;
+using GameStore.Auth.Core.Dtos;
+using GameStore.Auth.Core.Models;
 using GameStore.Auth.Tests.Seed;
 
 namespace GameStore.Auth.Tests.Api;
@@ -12,6 +15,24 @@ public class RoleIntegrationTests : BaseIntegrationTest
 
         Assert.NotNull(response);
         response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task Post_GivenValidRole_CreatesRole()
+    {
+        CreateRoleRequest validRole = new()
+        {
+            Role = new RoleModel() { Id = Guid.NewGuid().ToString(), Name = "newRole" },
+            Permissions =
+            [
+                PrivilegeSeed.AddGame.Id,
+            ],
+        };
+
+        var response = await HttpClient.PostAsJsonAsync("api/roles", validRole);
+
+        response.EnsureSuccessStatusCode();
+        Assert.Equal(RoleSeed.GetRoles().Count + 1, DbContext.Roles.Count());
     }
 
     [Fact]

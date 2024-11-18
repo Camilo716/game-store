@@ -9,6 +9,7 @@ public class UnitOfWork(
     IMapper mapper) : IUnitOfWork
 {
     private IPrivilegeRepository _privilegeRepository;
+    private IRoleRepository _roleRepository;
 
     public IPrivilegeRepository PrivilegeRepository
     {
@@ -16,6 +17,15 @@ public class UnitOfWork(
         {
             _privilegeRepository ??= new PrivilegeRepository(DbContext, Mapper);
             return _privilegeRepository;
+        }
+    }
+
+    public IRoleRepository RoleRepository
+    {
+        get
+        {
+            _roleRepository ??= new RoleRepository(DbContext, mapper);
+            return _roleRepository;
         }
     }
 
