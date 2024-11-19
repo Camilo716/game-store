@@ -35,6 +35,12 @@ public class PrivilegeSeed
         Key = nameof(Permissions.ViewRoles),
     };
 
+    public static Privilege ViewGenres => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000006"),
+        Key = nameof(Permissions.ViewGenres),
+    };
+
     public static List<Privilege> GetPrivileges() =>
     [
         AddGame,
@@ -42,5 +48,6 @@ public class PrivilegeSeed
         ViewGame,
         UpdateGame,
         ViewRoles,
+        ViewGenres,
     ];
 }

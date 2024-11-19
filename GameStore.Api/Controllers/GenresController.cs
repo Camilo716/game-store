@@ -1,7 +1,9 @@
 using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.GenreDtos;
+using GameStore.Core.Enums;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore.Api.Controllers;
@@ -36,6 +38,7 @@ public class GenresController(
     }
 
     [HttpGet]
+    [Authorize(Policy = nameof(Permissions.ViewGenres))]
     public async Task<ActionResult<IEnumerable<GenreResponseDto>>> Get()
     {
         var genres = await GenreService.GetAllAsync();

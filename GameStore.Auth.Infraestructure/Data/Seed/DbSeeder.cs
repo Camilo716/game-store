@@ -30,7 +30,8 @@ public static class DbSeeder
                 GetRelationship(PrivilegeSeed.ViewGame.Id, RoleSeed.Guest.Id),
                 GetRelationship(PrivilegeSeed.AddGame.Id, RoleSeed.Manager.Id),
                 GetRelationship(PrivilegeSeed.DeleteGame.Id, RoleSeed.Manager.Id),
-                GetRelationship(PrivilegeSeed.UpdateGame.Id, RoleSeed.Manager.Id));
+                GetRelationship(PrivilegeSeed.UpdateGame.Id, RoleSeed.Manager.Id),
+                GetRelationship(PrivilegeSeed.ViewGenres.Id, RoleSeed.Manager.Id));
     }
 
     private static Dictionary<string, object> GetRelationship(Guid privilegeId, string roleId)
