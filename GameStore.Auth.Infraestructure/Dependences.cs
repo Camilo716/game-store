@@ -47,8 +47,10 @@ public static class Dependences
         services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 
         services.AddAuthorizationBuilder()
-            .AddPolicy(nameof(Permissions.ViewRoles), policy =>
-                policy.Requirements.Add(new PermissionRequirement(nameof(Permissions.ViewRoles))));
+            .AddPermissionPolicy(Permissions.ViewRoles)
+            .AddPermissionPolicy(Permissions.AddRole)
+            .AddPermissionPolicy(Permissions.DeleteRole)
+            .AddPermissionPolicy(Permissions.UpdateRole);
 
         services.AddAuthorization();
 

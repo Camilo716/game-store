@@ -27,6 +27,9 @@ public static class DbSeeder
             .UsingEntity<Dictionary<string, object>>(PrivilegeRole)
             .HasData(
                 GetRelationship(PrivilegeSeed.ViewRoles.Id, RoleSeed.Admin.Id),
+                GetRelationship(PrivilegeSeed.AddRole.Id, RoleSeed.Admin.Id),
+                GetRelationship(PrivilegeSeed.DeleteRole.Id, RoleSeed.Admin.Id),
+                GetRelationship(PrivilegeSeed.UpdateRole.Id, RoleSeed.Admin.Id),
                 GetRelationship(PrivilegeSeed.ViewGame.Id, RoleSeed.Guest.Id),
                 GetRelationship(PrivilegeSeed.AddGame.Id, RoleSeed.Manager.Id),
                 GetRelationship(PrivilegeSeed.DeleteGame.Id, RoleSeed.Manager.Id),
