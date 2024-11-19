@@ -35,6 +35,24 @@ public class PrivilegeSeed
         Key = nameof(Permissions.ViewRoles),
     };
 
+    public static Privilege AddRole => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000007"),
+        Key = nameof(Permissions.AddRole),
+    };
+
+    public static Privilege DeleteRole => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000009"),
+        Key = nameof(Permissions.DeleteRole),
+    };
+
+    public static Privilege UpdateRole => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000008"),
+        Key = nameof(Permissions.UpdateRole),
+    };
+
     public static Privilege ViewGenres => new()
     {
         Id = Guid.Parse("00000000-0000-0000-0000-000000000006"),

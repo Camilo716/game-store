@@ -8,6 +8,9 @@ public enum Permissions
     UpdateGame,
 
     ViewRoles,
+    AddRole,
+    DeleteRole,
+    UpdateRole,
 
     ViewGenres,
 }

@@ -38,6 +38,14 @@ public class TestAuthHandler(
 
     private static void AddAllPermissions(List<Claim> claims)
     {
-        claims.Add(new(nameof(ClaimType.Permission), nameof(Permissions.ViewRoles)));
+        AddPermissionClaim(claims, Permissions.ViewRoles);
+        AddPermissionClaim(claims, Permissions.AddRole);
+        AddPermissionClaim(claims, Permissions.UpdateRole);
+        AddPermissionClaim(claims, Permissions.DeleteRole);
+    }
+
+    private static void AddPermissionClaim(List<Claim> claim, Permissions permission)
+    {
+        claim.Add(new($"{ClaimType.Permission}", $"{permission}"));
     }
 }

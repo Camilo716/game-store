@@ -16,6 +16,7 @@ public class RolesController(
     public IPrivilegeService PrivilegeService => privilegeService;
 
     [HttpGet]
+    [Authorize(Policy = nameof(Permissions.ViewRoles))]
     public async Task<ActionResult<IEnumerable<RoleModel>>> Get()
     {
         var roles = await roleService.GetAllAsync();
@@ -23,6 +24,7 @@ public class RolesController(
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(Permissions.AddRole))]
     public async Task<IActionResult> Post([FromBody] CreateRoleRequest createRoleRequest)
     {
         await roleService.InsertAync(createRoleRequest);
@@ -30,6 +32,7 @@ public class RolesController(
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(Permissions.UpdateRole))]
     public async Task<IActionResult> Put([FromBody] CreateRoleRequest update)
     {
         await roleService.UpdateAsync(update);
@@ -38,7 +41,6 @@ public class RolesController(
 
     [HttpGet]
     [Route("permissions")]
-    [Authorize(Policy = nameof(Permissions.ViewRoles))]
     public async Task<ActionResult<IEnumerable<PrivilegeModel>>> GetPermissions()
     {
         var privileges = await PrivilegeService.GetAllAsync();
@@ -55,6 +57,7 @@ public class RolesController(
 
     [HttpDelete]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.DeleteRole))]
     public async Task<ActionResult> DeleteAsync([FromRoute] string id)
     {
         await roleService.DeleteByIdAsync(id);
