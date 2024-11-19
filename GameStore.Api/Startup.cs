@@ -52,6 +52,7 @@ public class Startup(IConfiguration configuration)
                 .AllowAnyHeader()
                 .WithExposedHeaders("x-total-numbers-of-games"));
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>

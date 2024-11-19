@@ -8,4 +8,6 @@ public enum Permissions
     UpdateGame,
 
     ViewRoles,
+
+    ViewGenres,
 }

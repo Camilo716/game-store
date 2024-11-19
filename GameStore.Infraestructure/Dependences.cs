@@ -1,7 +1,14 @@
+using System.Text;
+using GameStore.Core.Enums;
+using GameStore.Core.Interfaces;
+using GameStore.Infraestructure.Auth;
 using GameStore.Infraestructure.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GameStore.Infraestructure;
 
@@ -11,5 +18,33 @@ public static class Dependences
     {
         services.AddDbContext<GameStoreDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
+
+        services.AddAuthentication(opt =>
+        {
+            opt.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
+            opt.DefaultChallengeScheme = IdentityConstants.BearerScheme;
+            opt.DefaultScheme = IdentityConstants.BearerScheme;
+        })
+        .AddJwtBearer(IdentityConstants.BearerScheme, options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                LogValidationExceptions = true,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:SecretKey"]!)),
+            };
+        });
+
+        services.AddAuthorization();
+
+        services.AddAuthorizationBuilder()
+            .AddPolicy(nameof(Permissions.ViewGenres), policy =>
+                policy.Requirements.Add(new PermissionRequirement(nameof(Permissions.ViewGenres))));
+
+        services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+        services.AddScoped<ITokenValidator, TokenValidator>();
     }
 }

@@ -1,5 +1,6 @@
 using GameStore.Api;
 using GameStore.Infraestructure.Data;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,20 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 options.UseInMemoryDatabase(Guid.NewGuid().ToString());
                 options.EnableSensitiveDataLogging();
             });
+
+            ByPassAuthentication(services);
         });
+    }
+
+    private static void ByPassAuthentication(IServiceCollection services)
+    {
+        services
+            .AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = TestAuthHandler.AuthScheme;
+                x.DefaultChallengeScheme = TestAuthHandler.AuthScheme;
+            })
+            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.AuthScheme, _ => { });
     }
 
     private static void RemoveDbContextServiceRegistration(IServiceCollection services)
