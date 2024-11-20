@@ -42,6 +42,16 @@ public class TestAuthHandler(
         AddPermissionClaim(claims, Permissions.AddGenre);
         AddPermissionClaim(claims, Permissions.UpdateGenre);
         AddPermissionClaim(claims, Permissions.DeleteGenre);
+
+        AddPermissionClaim(claims, Permissions.ViewPlatforms);
+        AddPermissionClaim(claims, Permissions.AddPlatform);
+        AddPermissionClaim(claims, Permissions.UpdatePlatform);
+        AddPermissionClaim(claims, Permissions.DeletePlatform);
+
+        AddPermissionClaim(claims, Permissions.ViewPublishers);
+        AddPermissionClaim(claims, Permissions.AddPublisher);
+        AddPermissionClaim(claims, Permissions.UpdatePublisher);
+        AddPermissionClaim(claims, Permissions.DeletePublisher);
     }
 
     private static void AddPermissionClaim(List<Claim> claim, Permissions permission)
