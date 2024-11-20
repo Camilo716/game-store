@@ -21,6 +21,7 @@ public class GenresController(
 
     [HttpGet]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.ViewGenres))]
     public async Task<ActionResult<GenreResponseDto>> GetById([FromRoute] Guid id)
     {
         var genre = await GenreService.GetByIdAsync(id);
@@ -48,6 +49,7 @@ public class GenresController(
 
     [HttpGet]
     [Route("{parentId}/genres")]
+    [Authorize(Policy = nameof(Permissions.ViewGenres))]
     public async Task<ActionResult<IEnumerable<GenreResponseDto>>> GetByParentId([FromRoute] Guid parentId)
     {
         var childrenGenres = await GenreService.GetByParentIdAsync(parentId);
@@ -57,6 +59,7 @@ public class GenresController(
 
     [HttpDelete]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.DeleteGenre))]
     public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
         await GenreService.DeleteAsync(id);
@@ -64,6 +67,7 @@ public class GenresController(
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(Permissions.AddGenre))]
     public async Task<ActionResult> Post([FromBody] GenrePostRequest genrePostDto)
     {
         if (!genrePostDto.IsValid())
@@ -85,6 +89,7 @@ public class GenresController(
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(Permissions.UpdateGenre))]
     public async Task<ActionResult> Put([FromBody] GenrePutRequest genrePutDto)
     {
         if (!genrePutDto.IsValid())

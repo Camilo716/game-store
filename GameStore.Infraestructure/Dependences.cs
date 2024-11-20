@@ -41,8 +41,10 @@ public static class Dependences
         services.AddAuthorization();
 
         services.AddAuthorizationBuilder()
-            .AddPolicy(nameof(Permissions.ViewGenres), policy =>
-                policy.Requirements.Add(new PermissionRequirement(nameof(Permissions.ViewGenres))));
+            .AddPermissionPolicy(Permissions.ViewGenres)
+            .AddPermissionPolicy(Permissions.AddGenre)
+            .AddPermissionPolicy(Permissions.UpdateGenre)
+            .AddPermissionPolicy(Permissions.DeleteGenre);
 
         services.AddScoped<IAuthorizationHandler, PermissionHandler>();
         services.AddScoped<ITokenValidator, TokenValidator>();
