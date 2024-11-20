@@ -50,7 +50,12 @@ public static class Dependences
             .AddPermissionPolicy(Permissions.ViewRoles)
             .AddPermissionPolicy(Permissions.AddRole)
             .AddPermissionPolicy(Permissions.DeleteRole)
-            .AddPermissionPolicy(Permissions.UpdateRole);
+            .AddPermissionPolicy(Permissions.UpdateRole)
+
+            .AddPermissionPolicy(Permissions.ViewUsers)
+            .AddPermissionPolicy(Permissions.AddUser)
+            .AddPermissionPolicy(Permissions.DeleteUser)
+            .AddPermissionPolicy(Permissions.UpdateUser);
 
         services.AddAuthorization();
 

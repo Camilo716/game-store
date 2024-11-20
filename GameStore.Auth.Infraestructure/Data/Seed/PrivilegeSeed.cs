@@ -17,7 +17,7 @@ public class PrivilegeSeed
         Key = nameof(Permissions.DeleteGame),
     };
 
-    public static Privilege ViewGame => new()
+    public static Privilege ViewGames => new()
     {
         Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
         Key = nameof(Permissions.ViewGame),
@@ -59,13 +59,47 @@ public class PrivilegeSeed
         Key = nameof(Permissions.ViewGenres),
     };
 
+    public static Privilege ViewUsers => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000010"),
+        Key = nameof(Permissions.ViewUsers),
+    };
+
+    public static Privilege AddUser => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000011"),
+        Key = nameof(Permissions.AddUser),
+    };
+
+    public static Privilege DeleteUser => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000012"),
+        Key = nameof(Permissions.DeleteUser),
+    };
+
+    public static Privilege UpdateUser => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000013"),
+        Key = nameof(Permissions.UpdateUser),
+    };
+
     public static List<Privilege> GetPrivileges() =>
     [
         AddGame,
         DeleteGame,
-        ViewGame,
+        ViewGames,
         UpdateGame,
+
+        AddUser,
+        DeleteUser,
+        ViewUsers,
+        UpdateUser,
+
         ViewRoles,
+        AddRole,
+        UpdateRole,
+        DeleteRole,
+
         ViewGenres,
     ];
 }

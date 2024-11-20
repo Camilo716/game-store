@@ -42,6 +42,11 @@ public class TestAuthHandler(
         AddPermissionClaim(claims, Permissions.AddRole);
         AddPermissionClaim(claims, Permissions.UpdateRole);
         AddPermissionClaim(claims, Permissions.DeleteRole);
+
+        AddPermissionClaim(claims, Permissions.ViewUsers);
+        AddPermissionClaim(claims, Permissions.AddUser);
+        AddPermissionClaim(claims, Permissions.UpdateUser);
+        AddPermissionClaim(claims, Permissions.DeleteUser);
     }
 
     private static void AddPermissionClaim(List<Claim> claim, Permissions permission)

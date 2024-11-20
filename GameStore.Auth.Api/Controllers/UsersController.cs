@@ -1,7 +1,9 @@
 using System.Security.Authentication;
 using GameStore.Auth.Core.Dtos;
+using GameStore.Auth.Core.Enums;
 using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore.Auth.Api.Controllers;
@@ -11,6 +13,7 @@ namespace GameStore.Auth.Api.Controllers;
 public class UsersController(IUserService userService) : ControllerBase
 {
     [HttpPost]
+    [Authorize(Policy = nameof(Permissions.AddUser))]
     public async Task<IActionResult> Post([FromBody] CreateUserRequest createUserRequest)
     {
         Result result = await userService.CreateAsync(createUserRequest);
@@ -19,6 +22,7 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(Permissions.UpdateUser))]
     public async Task<IActionResult> Put([FromBody] CreateUserRequest updateUserRequest)
     {
         Result result = await userService.UpdateAsync(updateUserRequest);
@@ -45,6 +49,7 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = nameof(Permissions.ViewUsers))]
     public async Task<ActionResult<IEnumerable<UserModel>>> Get()
     {
         var users = await userService.GetAllAsync();
@@ -53,6 +58,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     [HttpGet]
     [Route("{id}/roles")]
+    [Authorize(Policy = nameof(Permissions.ViewUsers))]
     public async Task<ActionResult<IEnumerable<RoleModel>>> GetUserRoles([FromRoute] string id)
     {
         var roles = await userService.GetUserRolesAsync(id);
@@ -61,6 +67,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     [HttpDelete]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.DeleteUser))]
     public async Task<ActionResult> Delete([FromRoute] string id)
     {
         await userService.DeleteByIdAsync(id);
