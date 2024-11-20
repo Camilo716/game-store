@@ -53,12 +53,6 @@ public class PrivilegeSeed
         Key = nameof(Permissions.UpdateRole),
     };
 
-    public static Privilege ViewGenres => new()
-    {
-        Id = Guid.Parse("00000000-0000-0000-0000-000000000006"),
-        Key = nameof(Permissions.ViewGenres),
-    };
-
     public static Privilege ViewUsers => new()
     {
         Id = Guid.Parse("00000000-0000-0000-0000-000000000010"),
@@ -83,6 +77,30 @@ public class PrivilegeSeed
         Key = nameof(Permissions.UpdateUser),
     };
 
+    public static Privilege ViewGenres => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000014"),
+        Key = nameof(Permissions.ViewGenres),
+    };
+
+    public static Privilege AddGenre => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000015"),
+        Key = nameof(Permissions.AddGenre),
+    };
+
+    public static Privilege DeleteGenre => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000016"),
+        Key = nameof(Permissions.DeleteGenre),
+    };
+
+    public static Privilege UpdateGenre => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000017"),
+        Key = nameof(Permissions.UpdateGenre),
+    };
+
     public static List<Privilege> GetPrivileges() =>
     [
         AddGame,
@@ -101,5 +119,8 @@ public class PrivilegeSeed
         DeleteRole,
 
         ViewGenres,
+        AddGenre,
+        UpdateGenre,
+        DeleteGenre,
     ];
 }

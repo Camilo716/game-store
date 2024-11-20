@@ -13,6 +13,9 @@ public enum Permissions
     UpdateRole,
 
     ViewGenres,
+    AddGenre,
+    DeleteGenre,
+    UpdateGenre,
 
     ViewUsers,
     AddUser,
