@@ -41,6 +41,10 @@ public static class Dependences
         services.AddAuthorization();
 
         services.AddAuthorizationBuilder()
+            .AddPermissionPolicy(Permissions.AddGame)
+            .AddPermissionPolicy(Permissions.UpdateGame)
+            .AddPermissionPolicy(Permissions.DeleteGame)
+
             .AddPermissionPolicy(Permissions.ViewGenres)
             .AddPermissionPolicy(Permissions.AddGenre)
             .AddPermissionPolicy(Permissions.UpdateGenre)

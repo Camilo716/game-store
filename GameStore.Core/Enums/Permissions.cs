@@ -2,6 +2,10 @@ namespace GameStore.Core.Enums;
 
 public enum Permissions
 {
+    AddGame,
+    UpdateGame,
+    DeleteGame,
+
     ViewGenres,
     AddGenre,
     UpdateGenre,

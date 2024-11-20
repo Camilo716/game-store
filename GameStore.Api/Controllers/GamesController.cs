@@ -3,8 +3,10 @@ using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.GenreDtos;
 using GameStore.Api.Dtos.PlatformDtos;
 using GameStore.Api.Dtos.PublisherDtos;
+using GameStore.Core.Enums;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore.Api.Controllers;
@@ -58,6 +60,7 @@ public class GamesController(
 
     [HttpGet]
     [Route("{key}/genres")]
+    [Authorize(Policy = nameof(Permissions.ViewGenres))]
     public async Task<ActionResult<IEnumerable<GenreResponseDto>>> GetGenresByGameKey([FromRoute] string key)
     {
         var genres = await GenreService.GetByGameKeyAsync(key);
@@ -67,6 +70,7 @@ public class GamesController(
 
     [HttpGet]
     [Route("{key}/platforms")]
+    [Authorize(Policy = nameof(Permissions.ViewPlatforms))]
     public async Task<ActionResult<IEnumerable<PlatformResponseDto>>> GetPlatformsByGameKey([FromRoute] string key)
     {
         var platforms = await PlatformService.GetByGameKeyAsync(key);
@@ -76,6 +80,7 @@ public class GamesController(
 
     [HttpGet]
     [Route("{key}/publisher")]
+    [Authorize(Policy = nameof(Permissions.ViewPublishers))]
     public async Task<ActionResult<Publisher>> GetPublisherByGameKey([FromRoute] string key)
     {
         var publisher = await PublisherService.GetByGameKeyAsync(key);
@@ -84,6 +89,7 @@ public class GamesController(
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(Permissions.AddGame))]
     public async Task<ActionResult> Post([FromBody] GamePostRequest gamePostDto)
     {
         if (!gamePostDto.IsValid())
@@ -102,6 +108,7 @@ public class GamesController(
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(Permissions.UpdateGame))]
     public async Task<ActionResult> Put([FromBody] GamePutRequest gamePutRequest)
     {
         if (!gamePutRequest.IsValid())
@@ -118,6 +125,7 @@ public class GamesController(
 
     [HttpDelete]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.DeleteGame))]
     public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
         await GameService.DeleteAsync(id);

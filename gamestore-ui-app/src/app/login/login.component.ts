@@ -41,7 +41,7 @@ export class LoginComponent {
 
     this.authService.login(email, password).subscribe({
       next: () => {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/admin']);
       },
       error: (err) => {
         this.error = 'Authentication Failed.';

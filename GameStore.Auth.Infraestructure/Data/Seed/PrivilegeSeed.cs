@@ -20,7 +20,7 @@ public class PrivilegeSeed
     public static Privilege ViewGames => new()
     {
         Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
-        Key = nameof(Permissions.ViewGame),
+        Key = nameof(Permissions.ViewGames),
     };
 
     public static Privilege UpdateGame => new()

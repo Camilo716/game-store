@@ -4,7 +4,7 @@ public enum Permissions
 {
     AddGame,
     DeleteGame,
-    ViewGame,
+    ViewGames,
     UpdateGame,
 
     ViewRoles,
