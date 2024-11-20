@@ -1,7 +1,9 @@
 using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.PlatformDtos;
+using GameStore.Core.Enums;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore.Api.Controllers;
@@ -19,6 +21,7 @@ public class PlatformsController(
 
     [HttpGet]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.ViewPlatforms))]
     public async Task<ActionResult<PlatformResponseDto>> GetById([FromRoute] Guid id)
     {
         var platform = await PlatformService.GetByIdAsync(id);
@@ -36,6 +39,7 @@ public class PlatformsController(
     }
 
     [HttpGet]
+    [Authorize(Policy = nameof(Permissions.ViewPlatforms))]
     public async Task<ActionResult<IEnumerable<PlatformResponseDto>>> GetAll()
     {
         var platforms = await PlatformService.GetAllAsync();
@@ -45,6 +49,7 @@ public class PlatformsController(
 
     [HttpDelete]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.DeletePlatform))]
     public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
         await PlatformService.DeleteAsync(id);
@@ -53,6 +58,7 @@ public class PlatformsController(
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(Permissions.AddPlatform))]
     public async Task<ActionResult> Post([FromBody] PlatformPostRequest platformCreationDto)
     {
         if (!platformCreationDto.IsValid())
@@ -72,6 +78,7 @@ public class PlatformsController(
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(Permissions.UpdatePlatform))]
     public async Task<ActionResult> Put([FromBody] PlatformPutRequest platformUpdateDto)
     {
         if (!platformUpdateDto.IsValid())

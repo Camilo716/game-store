@@ -1,7 +1,9 @@
 using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.PublisherDtos;
+using GameStore.Core.Enums;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameStore.Api.Controllers;
@@ -19,6 +21,7 @@ public class PublishersController(
 
     [HttpGet]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.ViewPublishers))]
     public async Task<ActionResult<PublisherResponseDto>> GetById([FromRoute] Guid id)
     {
         var publisher = await PublisherService.GetByIdAsync(id);
@@ -36,6 +39,7 @@ public class PublishersController(
     }
 
     [HttpGet]
+    [Authorize(Policy = nameof(Permissions.ViewPublishers))]
     public async Task<ActionResult<IEnumerable<PublisherResponseDto>>> GetAll()
     {
         var publishers = await PublisherService.GetAllAsync();
@@ -45,6 +49,7 @@ public class PublishersController(
 
     [HttpDelete]
     [Route("{id}")]
+    [Authorize(Policy = nameof(Permissions.DeletePublisher))]
     public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
         await PublisherService.DeleteAsync(id);
@@ -53,6 +58,7 @@ public class PublishersController(
     }
 
     [HttpPost]
+    [Authorize(Policy = nameof(Permissions.AddPublisher))]
     public async Task<ActionResult> Post([FromBody] PublisherPostRequest publisherCreationDto)
     {
         if (!publisherCreationDto.IsValid())
@@ -74,6 +80,7 @@ public class PublishersController(
     }
 
     [HttpPut]
+    [Authorize(Policy = nameof(Permissions.UpdatePublisher))]
     public async Task<ActionResult> Put([FromBody] PublisherPutRequest publisherUpdateDto)
     {
         if (!publisherUpdateDto.IsValid())

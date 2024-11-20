@@ -44,7 +44,17 @@ public static class Dependences
             .AddPermissionPolicy(Permissions.ViewGenres)
             .AddPermissionPolicy(Permissions.AddGenre)
             .AddPermissionPolicy(Permissions.UpdateGenre)
-            .AddPermissionPolicy(Permissions.DeleteGenre);
+            .AddPermissionPolicy(Permissions.DeleteGenre)
+
+            .AddPermissionPolicy(Permissions.ViewPlatforms)
+            .AddPermissionPolicy(Permissions.AddPlatform)
+            .AddPermissionPolicy(Permissions.UpdatePlatform)
+            .AddPermissionPolicy(Permissions.DeletePlatform)
+
+            .AddPermissionPolicy(Permissions.ViewPublishers)
+            .AddPermissionPolicy(Permissions.AddPublisher)
+            .AddPermissionPolicy(Permissions.UpdatePublisher)
+            .AddPermissionPolicy(Permissions.DeletePublisher);
 
         services.AddScoped<IAuthorizationHandler, PermissionHandler>();
         services.AddScoped<ITokenValidator, TokenValidator>();

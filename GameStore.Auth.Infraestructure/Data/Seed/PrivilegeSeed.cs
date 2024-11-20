@@ -101,6 +101,54 @@ public class PrivilegeSeed
         Key = nameof(Permissions.UpdateGenre),
     };
 
+    public static Privilege ViewPlatforms => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000018"),
+        Key = nameof(Permissions.ViewPlatforms),
+    };
+
+    public static Privilege AddPlatform => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000019"),
+        Key = nameof(Permissions.AddPlatform),
+    };
+
+    public static Privilege DeletePlatform => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000020"),
+        Key = nameof(Permissions.DeletePlatform),
+    };
+
+    public static Privilege UpdatePlatform => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000021"),
+        Key = nameof(Permissions.UpdatePlatform),
+    };
+
+    public static Privilege ViewPublishers => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000022"),
+        Key = nameof(Permissions.ViewPublishers),
+    };
+
+    public static Privilege AddPublisher => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000023"),
+        Key = nameof(Permissions.AddPublisher),
+    };
+
+    public static Privilege DeletePublisher => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000024"),
+        Key = nameof(Permissions.DeletePublisher),
+    };
+
+    public static Privilege UpdatePublisher => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000025"),
+        Key = nameof(Permissions.UpdatePublisher),
+    };
+
     public static List<Privilege> GetPrivileges() =>
     [
         AddGame,
@@ -122,5 +170,15 @@ public class PrivilegeSeed
         AddGenre,
         UpdateGenre,
         DeleteGenre,
+
+        ViewPlatforms,
+        AddPlatform,
+        UpdatePlatform,
+        DeletePlatform,
+
+        ViewPublishers,
+        AddPublisher,
+        UpdatePublisher,
+        DeletePublisher,
     ];
 }

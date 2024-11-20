@@ -17,6 +17,16 @@ public enum Permissions
     DeleteGenre,
     UpdateGenre,
 
+    ViewPlatforms,
+    AddPlatform,
+    DeletePlatform,
+    UpdatePlatform,
+
+    ViewPublishers,
+    AddPublisher,
+    DeletePublisher,
+    UpdatePublisher,
+
     ViewUsers,
     AddUser,
     DeleteUser,
