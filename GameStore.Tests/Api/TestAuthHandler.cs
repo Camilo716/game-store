@@ -38,6 +38,10 @@ public class TestAuthHandler(
 
     private static void AddAllPermissions(List<Claim> claims)
     {
+        AddPermissionClaim(claims, Permissions.AddGame);
+        AddPermissionClaim(claims, Permissions.UpdateGame);
+        AddPermissionClaim(claims, Permissions.DeleteGame);
+
         AddPermissionClaim(claims, Permissions.ViewGenres);
         AddPermissionClaim(claims, Permissions.AddGenre);
         AddPermissionClaim(claims, Permissions.UpdateGenre);
