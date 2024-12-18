@@ -3,6 +3,8 @@ using AutoMapper;
 using GameStore.Core.Interfaces;
 using GameStore.Core.Services;
 using GameStore.Infraestructure.Data;
+using GameStore.Logging;
+using Microsoft.AspNetCore.HttpLogging;
 
 namespace GameStore.Api;
 public class Startup(IConfiguration configuration)
@@ -12,6 +14,8 @@ public class Startup(IConfiguration configuration)
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddHttpLogging(opt =>
+            opt.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders);
 
         Infraestructure.Dependences.ConfigureServices(Configuration, services);
 
@@ -31,8 +35,11 @@ public class Startup(IConfiguration configuration)
             });
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
     {
+        loggerFactory.AddFileLoggingProvider(
+            filePath: Path.Combine(Directory.GetCurrentDirectory(), "logs"));
+
         if (env.IsDevelopment())
         {
             app.UseSwagger();
@@ -43,6 +50,7 @@ public class Startup(IConfiguration configuration)
         app.UseMiddleware<TotalGamesCountMiddleware>();
 
         app.UseHttpsRedirection();
+        app.UseHttpLogging();
 
         app.UseRouting();
 
