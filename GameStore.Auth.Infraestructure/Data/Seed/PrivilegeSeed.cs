@@ -3,7 +3,7 @@ using GameStore.Auth.Infraestructure.Entities;
 
 namespace GameStore.Auth.Infraestructure.Data.Seed;
 
-public class PrivilegeSeed
+public static class PrivilegeSeed
 {
     public static Privilege AddGame => new()
     {

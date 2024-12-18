@@ -11,11 +11,17 @@ public static class DbSeeder
 
     public static void Seed(ModelBuilder modelBuilder)
     {
-        List<Privilege> privileges = PrivilegeSeed.GetPrivileges();
-        List<Role> roles = RoleSeed.GetRoles();
+        Privilege[] privileges =
+        [
+            .. PrivilegeSeed.GetPrivileges()
+        ];
+        Role[] roles =
+        [
+            .. RoleSeed.GetRoles()
+        ];
 
-        modelBuilder.Entity<Privilege>().HasData([.. privileges]);
-        modelBuilder.Entity<Role>().HasData([.. roles]);
+        modelBuilder.Entity<Privilege>().HasData(privileges);
+        modelBuilder.Entity<Role>().HasData(roles);
         SeedPrivilegeRoleRelations(modelBuilder);
     }
 

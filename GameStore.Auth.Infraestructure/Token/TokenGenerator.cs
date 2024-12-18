@@ -18,12 +18,12 @@ public class TokenGenerator(
     RoleManager<Role> roleManager,
     IUnitOfWork unitOfWork) : ITokenGenerator
 {
-    private readonly string _secretKey = configuration["Jwt:SecretKey"]!;
+    private string SecretKey => configuration["Jwt:SecretKey"]!;
 
     public async Task<AuthToken> GenerateTokenAsync(UserModel userModel)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_secretKey);
+        var key = Encoding.ASCII.GetBytes(SecretKey);
 
         List<Claim> claims =
         [
