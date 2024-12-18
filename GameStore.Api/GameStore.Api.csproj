@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameStore.Logging\GameStore.Logging.csproj" />
     <ProjectReference Include="..\GameStore.Core\GameStore.Core.csproj" />
     <ProjectReference Include="..\GameStore.Infraestructure\GameStore.Infraestructure.csproj" />
   </ItemGroup>
