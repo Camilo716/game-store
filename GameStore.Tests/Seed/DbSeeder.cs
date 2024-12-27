@@ -12,6 +12,7 @@ internal class DbSeeder
         var genres = GenreSeed.GetGenres();
         var publishers = PublisherSeed.GetPublishers();
         var games = GameSeed.GetGames();
+        var comments = CommentSeed.GetComments();
 
         AttachGenresToGames(genres, games);
         AttachGamesToGenres(genres, games);
@@ -23,6 +24,7 @@ internal class DbSeeder
         context.Genres.AddRange(genres);
         context.Publishers.AddRange(publishers);
         context.Games.AddRange(games);
+        context.Comments.AddRange(comments);
 
         context.SaveChanges();
     }

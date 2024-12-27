@@ -25,6 +25,7 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<IPlatformService, PlatformService>();
         services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IPublisherService, PublisherService>();
+        services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<IGameService, GameService>();
         services.AddScoped<IGameFileService, GameTextFileService>();
 

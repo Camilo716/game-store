@@ -9,6 +9,7 @@ public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
     private IGenreRepository _genreRepository;
     private IPublisherRepository _publisherRepository;
     private IGameRepository _gameRepository;
+    private ICommentRepository _commentRepository;
 
     public IPlatformRepository PlatformRepository
     {
@@ -43,6 +44,15 @@ public class UnitOfWork(GameStoreDbContext dbContext) : IUnitOfWork
         {
             _gameRepository ??= new GameRepository(DbContext);
             return _gameRepository;
+        }
+    }
+
+    public ICommentRepository CommentRepository
+    {
+        get
+        {
+            _commentRepository ??= new CommentRepository(DbContext);
+            return _commentRepository;
         }
     }
 

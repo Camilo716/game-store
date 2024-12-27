@@ -19,7 +19,8 @@ public class GamesController(
     IGameFileService gameFileService,
     IGenreService genreService,
     IPlatformService platformService,
-    IPublisherService publisherService)
+    IPublisherService publisherService,
+    ICommentService commentService)
     : ControllerBase
 {
     private IMapper Mapper => mapper;
@@ -76,6 +77,14 @@ public class GamesController(
         var platforms = await PlatformService.GetByGameKeyAsync(key);
         var response = platforms.Select(p => new PlatformResponseDto(p));
         return Ok(response);
+    }
+
+    [HttpGet]
+    [Route("{key}/comments")]
+    public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsByGameKey([FromRoute] string key)
+    {
+        var comments = await commentService.GetByGameKeyAsync(key);
+        return Ok(comments);
     }
 
     [HttpGet]

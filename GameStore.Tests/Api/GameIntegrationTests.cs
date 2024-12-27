@@ -73,6 +73,18 @@ public class GameIntegrationTests : BaseIntegrationTest
     }
 
     [Fact]
+    public async Task GetCommentsByGameKey_GivenValidKey_ReturnsSuccess()
+    {
+        string gameKey = GameSeed.GearsOfWar.Key;
+
+        var response = await HttpClient.GetAsync($"api/games/{gameKey}/comments");
+
+        response.EnsureSuccessStatusCode();
+        var comments = await HttpHelper.GetModelFromHttpResponseAsync<IEnumerable<Comment>>(response);
+        Assert.NotNull(comments);
+    }
+
+    [Fact]
     public async Task GetPublisherByGameKey_GivenValidKey_ReturnsSuccess()
     {
         string gameKey = GameSeed.GearsOfWar.Key;

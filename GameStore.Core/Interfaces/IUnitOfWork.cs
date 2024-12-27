@@ -10,5 +10,7 @@ public interface IUnitOfWork
 
     public IGameRepository GameRepository { get; }
 
+    public ICommentRepository CommentRepository { get; }
+
     Task SaveChangesAsync();
 }
