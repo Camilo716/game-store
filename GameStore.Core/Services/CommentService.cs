@@ -9,6 +9,8 @@ public class CommentService(
 {
     public async Task CreateAsync(Comment comment, string gameKey)
     {
+        Game game = await unitOfWork.GameRepository.GetByKeyAsync(gameKey);
+        comment.GameId = game.Id;
         await unitOfWork.CommentRepository.InsertAsync(comment);
         await unitOfWork.SaveChangesAsync();
     }

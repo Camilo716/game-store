@@ -1,4 +1,5 @@
 using GameStore.Core.Interfaces;
+using GameStore.Core.Models;
 using GameStore.Core.Services;
 using GameStore.Tests.Seed;
 using Moq;
@@ -17,6 +18,31 @@ public class CommentServiceTest
         var comments = await commentService.GetByGameKeyAsync(gameKey);
 
         Assert.NotNull(comments);
+    }
+
+    [Fact]
+    public async Task CreateComment_GivenValidGame_CreatesComment()
+    {
+        Mock<IUnitOfWork> unitOfWork = new();
+        Game game = GameSeed.GearsOfWar;
+        string gameKey = game.Key;
+        Comment validComment = new()
+        {
+            Body = "Body",
+        };
+        Comment createdComment = null;
+
+        unitOfWork.Setup(m => m.GameRepository.GetByKeyAsync(gameKey))
+            .ReturnsAsync(game);
+
+        unitOfWork.Setup(m => m.CommentRepository.InsertAsync(It.IsAny<Comment>()))
+            .Callback<Comment>(c => createdComment = c);
+
+        CommentService commentService = new(unitOfWork.Object);
+
+        await commentService.CreateAsync(validComment, gameKey);
+
+        Assert.Equal(game.Id, createdComment.GameId);
     }
 
     private static Mock<IUnitOfWork> GetDummyUnitOfWorkMock()
