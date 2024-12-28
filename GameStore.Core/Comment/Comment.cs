@@ -10,6 +10,8 @@ public class Comment
 
     public CommentType Type { get; set; } = CommentType.Comment;
 
+    public bool Deleted { get; set; }
+
     public Guid GameId { get; set; }
 
     public Game.Game Game { get; set; }

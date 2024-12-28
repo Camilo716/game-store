@@ -22,4 +22,10 @@ public class CommentService(
 
         return comments.Select(commentFormatter.Format);
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await unitOfWork.CommentRepository.SoftDeleteAsync(id);
+        await unitOfWork.SaveChangesAsync();
+    }
 }

@@ -97,6 +97,14 @@ public class GamesController(
         return Ok();
     }
 
+    [HttpDelete]
+    [Route("comments/{id}")]
+    public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsByGameKey([FromRoute] Guid id)
+    {
+        await commentService.DeleteAsync(id);
+        return NoContent();
+    }
+
     [HttpGet]
     [Route("{key}/publisher")]
     [Authorize(Policy = nameof(Permissions.ViewPublishers))]

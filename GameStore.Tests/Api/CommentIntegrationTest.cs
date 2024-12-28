@@ -23,4 +23,16 @@ public class CommentIntegrationTest : BaseIntegrationTest
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal(CommentSeed.GetComments().Count + 1, DbContext.Comments.Count());
     }
+
+    [Fact]
+    public async Task Delete_GivenValidId_DeletesComment()
+    {
+        Guid id = CommentSeed.GetComments().First().Id;
+        string gameKey = GameSeed.GearsOfWar.Key;
+
+        var response = await HttpClient.DeleteAsync($"api/games/comments/{id}");
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(1, DbContext.Comments.Where(c => c.Deleted).Count());
+    }
 }

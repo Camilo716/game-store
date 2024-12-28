@@ -29,4 +29,13 @@ public class CommentRepository(
     {
         await dbContext.Comments.AddAsync(comment);
     }
+
+    public async Task SoftDeleteAsync(Guid id)
+    {
+        var comment = await dbContext.Comments.FindAsync(id)
+            ?? throw new InvalidOperationException($"Comment {id} was not found.");
+
+        comment.Deleted = true;
+        dbContext.Entry(comment).State = EntityState.Modified;
+    }
 }

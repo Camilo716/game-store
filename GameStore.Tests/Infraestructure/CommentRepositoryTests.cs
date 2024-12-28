@@ -35,4 +35,18 @@ public class CommentRepositoryTests
 
         Assert.Equal(CommentSeed.GetComments().Count + 1, dbContext.Comments.Count());
     }
+
+    [Fact]
+    public async Task SoftDelete_GivenValidId_SoftDeletesCommentsInDatabase()
+    {
+        using var dbContext = UnitTestHelper.GetUnitTestDbContext();
+        var unitOfWork = new UnitOfWork(dbContext);
+        Guid id = CommentSeed.PositiveComment.Id;
+
+        await unitOfWork.CommentRepository.SoftDeleteAsync(id);
+        await unitOfWork.SaveChangesAsync();
+
+        var deletedComment = await dbContext.Comments.FindAsync(id);
+        Assert.True(deletedComment.Deleted);
+    }
 }
