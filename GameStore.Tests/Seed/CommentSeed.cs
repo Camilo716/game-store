@@ -11,8 +11,17 @@ public static class CommentSeed
         GameId = GameSeed.GearsOfWar.Id,
     };
 
+    public static Comment ReplyComment => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+        Body = "I Agree",
+        GameId = GameSeed.GearsOfWar.Id,
+        ParentCommentId = PositiveComment.Id,
+    };
+
     public static List<Comment> GetComments() =>
     [
         PositiveComment,
+        ReplyComment,
     ];
 }

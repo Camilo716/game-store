@@ -9,9 +9,17 @@ public class CommentRepository(GameStoreDbContext dbContext) : ICommentRepositor
 {
     public async Task<IEnumerable<Comment>> GetByGameKeyAsync(string key)
     {
-        return await dbContext.Comments
-            .Include(c => c.Game)
+        var comments = await dbContext.Comments
             .Where(c => c.Game.Key == key)
             .ToListAsync();
+
+        ILookup<Guid, Comment> commentLookup = comments.ToLookup(c => c.ParentCommentId);
+
+        foreach (var comment in comments)
+        {
+            comment.ChildrenComments = commentLookup[comment.Id].ToList();
+        }
+
+        return comments.Where(c => c.ParentCommentId == Guid.Empty);
     }
 }

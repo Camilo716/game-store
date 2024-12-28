@@ -9,4 +9,8 @@ public class Comment
     public Guid GameId { get; set; }
 
     public Game Game { get; set; }
+
+    public Guid ParentCommentId { get; set; }
+
+    public IEnumerable<Comment> ChildrenComments { get; set; }
 }
