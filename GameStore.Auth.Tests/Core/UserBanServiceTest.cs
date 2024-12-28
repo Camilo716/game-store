@@ -1,6 +1,6 @@
-using GameStore.Core.Comment.UserBan;
+using GameStore.Auth.Core.User.Ban;
 
-namespace GameStore.Tests.Core;
+namespace GameStore.Auth.Tests.Core;
 
 public class UserBanServiceTest
 {

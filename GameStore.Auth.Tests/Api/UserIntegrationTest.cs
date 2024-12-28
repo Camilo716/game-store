@@ -93,6 +93,15 @@ public class UserIntegrationTest : BaseIntegrationTest
         Assert.Equal(UserSeed.GetUsers().Count - 1, DbContext.Users.Count());
     }
 
+    [Fact]
+    public async Task GetUserBanDurations_ReturnsSuccess()
+    {
+        var response = await HttpClient.GetAsync("api/users/ban/durations");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
+
     private static void EnsureSuccessStatusCode(HttpResponseMessage response)
     {
         if (!response.IsSuccessStatusCode)

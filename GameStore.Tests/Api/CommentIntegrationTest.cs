@@ -35,13 +35,4 @@ public class CommentIntegrationTest : BaseIntegrationTest
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         Assert.Equal(1, DbContext.Comments.Where(c => c.Deleted).Count());
     }
-
-    [Fact]
-    public async Task GetUserBanDurations_ReturnsSuccess()
-    {
-        var response = await HttpClient.GetAsync("api/comments/ban/durations");
-
-        Assert.NotNull(response);
-        response.EnsureSuccessStatusCode();
-    }
 }

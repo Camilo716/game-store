@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 using AutoMapper;
 using GameStore.Core.Comment;
 using GameStore.Core.Comment.Formatter;
-using GameStore.Core.Comment.UserBan;
 using GameStore.Core.Game;
 using GameStore.Core.Genre;
 using GameStore.Core.Platform;
@@ -33,7 +32,6 @@ public class Startup(IConfiguration configuration)
         services.AddScoped<IPublisherService, PublisherService>();
         services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<ICommentFormatter, CommentFormatter>();
-        services.AddScoped<IUserBanService, UserBanService>();
         services.AddScoped<IGameService, GameService>();
         services.AddScoped<IGameFileService, GameTextFileService>();
 

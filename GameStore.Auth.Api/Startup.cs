@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using AutoMapper;
 using GameStore.Auth.Core.Interfaces;
 using GameStore.Auth.Core.Services;
+using GameStore.Auth.Core.User.Ban;
 using GameStore.Auth.Infraestructure.Data;
 
 namespace GameStore.Auth.Api;
@@ -20,6 +21,7 @@ public class Startup(IConfiguration configuration)
 
         services.AddScoped<IPrivilegeService, PrivilegeService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserBanService, UserBanService>();
         services.AddScoped<IRoleService, RoleService>();
 
         services.AddEndpointsApiExplorer();

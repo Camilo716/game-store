@@ -1,4 +1,4 @@
-namespace GameStore.Core.Comment.UserBan;
+namespace GameStore.Auth.Core.User.Ban;
 
 public record UserBanDuration(
     string Code,
