@@ -1,4 +1,4 @@
-using GameStore.Core.Models;
+using GameStore.Core.Genre;
 
 namespace GameStore.Api.Dtos.GenreDtos;
 

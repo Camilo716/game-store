@@ -1,7 +1,11 @@
 using System.Net;
 using System.Net.Http.Json;
 using GameStore.Api.Dtos.GameDtos;
-using GameStore.Core.Models;
+using GameStore.Core.Comment;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
+using GameStore.Core.Platform;
+using GameStore.Core.Publisher;
 using GameStore.Tests.Api.ClassData;
 using GameStore.Tests.Seed;
 

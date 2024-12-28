@@ -4,9 +4,12 @@ using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.GenreDtos;
 using GameStore.Api.Dtos.PlatformDtos;
 using GameStore.Api.Dtos.PublisherDtos;
-using GameStore.Core.Enums;
-using GameStore.Core.Interfaces;
-using GameStore.Core.Models;
+using GameStore.Core.Auth;
+using GameStore.Core.Comment;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
+using GameStore.Core.Platform;
+using GameStore.Core.Publisher;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

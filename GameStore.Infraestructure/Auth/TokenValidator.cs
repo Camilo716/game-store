@@ -1,6 +1,5 @@
 using System.Security.Claims;
-using GameStore.Core.Enums;
-using GameStore.Core.Interfaces;
+using GameStore.Core.Auth;
 
 namespace GameStore.Infraestructure.Auth;
 

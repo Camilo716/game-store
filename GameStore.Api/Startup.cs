@@ -1,7 +1,11 @@
 using System.Text.Json.Serialization;
 using AutoMapper;
-using GameStore.Core.Interfaces;
-using GameStore.Core.Services;
+using GameStore.Core.Comment;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
+using GameStore.Core.Platform;
+using GameStore.Core.Publisher;
+using GameStore.Core.UnitOfWork;
 using GameStore.Infraestructure.Data;
 using GameStore.Logging;
 using Microsoft.AspNetCore.HttpLogging;

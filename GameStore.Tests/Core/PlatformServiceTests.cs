@@ -1,6 +1,5 @@
-using GameStore.Core.Interfaces;
-using GameStore.Core.Models;
-using GameStore.Core.Services;
+using GameStore.Core.Platform;
+using GameStore.Core.UnitOfWork;
 using GameStore.Tests.Seed;
 using Moq;
 

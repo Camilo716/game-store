@@ -1,4 +1,4 @@
-using GameStore.Core.Enums;
+using GameStore.Core.Auth;
 using GameStore.Infraestructure.Auth;
 using Microsoft.AspNetCore.Authorization;
 

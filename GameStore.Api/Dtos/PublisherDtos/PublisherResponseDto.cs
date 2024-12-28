@@ -1,4 +1,4 @@
-using GameStore.Core.Models;
+using GameStore.Core.Publisher;
 
 namespace GameStore.Api.Dtos.PublisherDtos;
 

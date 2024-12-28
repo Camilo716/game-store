@@ -1,4 +1,9 @@
-using GameStore.Core.Interfaces;
+using GameStore.Core.Comment;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
+using GameStore.Core.Platform;
+using GameStore.Core.Publisher;
+using GameStore.Core.UnitOfWork;
 using GameStore.Infraestructure.Repositories;
 
 namespace GameStore.Infraestructure.Data;

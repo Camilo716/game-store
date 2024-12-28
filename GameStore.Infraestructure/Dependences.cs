@@ -1,6 +1,5 @@
 using System.Text;
-using GameStore.Core.Enums;
-using GameStore.Core.Interfaces;
+using GameStore.Core.Auth;
 using GameStore.Infraestructure.Auth;
 using GameStore.Infraestructure.Data;
 using Microsoft.AspNetCore.Authorization;

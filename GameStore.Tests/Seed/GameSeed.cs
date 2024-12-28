@@ -1,4 +1,4 @@
-using GameStore.Core.Models;
+using GameStore.Core.Game;
 
 namespace GameStore.Tests.Seed;
 

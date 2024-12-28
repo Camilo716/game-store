@@ -1,8 +1,8 @@
 using GameStore.Api.Dtos.GameDtos;
 using GameStore.Api.Dtos.GenreDtos;
-using GameStore.Core.Enums;
-using GameStore.Core.Interfaces;
-using GameStore.Core.Models;
+using GameStore.Core.Auth;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
