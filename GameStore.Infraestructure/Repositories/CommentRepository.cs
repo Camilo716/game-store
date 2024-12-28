@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Infraestructure.Repositories;
 
-public class CommentRepository(GameStoreDbContext dbContext) : ICommentRepository
+public class CommentRepository(
+    GameStoreDbContext dbContext)
+    : ICommentRepository
 {
     public async Task<IEnumerable<Comment>> GetByGameKeyAsync(string key)
     {
@@ -13,13 +15,19 @@ public class CommentRepository(GameStoreDbContext dbContext) : ICommentRepositor
             .Where(c => c.Game.Key == key)
             .ToListAsync();
 
-        ILookup<Guid, Comment> commentLookup = comments.ToLookup(c => c.ParentCommentId);
+        ILookup<Guid?, Comment> commentLookup = comments.ToLookup(c => c.ParentCommentId);
 
         foreach (var comment in comments)
         {
             comment.ChildrenComments = commentLookup[comment.Id].ToList();
         }
 
-        return comments.Where(c => c.ParentCommentId == Guid.Empty);
+        Func<Comment, bool> isRootLevel = c => c.ParentCommentId == Guid.Empty || c.ParentCommentId is null;
+        return comments.Where(isRootLevel);
+    }
+
+    public async Task InsertAsync(Comment comment)
+    {
+        await dbContext.Comments.AddAsync(comment);
     }
 }
