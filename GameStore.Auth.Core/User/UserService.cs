@@ -1,9 +1,9 @@
 using System.Security.Authentication;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.ProcessResult;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.User.Login;
 
-namespace GameStore.Auth.Core.Services;
+namespace GameStore.Auth.Core.User;
 
 public class UserService(
     IUserManager userManager,

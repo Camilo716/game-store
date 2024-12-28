@@ -1,8 +1,8 @@
 using System.Security.Authentication;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
-using GameStore.Auth.Core.Services;
+using GameStore.Auth.Core.ProcessResult;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Login;
 using GameStore.Auth.Tests.Seed;
 using Moq;
 

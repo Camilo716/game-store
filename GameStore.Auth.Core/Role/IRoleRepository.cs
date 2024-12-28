@@ -1,6 +1,4 @@
-using GameStore.Auth.Core.Dtos;
-
-namespace GameStore.Auth.Core.Interfaces;
+namespace GameStore.Auth.Core.Role;
 
 public interface IRoleRepository
 {

@@ -1,4 +1,6 @@
-namespace GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.Role;
+
+namespace GameStore.Auth.Core.Privilege;
 
 public class PrivilegeModel
 {

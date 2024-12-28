@@ -1,7 +1,4 @@
 using GameStore.Auth.Infraestructure.Data;
-/* using GameStore.Auth.Infraestructure.Entities;
-using GameStore.Auth.Tests.Seed;
-using Microsoft.AspNetCore.Identity; */
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GameStore.Auth.Tests.Api;

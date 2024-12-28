@@ -1,5 +1,5 @@
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Services;
+using GameStore.Auth.Core.Privilege;
+using GameStore.Auth.Core.UnitOfWork;
 using GameStore.Auth.Tests.Seed;
 using Moq;
 

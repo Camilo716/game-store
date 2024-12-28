@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.Role;
 using GameStore.Auth.Tests.Seed;
 
 namespace GameStore.Auth.Tests.Api;

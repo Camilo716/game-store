@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
 using AutoMapper;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Services;
+using GameStore.Auth.Core.Privilege;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.UnitOfWork;
+using GameStore.Auth.Core.User;
 using GameStore.Auth.Core.User.Ban;
 using GameStore.Auth.Infraestructure.Data;
 

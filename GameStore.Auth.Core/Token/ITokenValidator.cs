@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace GameStore.Auth.Core.Interfaces;
+namespace GameStore.Auth.Core.Token;
 
 public interface ITokenValidator
 {

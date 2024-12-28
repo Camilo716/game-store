@@ -1,6 +1,9 @@
 using System.Text;
-using GameStore.Auth.Core.Enums;
-using GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Core.Config;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.Token;
+using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Login;
 using GameStore.Auth.Infraestructure.Adapters;
 using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Infraestructure.Entities;

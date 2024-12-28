@@ -1,7 +1,6 @@
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.ProcessResult;
 
-namespace GameStore.Auth.Core.Interfaces;
+namespace GameStore.Auth.Core.User.Login;
 
 public interface ISignInManager
 {

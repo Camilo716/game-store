@@ -1,7 +1,7 @@
 using AutoMapper;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.ProcessResult;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.User;
 using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -94,10 +94,10 @@ public class UserManagerIdentityAdapter(
     {
         if (result.Succeeded)
         {
-            return Core.Dtos.Result.SuccessResult();
+            return Core.ProcessResult.Result.SuccessResult();
         }
 
         var errors = result.Errors.Select(e => e.Description);
-        return Core.Dtos.Result.FailureResult(errors);
+        return Core.ProcessResult.Result.FailureResult(errors);
     }
 }

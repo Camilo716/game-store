@@ -1,4 +1,4 @@
-namespace GameStore.Auth.Core.Dtos;
+namespace GameStore.Auth.Core.ProcessResult;
 
 public class Result
 {

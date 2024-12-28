@@ -1,5 +1,7 @@
 using AutoMapper;
-using GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Core.Privilege;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.UnitOfWork;
 using GameStore.Auth.Infraestructure.Repositories;
 
 namespace GameStore.Auth.Infraestructure.Data;

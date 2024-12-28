@@ -1,8 +1,6 @@
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.UnitOfWork;
 
-namespace GameStore.Auth.Core.Services;
+namespace GameStore.Auth.Core.Role;
 
 public class RoleService(IRoleManager roleManager, IUnitOfWork unitOfWork) : IRoleService
 {

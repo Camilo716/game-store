@@ -1,4 +1,7 @@
-namespace GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Core.Privilege;
+using GameStore.Auth.Core.Role;
+
+namespace GameStore.Auth.Core.UnitOfWork;
 
 public interface IUnitOfWork
 {

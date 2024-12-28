@@ -1,7 +1,8 @@
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.ProcessResult;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.User.Login;
 
-namespace GameStore.Auth.Core.Interfaces;
+namespace GameStore.Auth.Core.User;
 
 public interface IUserService
 {

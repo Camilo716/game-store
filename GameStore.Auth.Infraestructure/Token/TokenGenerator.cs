@@ -1,10 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Enums;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.Config;
+using GameStore.Auth.Core.UnitOfWork;
+using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Login;
 using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;

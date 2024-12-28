@@ -1,6 +1,4 @@
-using GameStore.Auth.Core.Models;
-
-namespace GameStore.Auth.Core.Dtos;
+namespace GameStore.Auth.Core.Role;
 
 public class CreateRoleRequest
 {
