@@ -1,12 +1,16 @@
 namespace GameStore.Core.Comment.Formatter;
 
-internal class SimpleCommentFormatter : ICommentFormatter
+public class SimpleCommentFormatter : ICommentFormatter
 {
     public CommentResponse Format(Comment comment)
     {
+        string formattedBody = comment.Deleted
+            ? Constants.DeletedCommentText
+            : comment.Body;
+
         return new CommentResponse(comment)
         {
-            FormattedBody = comment.Body,
+            FormattedBody = formattedBody,
         };
     }
 }

@@ -58,4 +58,40 @@ public class CommentFormatterTest
 
         Assert.Equal("[My Body], My Quote", formattedComment.FormattedBody);
     }
+
+    [Fact]
+    public void Format_GivenSimpleDeletedComment_ReturnsDefaultText()
+    {
+        Comment comment = new()
+        {
+            Body = "My Body",
+            Type = CommentType.Comment,
+            Deleted = true,
+        };
+        var formatter = new CommentFormatter();
+
+        CommentResponse formattedComment = formatter.Format(comment);
+
+        Assert.Equal("A comment/quote was deleted", formattedComment.FormattedBody);
+    }
+
+    [Fact]
+    public void Format_GivenQuoteDeletedComment_HidesDeletedQuote()
+    {
+        Comment comment = new()
+        {
+            Body = "My Quote",
+            Type = CommentType.Quote,
+            ParentComment = new Comment()
+            {
+                Body = "My Body",
+                Deleted = true,
+            },
+        };
+        var formatter = new CommentFormatter();
+
+        CommentResponse formattedComment = formatter.Format(comment);
+
+        Assert.Equal("[A comment/quote was deleted], My Quote", formattedComment.FormattedBody);
+    }
 }
