@@ -11,7 +11,9 @@ public class CommentIntegrationTest : BaseIntegrationTest
     public async Task Post_GivenValidComment_CreatesComment()
     {
         CommentRequest commentRequest = new(
-            Comment: new(Body: "Great Game"),
+            Comment: new(
+                UserName: "UserName",
+                Body: "Great Game"),
             ParentId: null);
 
         string gameKey = GameSeed.GearsOfWar.Key;

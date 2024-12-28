@@ -26,6 +26,7 @@ public class CommentRepositoryTests
         var unitOfWork = new UnitOfWork(dbContext);
         Comment validComment = new()
         {
+            UserName = "UserName",
             Body = "Body",
         };
 

@@ -46,8 +46,11 @@ public class Startup(IConfiguration configuration)
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        else
+        {
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+        }
 
-        app.UseMiddleware<ExceptionHandlerMiddleware>();
         app.UseMiddleware<TotalGamesCountMiddleware>();
 
         app.UseHttpsRedirection();

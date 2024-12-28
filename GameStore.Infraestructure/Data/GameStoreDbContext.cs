@@ -29,6 +29,11 @@ public class GameStoreDbContext(DbContextOptions options) : DbContext(options)
             .HasIndex(g => g.Name)
             .IsUnique();
 
+        modelBuilder.Entity<Comment>()
+            .Property(c => c.Body).IsRequired();
+        modelBuilder.Entity<Comment>()
+            .Property(c => c.UserName).IsRequired();
+
         GenreSeeder.SeedGenres(modelBuilder);
         PlatformSeeder.SeedPlatforms(modelBuilder);
     }

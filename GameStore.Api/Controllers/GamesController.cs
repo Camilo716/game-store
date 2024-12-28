@@ -84,6 +84,7 @@ public class GamesController(
     {
         Comment comment = new()
         {
+            UserName = commentRequest.Comment.UserName,
             Body = commentRequest.Comment.Body,
             ParentCommentId = commentRequest.ParentId ?? Guid.Empty,
         };

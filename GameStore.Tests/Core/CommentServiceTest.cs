@@ -23,6 +23,7 @@ public class CommentServiceTest
     [Fact]
     public async Task CreateComment_GivenValidGame_CreatesComment()
     {
+        // Arrange
         Mock<IUnitOfWork> unitOfWork = new();
         Game game = GameSeed.GearsOfWar;
         string gameKey = game.Key;
@@ -40,8 +41,10 @@ public class CommentServiceTest
 
         CommentService commentService = new(unitOfWork.Object);
 
+        // Act
         await commentService.CreateAsync(validComment, gameKey);
 
+        // Assert
         Assert.Equal(game.Id, createdComment.GameId);
     }
 
