@@ -37,6 +37,10 @@ public class GameStoreDbContext(DbContextOptions options) : DbContext(options)
             .Property(c => c.Body).IsRequired();
         modelBuilder.Entity<Comment>()
             .Property(c => c.UserName).IsRequired();
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.ParentComment)
+            .WithMany(c => c.ChildrenComments)
+            .HasForeignKey(c => c.ParentCommentId);
 
         GenreSeeder.SeedGenres(modelBuilder);
         PlatformSeeder.SeedPlatforms(modelBuilder);

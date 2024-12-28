@@ -1,4 +1,5 @@
 using GameStore.Core.Comment;
+using GameStore.Core.Comment.Formatter;
 using GameStore.Core.Game;
 using GameStore.Core.UnitOfWork;
 using GameStore.Tests.Seed;
@@ -12,7 +13,9 @@ public class CommentServiceTest
     public async Task GetByGameKey_GivenValidKey_ReturnsComments()
     {
         Mock<IUnitOfWork> unitOfWork = GetDummyUnitOfWorkMock();
-        var commentService = new CommentService(unitOfWork.Object);
+        Mock<ICommentFormatter> commentFormatter = GetDummyCommentFormatter();
+
+        var commentService = new CommentService(unitOfWork.Object, commentFormatter.Object);
         string gameKey = GameSeed.GearsOfWar.Key;
 
         var comments = await commentService.GetByGameKeyAsync(gameKey);
@@ -39,7 +42,7 @@ public class CommentServiceTest
         unitOfWork.Setup(m => m.CommentRepository.InsertAsync(It.IsAny<Comment>()))
             .Callback<Comment>(c => createdComment = c);
 
-        CommentService commentService = new(unitOfWork.Object);
+        CommentService commentService = new(unitOfWork.Object, GetDummyCommentFormatter().Object);
 
         // Act
         await commentService.CreateAsync(validComment, gameKey);
@@ -56,5 +59,16 @@ public class CommentServiceTest
             .ReturnsAsync([CommentSeed.PositiveComment]);
 
         return unitOfWork;
+    }
+
+    private static Mock<ICommentFormatter> GetDummyCommentFormatter()
+    {
+        Mock<ICommentFormatter> commentFormatter = new();
+
+        commentFormatter
+            .Setup(c => c.Format(It.IsAny<Comment>()))
+            .Returns((Comment comment) => new CommentResponse(comment));
+
+        return commentFormatter;
     }
 }

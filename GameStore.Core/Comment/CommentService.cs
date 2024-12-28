@@ -1,9 +1,11 @@
+using GameStore.Core.Comment.Formatter;
 using GameStore.Core.UnitOfWork;
 
 namespace GameStore.Core.Comment;
 
 public class CommentService(
-    IUnitOfWork unitOfWork)
+    IUnitOfWork unitOfWork,
+    ICommentFormatter commentFormatter)
     : ICommentService
 {
     public async Task CreateAsync(Comment comment, string gameKey)
@@ -14,8 +16,10 @@ public class CommentService(
         await unitOfWork.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<Comment>> GetByGameKeyAsync(string gameKey)
+    public async Task<IEnumerable<CommentResponse>> GetByGameKeyAsync(string gameKey)
     {
-        return unitOfWork.CommentRepository.GetByGameKeyAsync(gameKey);
+        var comments = await unitOfWork.CommentRepository.GetByGameKeyAsync(gameKey);
+
+        return comments.Select(commentFormatter.Format);
     }
 }
