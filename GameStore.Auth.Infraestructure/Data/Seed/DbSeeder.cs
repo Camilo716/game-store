@@ -55,6 +55,8 @@ public static class DbSeeder
                 GetRelationship(PrivilegeSeed.AddPublisher.Id, RoleSeed.Manager.Id),
                 GetRelationship(PrivilegeSeed.UpdatePublisher.Id, RoleSeed.Manager.Id),
                 GetRelationship(PrivilegeSeed.DeletePublisher.Id, RoleSeed.Manager.Id),
+                GetRelationship(PrivilegeSeed.DeleteComment.Id, RoleSeed.Manager.Id),
+                GetRelationship(PrivilegeSeed.BanUser.Id, RoleSeed.Manager.Id),
                 GetRelationship(PrivilegeSeed.ViewGames.Id, RoleSeed.Guest.Id));
     }
 

@@ -101,6 +101,7 @@ public class GamesController(
 
     [HttpDelete]
     [Route("comments/{id}")]
+    [Authorize(Policy = nameof(Permissions.DeleteComment))]
     public async Task<ActionResult<IEnumerable<Comment>>> DeleteComment([FromRoute] Guid id)
     {
         await commentService.DeleteAsync(id);

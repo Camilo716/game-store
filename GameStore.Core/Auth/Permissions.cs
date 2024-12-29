@@ -20,4 +20,6 @@ public enum Permissions
     AddPublisher,
     DeletePublisher,
     UpdatePublisher,
+
+    DeleteComment,
 }

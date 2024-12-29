@@ -59,6 +59,8 @@ public static class Dependences
             .AddPermissionPolicy(Permissions.UpdatePublisher)
             .AddPermissionPolicy(Permissions.DeletePublisher)
 
+            .AddPermissionPolicy(Permissions.DeleteComment)
+
             .AddPolicy($"{Policy.NotBanned}", policy =>
                 policy.Requirements.Add(new BannedUserRequirement()));
 

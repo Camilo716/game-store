@@ -57,6 +57,8 @@ public class TestAuthHandler(
         AddPermissionClaim(claims, Permissions.UpdatePublisher);
         AddPermissionClaim(claims, Permissions.DeletePublisher);
 
+        AddPermissionClaim(claims, Permissions.DeleteComment);
+
         claims.Add(new($"{Policy.NotBanned}", true.ToString()));
     }
 

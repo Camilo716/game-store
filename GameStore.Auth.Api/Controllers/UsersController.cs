@@ -80,6 +80,7 @@ public class UsersController(
 
     [HttpGet]
     [Route("ban/durations")]
+    [Authorize(Policy = nameof(Permissions.BanUser))]
     public async Task<IActionResult> GetUserBanDurations()
     {
         return await Task.Run(() =>
@@ -91,6 +92,7 @@ public class UsersController(
 
     [HttpPost]
     [Route("{userName}/ban")]
+    [Authorize(Policy = nameof(Permissions.BanUser))]
     public async Task<IActionResult> BanUser([FromRoute] string userName, [FromBody] UserBanDuration duration)
     {
         await userBanService.BanUserAsync(userName, duration);

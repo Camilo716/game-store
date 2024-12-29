@@ -31,4 +31,7 @@ public enum Permissions
     AddUser,
     DeleteUser,
     UpdateUser,
+    BanUser,
+
+    DeleteComment,
 }
