@@ -2,6 +2,7 @@ using AutoMapper;
 using GameStore.Auth.Core.Privilege;
 using GameStore.Auth.Core.Role;
 using GameStore.Auth.Core.UnitOfWork;
+using GameStore.Auth.Core.User;
 using GameStore.Auth.Infraestructure.Repositories;
 
 namespace GameStore.Auth.Infraestructure.Data;
@@ -12,12 +13,13 @@ public class UnitOfWork(
 {
     private IPrivilegeRepository _privilegeRepository;
     private IRoleRepository _roleRepository;
+    private IUserRepository _userRepository;
 
     public IPrivilegeRepository PrivilegeRepository
     {
         get
         {
-            _privilegeRepository ??= new PrivilegeRepository(DbContext, Mapper);
+            _privilegeRepository ??= new PrivilegeRepository(dbContext, mapper);
             return _privilegeRepository;
         }
     }
@@ -26,17 +28,22 @@ public class UnitOfWork(
     {
         get
         {
-            _roleRepository ??= new RoleRepository(DbContext, mapper);
+            _roleRepository ??= new RoleRepository(dbContext, mapper);
             return _roleRepository;
         }
     }
 
-    private GameStoreAuthDbContext DbContext => dbContext;
-
-    private IMapper Mapper => mapper;
+    public IUserRepository UserRepository
+    {
+        get
+        {
+            _userRepository ??= new UserRepository(dbContext);
+            return _userRepository;
+        }
+    }
 
     public async Task SaveChangesAsync()
     {
-        await DbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 }

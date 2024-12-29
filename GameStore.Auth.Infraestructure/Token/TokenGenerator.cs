@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using GameStore.Auth.Core.Config;
+using GameStore.Auth.Core.Date;
 using GameStore.Auth.Core.UnitOfWork;
 using GameStore.Auth.Core.User;
 using GameStore.Auth.Core.User.Login;
@@ -16,7 +17,8 @@ public class TokenGenerator(
     IConfiguration configuration,
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
-    IUnitOfWork unitOfWork) : ITokenGenerator
+    IUnitOfWork unitOfWork,
+    IDateTimeProvider dateTimeProvider) : ITokenGenerator
 {
     private string SecretKey => configuration["Jwt:SecretKey"]!;
 
@@ -31,6 +33,7 @@ public class TokenGenerator(
         ];
 
         await AddUserPermissionsClaimsAsync(userModel, claims);
+        claims.Add(new(nameof(Policy.NotBanned), (userModel.BanExpirationDate <= dateTimeProvider.Now()).ToString()));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -49,7 +52,7 @@ public class TokenGenerator(
 
         foreach (string permission in permissions)
         {
-            claims.Add(new(nameof(ClaimType.Permission), permission));
+            claims.Add(new(nameof(Policy.Permission), permission));
         }
     }
 

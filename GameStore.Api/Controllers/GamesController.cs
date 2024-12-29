@@ -81,7 +81,8 @@ public class GamesController(
 
     [HttpPost]
     [Route("{key}/comments")]
-    public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsByGameKey(
+    [Authorize(Policy = nameof(Policy.NotBanned))]
+    public async Task<ActionResult<IEnumerable<Comment>>> AddGameComment(
         [FromRoute] string key,
         [FromBody] CommentRequest commentRequest)
     {

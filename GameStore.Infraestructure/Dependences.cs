@@ -57,9 +57,13 @@ public static class Dependences
             .AddPermissionPolicy(Permissions.ViewPublishers)
             .AddPermissionPolicy(Permissions.AddPublisher)
             .AddPermissionPolicy(Permissions.UpdatePublisher)
-            .AddPermissionPolicy(Permissions.DeletePublisher);
+            .AddPermissionPolicy(Permissions.DeletePublisher)
+
+            .AddPolicy($"{Policy.NotBanned}", policy =>
+                policy.Requirements.Add(new BannedUserRequirement()));
 
         services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+        services.AddScoped<IAuthorizationHandler, BannedUserHandler>();
         services.AddScoped<ITokenValidator, TokenValidator>();
     }
 }

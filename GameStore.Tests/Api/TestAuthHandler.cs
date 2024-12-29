@@ -56,10 +56,12 @@ public class TestAuthHandler(
         AddPermissionClaim(claims, Permissions.AddPublisher);
         AddPermissionClaim(claims, Permissions.UpdatePublisher);
         AddPermissionClaim(claims, Permissions.DeletePublisher);
+
+        claims.Add(new($"{Policy.NotBanned}", true.ToString()));
     }
 
     private static void AddPermissionClaim(List<Claim> claim, Permissions permission)
     {
-        claim.Add(new($"{ClaimType.Permission}", $"{permission}"));
+        claim.Add(new($"{Policy.Permission}", $"{permission}"));
     }
 }

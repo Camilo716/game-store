@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Ban;
 using GameStore.Auth.Core.User.Login;
 using GameStore.Auth.Tests.Seed;
 
@@ -97,6 +98,18 @@ public class UserIntegrationTest : BaseIntegrationTest
     public async Task GetUserBanDurations_ReturnsSuccess()
     {
         var response = await HttpClient.GetAsync("api/users/ban/durations");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task BanUser_ReturnsSuccess()
+    {
+        string userName = UserSeed.UserManager.UserName;
+        UserBanDuration duration = new(Interval.Hours, 1, string.Empty);
+
+        var response = await HttpClient.PostAsJsonAsync($"api/users/{userName}/ban", duration);
 
         Assert.NotNull(response);
         response.EnsureSuccessStatusCode();

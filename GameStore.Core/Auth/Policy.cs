@@ -1,6 +1,7 @@
 namespace GameStore.Core.Auth;
 
-public enum ClaimType
+public enum Policy
 {
     Permission,
+    NotBanned,
 }

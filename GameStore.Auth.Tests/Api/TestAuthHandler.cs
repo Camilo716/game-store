@@ -51,6 +51,6 @@ public class TestAuthHandler(
 
     private static void AddPermissionClaim(List<Claim> claim, Permissions permission)
     {
-        claim.Add(new($"{ClaimType.Permission}", $"{permission}"));
+        claim.Add(new($"{Policy.Permission}", $"{permission}"));
     }
 }

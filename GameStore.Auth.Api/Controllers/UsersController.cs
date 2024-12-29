@@ -88,4 +88,12 @@ public class UsersController(
             return Ok(banDurations.Select(d => d.Description));
         });
     }
+
+    [HttpPost]
+    [Route("{userName}/ban")]
+    public async Task<IActionResult> BanUser([FromRoute] string userName, [FromBody] UserBanDuration duration)
+    {
+        await userBanService.BanUserAsync(userName, duration);
+        return Ok();
+    }
 }
