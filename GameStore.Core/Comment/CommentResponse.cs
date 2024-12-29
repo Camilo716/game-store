@@ -1,17 +1,27 @@
 namespace GameStore.Core.Comment;
 
-public class CommentResponse(
-    Comment comment)
+public class CommentResponse
 {
     public string FormattedBody { get; set; }
 
-    public Guid Id { get; set; } = comment.Id;
+    public Guid Id { get; set; }
 
-    public string UserName { get; set; } = comment.UserName;
+    public string UserName { get; set; }
 
-    public Guid? ParentCommentId { get; set; } = comment.ParentCommentId;
+    public Guid? ParentCommentId { get; set; }
 
-    public List<CommentResponse> ChildrenComments { get; set; } = comment.ChildrenComments
-        .Select(c => new CommentResponse(c))
-        .ToList();
+    public List<CommentResponse> ChildrenComments { get; set; }
+
+    public CommentResponse Map(Comment comment)
+    {
+        Id = comment.Id;
+        UserName = comment.UserName;
+        ParentCommentId = comment.ParentCommentId;
+
+        ChildrenComments = comment.ChildrenComments
+            .Select(c => new CommentResponse().Map(c))
+            .ToList();
+
+        return this;
+    }
 }

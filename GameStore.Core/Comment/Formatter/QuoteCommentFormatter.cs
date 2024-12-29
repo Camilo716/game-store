@@ -13,9 +13,8 @@ public class QuoteCommentFormatter(
         string quoteBody = simpleCommentFormatter.Format(comment.ParentComment).FormattedBody;
         string formattedBody = simpleCommentFormatter.Format(comment).FormattedBody;
 
-        return new CommentResponse(comment)
-        {
-            FormattedBody = $"[{quoteBody}], {formattedBody}",
-        };
+        var response = new CommentResponse().Map(comment);
+        response.FormattedBody = $"[{quoteBody}], {formattedBody}";
+        return response;
     }
 }

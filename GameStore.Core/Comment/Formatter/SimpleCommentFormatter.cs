@@ -8,9 +8,8 @@ public class SimpleCommentFormatter : ICommentFormatter
             ? Constants.DeletedCommentText
             : comment.Body;
 
-        return new CommentResponse(comment)
-        {
-            FormattedBody = formattedBody,
-        };
+        var response = new CommentResponse().Map(comment);
+        response.FormattedBody = formattedBody;
+        return response;
     }
 }

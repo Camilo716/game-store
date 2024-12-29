@@ -67,7 +67,7 @@ public class CommentServiceTest
 
         commentFormatter
             .Setup(c => c.Format(It.IsAny<Comment>()))
-            .Returns((Comment comment) => new CommentResponse(comment));
+            .Returns((Comment comment) => new CommentResponse().Map(comment));
 
         return commentFormatter;
     }

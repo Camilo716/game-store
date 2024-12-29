@@ -13,9 +13,8 @@ internal class ReplyCommentFormatter(
 
         string formattedBody = simpleCommentFormatter.Format(comment).FormattedBody;
 
-        return new CommentResponse(comment)
-        {
-            FormattedBody = $"[{comment.ParentComment.UserName}], {formattedBody}",
-        };
+        var response = new CommentResponse().Map(comment);
+        response.FormattedBody = $"[{comment.ParentComment.UserName}], {formattedBody}";
+        return response;
     }
 }
