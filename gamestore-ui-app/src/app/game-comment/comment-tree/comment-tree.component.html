@@ -1,5 +1,5 @@
-<mat-card style="padding: 20px; margin: 30px;" class="min-w-96">
-  <div *ngFor="let comment of comments">
+<div *ngFor="let comment of comments" class="min-w-96">
+  <mat-card  class="p-5 m-10">
     <div class="flex justify-between">
       <p><span class="font-medium">{{ comment.userName }}</span>: <span class="text-gray-800">{{ comment.formattedBody }}</span></p>
 
@@ -24,9 +24,9 @@
       </ng-container>
     </div>
 
-    <!-- Recursive rendering of children comments -->
+  <!-- Recursive rendering of children comments -->
     <div *ngIf="comment.childrenComments?.length">
       <app-comment-tree [comments]="comment.childrenComments"></app-comment-tree>
     </div>
-  </div>
-</mat-card>
+  </mat-card>
+</div>

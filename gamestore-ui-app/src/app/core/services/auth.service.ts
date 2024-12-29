@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ConfigService } from './config.service';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -41,5 +42,18 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('authToken');
     this.tokenSubject.next(null);
+  }
+
+  getDecodedToken(): any | null {
+    const token = this.tokenSubject.value;
+    if (token) {
+      return jwtDecode<JwtPayload & { [key: string]: any }>(token);
+    }
+    return null;
+  }
+
+  getUsername(): string | null {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken ? decodedToken['nameid'] : null;
   }
 }
