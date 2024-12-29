@@ -27,7 +27,7 @@
       <app-comment-tree
         [comments]="comments"
         [game]="game"
-        [reload]="loadComments">
+        [reload]="loadComments.bind(this)">
       </app-comment-tree>
     </div>
   </mat-card>

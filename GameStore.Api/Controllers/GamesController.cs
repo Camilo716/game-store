@@ -90,6 +90,7 @@ public class GamesController(
         {
             UserName = commentRequest.Comment.UserName,
             Body = commentRequest.Comment.Body,
+            Type = commentRequest.Comment.Type,
             ParentCommentId = commentRequest.ParentId,
         };
 

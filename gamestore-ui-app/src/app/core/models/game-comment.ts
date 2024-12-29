@@ -9,7 +9,7 @@ export interface GameComment {
 }
 
 export enum CommentType {
-  Comment,
-  Reply,
-  Quote,
+  Comment = 0,
+  Reply = 1,
+  Quote = 2,
 }

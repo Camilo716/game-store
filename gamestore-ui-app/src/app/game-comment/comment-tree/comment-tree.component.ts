@@ -23,10 +23,24 @@ export class CommentTreeComponent {
   readonly formDialog = inject(MatDialog);
 
   quoteComment(comment: GameComment) {
+    comment.type = CommentType.Quote;
+    this.comment(comment);
+  }
+
+  replyToComment(comment: GameComment) {
+    comment.type = CommentType.Reply;
+    this.comment(comment);
+  }
+
+  banUser(comment: GameComment) {
+    console.log('Ban user:', comment);
+  }
+
+  private comment(comment: GameComment) {
     const dialogRef = this.formDialog.open(CommentFormComponent, {
       data: {
         comment: {
-          type: CommentType.Quote,
+          type: comment.type,
           parentCommentId: comment.id,
         },
         gameKey: this.game?.key,
@@ -34,15 +48,8 @@ export class CommentTreeComponent {
     });
 
     dialogRef.afterClosed().subscribe(() => {
+      console.log(this.reload);
       this.reload();
     });
-  }
-
-  replyToComment(comment: GameComment) {
-    console.log('Reply to:', comment);
-  }
-
-  banUser(comment: GameComment) {
-    console.log('Ban user:', comment);
   }
 }

@@ -72,6 +72,8 @@ export class CommentFormComponent implements OnInit {
       ...this.form.value,
     };
 
+    console.log(comment);
+
     this.commentService
       .addComment(comment, this.gameKey)
       .subscribe(() => this.dialogRef.close());

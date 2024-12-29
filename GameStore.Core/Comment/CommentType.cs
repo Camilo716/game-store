@@ -2,7 +2,7 @@ namespace GameStore.Core.Comment;
 
 public enum CommentType
 {
-    Comment,
-    Reply,
-    Quote,
+    Comment = 0,
+    Reply = 1,
+    Quote = 2,
 }
