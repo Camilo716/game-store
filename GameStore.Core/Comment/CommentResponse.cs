@@ -3,7 +3,13 @@ namespace GameStore.Core.Comment;
 public class CommentResponse(
     Comment comment)
 {
+    public string FormattedBody { get; set; }
+
     public Guid Id { get; set; } = comment.Id;
 
-    public string FormattedBody { get; set; }
+    public string UserName { get; set; } = comment.UserName;
+
+    public Guid? ParentCommentId { get; set; } = comment.ParentCommentId;
+
+    public List<Comment> ChildrenComments { get; set; } = comment.ChildrenComments;
 }

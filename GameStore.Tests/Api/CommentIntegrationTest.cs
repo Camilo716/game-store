@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using GameStore.Api.Dtos.CommentDtos;
+using GameStore.Core.Comment;
 using GameStore.Tests.Seed;
 
 namespace GameStore.Tests.Api;
@@ -13,7 +14,8 @@ public class CommentIntegrationTest : BaseIntegrationTest
         CommentRequest commentRequest = new(
             Comment: new(
                 UserName: "UserName",
-                Body: "Great Game"),
+                Body: "Great Game",
+                CommentType.Comment),
             ParentId: null);
 
         string gameKey = GameSeed.GearsOfWar.Key;

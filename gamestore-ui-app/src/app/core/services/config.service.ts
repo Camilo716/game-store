@@ -78,6 +78,14 @@ export class ConfigService {
     return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${key}/${this.config.platformsApiUrl}`;
   }
 
+  getCommentsByGameKeyApiUrl(key: string): string {
+    return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${key}/${this.config.commentsApiUrl}`;
+  }
+
+  addCommentApiUrl(gameKey: string): string {
+    return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${gameKey}/${this.config.commentsApiUrl}`;
+  }
+
   deletePlatformApiUrl(id: string) {
     return `${this.config.baseApiUrl}${this.config.platformsApiUrl}/${id}`;
   }

@@ -1,0 +1,14 @@
+<div *ngFor="let comment of comments" class="comment">
+  <div class="comment-body">
+    <p><strong>{{ comment.userName }}</strong>: {{ comment.body }}</p>
+    <div class="actions">
+      <button (click)="quoteComment(comment)">Quote</button>
+      <button (click)="replyToComment(comment)">Reply</button>
+      <button (click)="banUser(comment)">Ban</button>
+    </div>
+  </div>
+  <!-- Recursive rendering of children comments -->
+  <div class="replies" *ngIf="comment.childrenComments?.length">
+    <app-comment-tree [comments]="comment.childrenComments"></app-comment-tree>
+  </div>
+</div>

@@ -37,12 +37,14 @@ export const HttpMessageInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => error);
       }
 
-      const authError = error.status === 401 && error.status < 403;
+      const authError = error.status >= 401 && error.status <= 403;
       if (authError) {
         showMessage("You don't have permissions to perform this action.");
       }
 
-      const serverError = error.status >= 500 && error.status < 600;
+      console.log(error);
+      const serverError =
+        (error.status >= 500 && error.status < 600) || error.status === 0;
       if (serverError) {
         showMessage('An error occurred. Please try again.');
       }

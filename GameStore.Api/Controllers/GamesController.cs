@@ -90,7 +90,7 @@ public class GamesController(
         {
             UserName = commentRequest.Comment.UserName,
             Body = commentRequest.Comment.Body,
-            ParentCommentId = commentRequest.ParentId ?? Guid.Empty,
+            ParentCommentId = commentRequest.ParentId,
         };
 
         await commentService.CreateAsync(comment, key);
@@ -100,7 +100,7 @@ public class GamesController(
 
     [HttpDelete]
     [Route("comments/{id}")]
-    public async Task<ActionResult<IEnumerable<Comment>>> GetCommentsByGameKey([FromRoute] Guid id)
+    public async Task<ActionResult<IEnumerable<Comment>>> DeleteComment([FromRoute] Guid id)
     {
         await commentService.DeleteAsync(id);
         return NoContent();
