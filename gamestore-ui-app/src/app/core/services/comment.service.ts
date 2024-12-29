@@ -28,4 +28,8 @@ export class CommentService {
 
     return this.http.post(this.config.addCommentApiUrl(gameKey), request);
   }
+
+  deleteComment(id: string): Observable<any> {
+    return this.http.delete(this.config.deleteCommentApiUrl(id));
+  }
 }

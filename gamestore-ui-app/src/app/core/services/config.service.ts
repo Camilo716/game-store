@@ -86,6 +86,10 @@ export class ConfigService {
     return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${gameKey}/${this.config.commentsApiUrl}`;
   }
 
+  deleteCommentApiUrl(id: string) {
+    return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${this.config.commentsApiUrl}/${id}`;
+  }
+
   deletePlatformApiUrl(id: string) {
     return `${this.config.baseApiUrl}${this.config.platformsApiUrl}/${id}`;
   }

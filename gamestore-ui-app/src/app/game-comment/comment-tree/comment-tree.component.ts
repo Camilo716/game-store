@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CommentFormComponent } from '../comment-form/comment-form.component';
 import { Game } from '../../core/models/game';
 import { BanFormComponent } from '../../admin/user/ban-form/ban-form.component';
+import { CommentService } from '../../core/services/comment.service';
 
 @Component({
   selector: 'app-comment-tree',
@@ -23,6 +24,8 @@ export class CommentTreeComponent {
 
   readonly formDialog = inject(MatDialog);
 
+  constructor(private commentService: CommentService) {}
+
   quoteComment(comment: GameComment) {
     comment.type = CommentType.Quote;
     this.comment(comment);
@@ -31,6 +34,12 @@ export class CommentTreeComponent {
   replyToComment(comment: GameComment) {
     comment.type = CommentType.Reply;
     this.comment(comment);
+  }
+
+  deleteComment(comment: GameComment) {
+    this.commentService
+      .deleteComment(comment.id)
+      .subscribe(() => this.reload());
   }
 
   banUser(comment: GameComment) {
