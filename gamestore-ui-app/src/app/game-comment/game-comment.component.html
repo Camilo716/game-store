@@ -1,6 +1,6 @@
 <div class="min-w-full">
-  <mat-card style="padding: 20px; margin: 30px">
-    <mat-card-header style="padding: 20px">
+  <mat-card>
+    <mat-card-header>
       <mat-card-title-group>
         <mat-card-title class="text-gray-600">{{ title }}</mat-card-title>
       </mat-card-title-group>
@@ -24,7 +24,11 @@
       </div>
     </mat-card-header>
     <div style="min-width: 80vh; max-height: 60vh;" class="max-h-lvh overflow-scroll">
-      <app-comment-tree [comments]="comments"></app-comment-tree>
+      <app-comment-tree
+        [comments]="comments"
+        [game]="game"
+        [reload]="loadComments">
+      </app-comment-tree>
     </div>
   </mat-card>
 </div>

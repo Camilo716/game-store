@@ -42,7 +42,6 @@ export const HttpMessageInterceptor: HttpInterceptorFn = (req, next) => {
         showMessage("You don't have permissions to perform this action.");
       }
 
-      console.log(error);
       const serverError =
         (error.status >= 500 && error.status < 600) || error.status === 0;
       if (serverError) {

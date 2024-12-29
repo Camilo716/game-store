@@ -4,7 +4,7 @@ export interface GameComment {
   body: string;
   formattedBody: string;
   type: CommentType;
-  parentId: string;
+  parentCommentId: string;
   childrenComments: GameComment[];
 }
 

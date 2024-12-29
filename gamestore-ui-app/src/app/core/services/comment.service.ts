@@ -23,7 +23,7 @@ export class CommentService {
     comment.userName = this.auth.getUsername() || '';
     let request = {
       comment: comment,
-      parentId: comment.parentId,
+      parentId: comment.parentCommentId,
     };
 
     return this.http.post(this.config.addCommentApiUrl(gameKey), request);

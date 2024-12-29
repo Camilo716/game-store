@@ -36,7 +36,9 @@ export class GameCommentComponent implements OnInit {
   constructor(private commentService: CommentService) {
     this.game = this.gameFormData.game;
   }
+
   ngOnInit(): void {
+    this.game = this.gameFormData.game;
     this.loadComments();
   }
 

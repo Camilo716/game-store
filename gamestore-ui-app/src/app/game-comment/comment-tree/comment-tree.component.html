@@ -1,6 +1,6 @@
-<div *ngFor="let comment of comments" class="min-w-96">
-  <mat-card  class="p-5 m-10">
-    <div class="flex justify-between">
+<div *ngFor="let comment of comments" class="min-w-96 p-2">
+  <mat-card  class="pl-7 pb-2 pt-2 m-5">
+    <div class="">
       <p><span class="font-medium">{{ comment.userName }}</span>: <span class="text-gray-800">{{ comment.formattedBody }}</span></p>
 
       <ng-container matColumnDef="actions" stickyEnd width="5%">
@@ -9,15 +9,15 @@
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="replyToComment(comment)">
-            <mat-icon>edit</mat-icon>
+            <mat-icon>reply</mat-icon>
             <span>Reply</span>
           </button>
           <button mat-menu-item (click)="quoteComment(comment)">
-            <mat-icon>delete</mat-icon>
+            <mat-icon>format_quote</mat-icon>
             <span>Quote</span>
           </button>
           <button mat-menu-item (click)="banUser(comment)">
-            <mat-icon>delete</mat-icon>
+            <mat-icon>block</mat-icon>
             <span>Ban</span>
           </button>
         </mat-menu>
@@ -26,7 +26,10 @@
 
   <!-- Recursive rendering of children comments -->
     <div *ngIf="comment.childrenComments?.length">
-      <app-comment-tree [comments]="comment.childrenComments"></app-comment-tree>
+      <app-comment-tree
+        [comments]="comment.childrenComments"
+        [game]="game"
+        [reload]="reload"></app-comment-tree>
     </div>
   </mat-card>
 </div>
