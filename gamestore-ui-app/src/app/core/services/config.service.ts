@@ -162,6 +162,14 @@ export class ConfigService {
     return `${this.config.baseApiAuth}${this.config.usersApiUrl}`;
   }
 
+  banUserApiUrl(userName: string): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}/${userName}/ban`;
+  }
+
+  getUserBanDurationsApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}/ban/durations`;
+  }
+
   deleteUserApiUrl(id: string): string {
     return `${this.config.baseApiAuth}${this.config.usersApiUrl}/${id}`;
   }

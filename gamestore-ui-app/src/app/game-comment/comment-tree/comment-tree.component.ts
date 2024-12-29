@@ -7,6 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { CommentFormComponent } from '../comment-form/comment-form.component';
 import { Game } from '../../core/models/game';
+import { BanFormComponent } from '../../admin/user/ban-form/ban-form.component';
 
 @Component({
   selector: 'app-comment-tree',
@@ -33,7 +34,15 @@ export class CommentTreeComponent {
   }
 
   banUser(comment: GameComment) {
-    console.log('Ban user:', comment);
+    const dialogRef = this.formDialog.open(BanFormComponent, {
+      data: {
+        user: { username: comment.userName },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.reload();
+    });
   }
 
   private comment(comment: GameComment) {
@@ -48,7 +57,6 @@ export class CommentTreeComponent {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      console.log(this.reload);
       this.reload();
     });
   }

@@ -85,7 +85,7 @@ public class UsersController(
         return await Task.Run(() =>
         {
             var banDurations = userBanService.GetUserBanDurations();
-            return Ok(banDurations.Select(d => d.Description));
+            return Ok(banDurations);
         });
     }
 

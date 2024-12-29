@@ -1,0 +1,31 @@
+<ng-container [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field class="p-3 w-full">
+      <mat-label>Duration</mat-label>
+      <mat-select formControlName="description">
+        <mat-option></mat-option>
+        <mat-option
+          *ngFor="let duration of banDurations"
+          [value]="duration.description"
+        >
+          {{ duration.description }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="flex justify-end gap-1">
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onConfirm()"
+    >
+      Confirm
+    </button>
+  </mat-dialog-actions>
+</ng-container>
