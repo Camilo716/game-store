@@ -11,5 +11,7 @@ public class CommentResponse(
 
     public Guid? ParentCommentId { get; set; } = comment.ParentCommentId;
 
-    public List<Comment> ChildrenComments { get; set; } = comment.ChildrenComments;
+    public List<CommentResponse> ChildrenComments { get; set; } = comment.ChildrenComments
+        .Select(c => new CommentResponse(c))
+        .ToList();
 }

@@ -28,4 +28,11 @@ public class CommentService(
         await unitOfWork.CommentRepository.SoftDeleteAsync(id);
         await unitOfWork.SaveChangesAsync();
     }
+
+    /*     public async IEnumerable<CommentResponse> FormatCommentTree(IEnumerable<CommentResponse> comments)
+        {
+            var formattedComments = Enumerable.Empty<CommentResponse>();
+
+            foreach(Comment)
+        } */
 }
