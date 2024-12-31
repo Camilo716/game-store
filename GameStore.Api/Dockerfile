@@ -17,4 +17,4 @@ WORKDIR /work/GameStore.Api/
 RUN mkdir /out/
 RUN dotnet publish GameStore.Api.csproj --no-restore --output /out/ --configuration Release
 
-ENTRYPOINT ["dotnet", "watch", "run" ]
+ENTRYPOINT ["dotnet", "watch", "run", "--non-interactive" ]

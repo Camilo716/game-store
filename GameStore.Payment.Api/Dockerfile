@@ -7,14 +7,14 @@ RUN curl -sSL https://aka.ms/getvsdbgsh | /bin/sh /dev/stdin -v latest -l ~/vsdb
 
 RUN mkdir /work/
 WORKDIR /work/
-EXPOSE 5114
+EXPOSE 5242
 
 COPY . .
 
 RUN dotnet restore
 
-WORKDIR /work/GameStore.Auth.Api/
+WORKDIR /work/GameStore.Payment.Api/
 RUN mkdir /out/
-RUN dotnet publish GameStore.Auth.Api.csproj --no-restore --output /out/ --configuration Release
+RUN dotnet publish GameStore.Payment.Api.csproj --no-restore --output /out/ --configuration Release
 
 ENTRYPOINT ["dotnet", "watch", "run", "--non-interactive" ]

@@ -43,6 +43,26 @@ services:
     networks:
       - gamestorenetwork
 
+  gamestorepaymentapi:
+    image: gamestorepaymentapi
+    build:
+      context: .
+      dockerfile: GameStore.Payment.Api/Dockerfile
+      target: development
+      args:
+        - configuration=Debug
+    ports:
+      - 5242:5242
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=sqlserver;Database=GameStorePayment;User Id=SA;Password="Mysecretpassword*";TrustServerCertificate=True;
+    volumes:
+      - ./:/work/
+    networks:
+      - gamestorenetwork
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:latest
     environment:
