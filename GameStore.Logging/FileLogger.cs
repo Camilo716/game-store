@@ -46,6 +46,12 @@ public class FileLogger(string path) : ILogger
             }
 
             string log = $"{logLevel}: {DateTime.Now} {formatter(state, exception)}{n}{exc}{n}";
+
+            if (!File.Exists(fullFilePath))
+            {
+                File.Create(fullFilePath);
+            }
+
             File.AppendAllText(fullFilePath, log);
         }
     }

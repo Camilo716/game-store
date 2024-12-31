@@ -3,6 +3,7 @@ using GameStore.Core.Auth;
 using GameStore.Infraestructure.Auth;
 using GameStore.Infraestructure.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -67,5 +68,11 @@ public static class Dependences
         services.AddScoped<IAuthorizationHandler, PermissionHandler>();
         services.AddScoped<IAuthorizationHandler, BannedUserHandler>();
         services.AddScoped<ITokenValidator, TokenValidator>();
+    }
+
+    public static void InitializeDatabase(IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+        scope.ServiceProvider.GetRequiredService<GameStoreDbContext>().Database.Migrate();
     }
 }

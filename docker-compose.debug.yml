@@ -1,0 +1,42 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
+
+version: '3.4'
+
+services:
+  gamestoreapi:
+    image: gamestoreapi
+    build:
+      context: .
+      dockerfile: GameStore.Api/Dockerfile
+      target: debug
+      args:
+        - configuration=Debug
+    ports:
+      - 5080:5080
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=sqlserver;Database=cashop;User Id=SA;Password="Mysecretpassword*";TrustServerCertificate=True;
+    volumes:
+      - ./:/work/
+    networks:
+      - gamestorenetwork
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      MSSQL_SA_PASSWORD: "Mysecretpassword*"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
+    volumes:
+      - sqldata:/var/opt/mssql
+    networks:
+      - gamestorenetwork
+
+networks:
+  gamestorenetwork:
+
+volumes:
+  sqldata:

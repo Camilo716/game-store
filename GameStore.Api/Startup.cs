@@ -51,6 +51,7 @@ public class Startup(IConfiguration configuration)
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            Infraestructure.Dependences.InitializeDatabase(app);
         }
         else
         {
