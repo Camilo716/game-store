@@ -12,12 +12,13 @@ public static class Dependences
     {
         services.AddDbContext<GameStorePaymentDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
+
+        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
     }
 
     public static void InitializeDatabase(IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-        using var context = scope.ServiceProvider.GetRequiredService<GameStorePaymentDbContext>();
-        context.Database.Migrate();
+        scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>().Initialize();
     }
 }

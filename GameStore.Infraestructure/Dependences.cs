@@ -19,6 +19,8 @@ public static class Dependences
         services.AddDbContext<GameStoreDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
 
+        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
+
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
@@ -73,6 +75,6 @@ public static class Dependences
     public static void InitializeDatabase(IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-        scope.ServiceProvider.GetRequiredService<GameStoreDbContext>().Database.Migrate();
+        scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>().Initialize();
     }
 }

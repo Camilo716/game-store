@@ -36,6 +36,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         builder.ConfigureServices(services =>
         {
             RemoveDbContextServiceRegistration(services);
+            ConfigureDbInitializer(services);
 
             services.AddDbContextPool<GameStorePaymentDbContext>(options =>
             {
@@ -46,6 +47,16 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             RemoveHttpClientServiceRegistration(services);
             services.AddHttpClient<IGameServiceClient, MockGameServiceClient>();
         });
+    }
+
+    private static void ConfigureDbInitializer(IServiceCollection services)
+    {
+        var dbInitializerDescriptor = services.SingleOrDefault(
+            d => d.ServiceType == typeof(IDatabaseInitializer))
+            ?? throw new InvalidOperationException();
+
+        services.Remove(dbInitializerDescriptor);
+        services.AddSingleton<IDatabaseInitializer, DummyDatabaseInitializer>();
     }
 
     private static void RemoveDbContextServiceRegistration(IServiceCollection services)

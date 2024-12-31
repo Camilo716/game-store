@@ -27,6 +27,8 @@ public static class Dependences
             opt.UseSqlServer(configuration.GetConnectionString("Default"))
             .EnableSensitiveDataLogging());
 
+        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
+
         services.AddSingleton(_ => TimeProvider.System);
 
         services.AddAuthentication(opt =>
@@ -82,6 +84,6 @@ public static class Dependences
     public static void InitializeDatabase(IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-        scope.ServiceProvider.GetRequiredService<GameStoreAuthDbContext>().Database.Migrate();
+        scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>().Initialize();
     }
 }
