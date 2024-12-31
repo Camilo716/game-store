@@ -35,6 +35,19 @@ services:
     networks:
       - gamestorenetwork
 
+  angularapp:
+    build:
+      context: .
+      dockerfile: gamestore-ui-app/Dockerfile
+    ports:
+      - 4200:4200
+    volumes:
+      - ./gamestore-ui-app:/angular-app/
+    networks:
+      - gamestorenetwork
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
 networks:
   gamestorenetwork:
 
