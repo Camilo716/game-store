@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS debug
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS development
 
 #install debugger for NET Core
 # RUN apt update

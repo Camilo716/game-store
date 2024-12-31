@@ -8,7 +8,7 @@ services:
     build:
       context: .
       dockerfile: GameStore.Api/Dockerfile
-      target: debug
+      target: development
       args:
         - configuration=Debug
     ports:
@@ -17,7 +17,27 @@ services:
       - sqlserver
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__Default=Server=sqlserver;Database=cashop;User Id=SA;Password="Mysecretpassword*";TrustServerCertificate=True;
+      - ConnectionStrings__Default=Server=sqlserver;Database=GameStore;User Id=SA;Password="Mysecretpassword*";TrustServerCertificate=True;
+    volumes:
+      - ./:/work/
+    networks:
+      - gamestorenetwork
+
+  gamestoreauthapi:
+    image: gamestoreauthapi
+    build:
+      context: .
+      dockerfile: GameStore.Auth.Api/Dockerfile
+      target: development
+      args:
+        - configuration=Debug
+    ports:
+      - 5114:5114
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=sqlserver;Database=GameStoreAuth;User Id=SA;Password="Mysecretpassword*";TrustServerCertificate=True;
     volumes:
       - ./:/work/
     networks:
@@ -38,6 +58,7 @@ services:
   angularapp:
     build:
       context: .
+      target: development
       dockerfile: gamestore-ui-app/Dockerfile
     ports:
       - 4200:4200
