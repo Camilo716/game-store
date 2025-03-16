@@ -1,0 +1,34 @@
+<div class="min-w-full">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title class="text-gray-600">{{ title }}</mat-card-title>
+      </mat-card-title-group>
+      <div class="flex justify-between gap-3">
+        <button
+          mat-raised-button
+          class="bg-gray-500 hover:bg-gray-800 table-action-button text-white rounded-md"
+          (click)="loadComments()"
+          matTooltip="Refresh"
+        >
+          <mat-icon>autorenew</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          class="bg-indigo-500 hover:bg-indigo-800 table-action-button text-white rounded-md"
+          (click)="openAddCommentDialog()"
+          matTooltip="Add"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <div style="min-width: 80vh; max-height: 60vh;" class="max-h-lvh overflow-scroll">
+      <app-comment-tree
+        [comments]="comments"
+        [game]="game"
+        [reload]="loadComments.bind(this)">
+      </app-comment-tree>
+    </div>
+  </mat-card>
+</div>

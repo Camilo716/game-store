@@ -507,6 +507,7 @@ Cover application code with by Unit tests with coverage not lower than 50%.
 
 
 ## General requirements
+Please use the following Angular Front-end: [gamestore-ui-app](gamestore-ui-app)
 
 System should support the following features: 
 * Inbound requests logging.  

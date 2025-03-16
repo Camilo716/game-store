@@ -9,9 +9,14 @@ public class TotalGamesCountMiddleware(RequestDelegate next)
 
     public async Task InvokeAsync(HttpContext context, GameStoreDbContext dbContext)
     {
-        int totalGamesCount = await dbContext.Games.CountAsync();
-
-        context.Response.Headers.Append("x-total-numbers-of-games", totalGamesCount.ToString());
+        try
+        {
+            int totalGamesCount = await dbContext.Games.CountAsync();
+            context.Response.Headers.Append("x-total-numbers-of-games", totalGamesCount.ToString());
+        }
+        catch (Exception)
+        {
+        }
 
         await Next(context);
     }

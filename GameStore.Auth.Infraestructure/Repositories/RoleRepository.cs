@@ -1,6 +1,5 @@
 using AutoMapper;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Core.Role;
 using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.EntityFrameworkCore;

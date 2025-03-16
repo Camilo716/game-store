@@ -1,5 +1,4 @@
-using GameStore.Core.Interfaces;
-using GameStore.Core.Models;
+using GameStore.Core.Publisher;
 using GameStore.Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 

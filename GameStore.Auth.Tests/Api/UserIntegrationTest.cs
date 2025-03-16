@@ -1,7 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Ban;
+using GameStore.Auth.Core.User.Login;
 using GameStore.Auth.Tests.Seed;
 
 namespace GameStore.Auth.Tests.Api;
@@ -91,6 +92,27 @@ public class UserIntegrationTest : BaseIntegrationTest
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         Assert.Equal(UserSeed.GetUsers().Count - 1, DbContext.Users.Count());
+    }
+
+    [Fact]
+    public async Task GetUserBanDurations_ReturnsSuccess()
+    {
+        var response = await HttpClient.GetAsync("api/users/ban/durations");
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
+    }
+
+    [Fact]
+    public async Task BanUser_ReturnsSuccess()
+    {
+        string userName = UserSeed.UserManager.UserName;
+        UserBanDuration duration = new(Interval.Hours, 1, string.Empty);
+
+        var response = await HttpClient.PostAsJsonAsync($"api/users/{userName}/ban", duration);
+
+        Assert.NotNull(response);
+        response.EnsureSuccessStatusCode();
     }
 
     private static void EnsureSuccessStatusCode(HttpResponseMessage response)

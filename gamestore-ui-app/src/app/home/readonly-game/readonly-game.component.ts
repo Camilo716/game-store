@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { GameService } from '../../core/services/game.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { GameCommentComponent } from '../../game-comment/game-comment.component';
 
 @Component({
   selector: 'app-readonly-game',
@@ -41,6 +43,8 @@ export class ReadonlyGameComponent implements OnInit {
 
   displayedColumns: string[] = [];
 
+  readonly commentDialog = inject(MatDialog);
+
   constructor(private gameService: GameService, private router: Router) {}
 
   ngOnInit(): void {
@@ -57,6 +61,18 @@ export class ReadonlyGameComponent implements OnInit {
   addToCart(gameKey: string): void {
     this.gameService.addToCart(gameKey).subscribe(() => {
       this.router.navigate(['/cart']);
+    });
+  }
+
+  openCommentsDialog(game: Game): void {
+    const dialogRef = this.commentDialog.open(GameCommentComponent, {
+      data: {
+        game,
+        isEdit: true,
+      },
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadGames();
     });
   }
 

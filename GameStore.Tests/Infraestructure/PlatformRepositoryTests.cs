@@ -1,4 +1,4 @@
-using GameStore.Core.Models;
+using GameStore.Core.Platform;
 using GameStore.Infraestructure.Data;
 using GameStore.Infraestructure.Repositories;
 using GameStore.Tests.Seed;

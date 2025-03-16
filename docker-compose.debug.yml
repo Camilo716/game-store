@@ -1,0 +1,96 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP.NET Core service.
+
+version: '3.4'
+
+services:
+  gamestoreapi:
+    image: gamestoreapi
+    build:
+      context: .
+      dockerfile: GameStore.Api/Dockerfile
+      target: development
+      args:
+        - configuration=Debug
+    ports:
+      - 5080:5080
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=sqlserver;Database=GameStore;User Id=SA;Password="Mysecretpassword*";TrustServerCertificate=True;
+    volumes:
+      - ./:/work/
+    networks:
+      - gamestorenetwork
+
+  gamestoreauthapi:
+    image: gamestoreauthapi
+    build:
+      context: .
+      dockerfile: GameStore.Auth.Api/Dockerfile
+      target: development
+      args:
+        - configuration=Debug
+    ports:
+      - 5114:5114
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=sqlserver;Database=GameStoreAuth;User Id=SA;Password="Mysecretpassword*";TrustServerCertificate=True;
+    volumes:
+      - ./:/work/
+    networks:
+      - gamestorenetwork
+
+  gamestorepaymentapi:
+    image: gamestorepaymentapi
+    build:
+      context: .
+      dockerfile: GameStore.Payment.Api/Dockerfile
+      target: development
+      args:
+        - configuration=Debug
+    ports:
+      - 5242:5242
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Server=sqlserver;Database=GameStorePayment;User Id=SA;Password="Mysecretpassword*";TrustServerCertificate=True;
+    volumes:
+      - ./:/work/
+    networks:
+      - gamestorenetwork
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      MSSQL_SA_PASSWORD: "Mysecretpassword*"
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
+    volumes:
+      - sqldata:/var/opt/mssql
+    networks:
+      - gamestorenetwork
+
+  angularapp:
+    build:
+      context: .
+      target: development
+      dockerfile: gamestore-ui-app/Dockerfile
+    ports:
+      - 4200:4200
+    volumes:
+      - ./gamestore-ui-app:/angular-app/
+    networks:
+      - gamestorenetwork
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+networks:
+  gamestorenetwork:
+
+volumes:
+  sqldata:

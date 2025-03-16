@@ -1,4 +1,4 @@
-using GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Core.Token;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GameStore.Auth.Infraestructure.Handlers;

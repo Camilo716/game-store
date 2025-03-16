@@ -78,6 +78,18 @@ export class ConfigService {
     return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${key}/${this.config.platformsApiUrl}`;
   }
 
+  getCommentsByGameKeyApiUrl(key: string): string {
+    return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${key}/${this.config.commentsApiUrl}`;
+  }
+
+  addCommentApiUrl(gameKey: string): string {
+    return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${gameKey}/${this.config.commentsApiUrl}`;
+  }
+
+  deleteCommentApiUrl(id: string) {
+    return `${this.config.baseApiUrl}${this.config.gamesApiUrl}/${this.config.commentsApiUrl}/${id}`;
+  }
+
   deletePlatformApiUrl(id: string) {
     return `${this.config.baseApiUrl}${this.config.platformsApiUrl}/${id}`;
   }
@@ -152,6 +164,14 @@ export class ConfigService {
 
   addUserApiUrl(): string {
     return `${this.config.baseApiAuth}${this.config.usersApiUrl}`;
+  }
+
+  banUserApiUrl(userName: string): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}/${userName}/ban`;
+  }
+
+  getUserBanDurationsApiUrl(): string {
+    return `${this.config.baseApiAuth}${this.config.usersApiUrl}/ban/durations`;
   }
 
   deleteUserApiUrl(id: string): string {

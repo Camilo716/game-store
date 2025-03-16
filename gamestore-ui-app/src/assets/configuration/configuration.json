@@ -6,6 +6,7 @@
   "gamesApiUrl": "games",
   "genresApiUrl": "genres",
   "platformsApiUrl": "platforms",
+  "commentsApiUrl": "comments",
 
   "publishersApiUrl": "publishers",
   "publisherApiUrl": "publisher",

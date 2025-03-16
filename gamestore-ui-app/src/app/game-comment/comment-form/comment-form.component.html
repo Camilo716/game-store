@@ -1,0 +1,27 @@
+<ng-container [formGroup]="form">
+  <mat-dialog-content>
+    <mat-form-field class="w-96 h-52">
+      <mat-label>Body</mat-label>
+      <input
+        matInput
+        placeholder="Body"
+        formControlName="body"
+      />
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onCancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="action-button m-1 text-white bg-indigo-500 hover:bg-indigo-600"
+      (click)="onSave()"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-container>

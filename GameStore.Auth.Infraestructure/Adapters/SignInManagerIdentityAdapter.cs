@@ -1,6 +1,6 @@
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.ProcessResult;
+using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Login;
 using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.AspNetCore.Identity;

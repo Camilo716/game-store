@@ -1,8 +1,10 @@
 using System.Security.Authentication;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Enums;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.Config;
+using GameStore.Auth.Core.ProcessResult;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Ban;
+using GameStore.Auth.Core.User.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +12,9 @@ namespace GameStore.Auth.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UsersController(IUserService userService) : ControllerBase
+public class UsersController(
+    IUserService userService,
+    IUserBanService userBanService) : ControllerBase
 {
     [HttpPost]
     [Authorize(Policy = nameof(Permissions.AddUser))]
@@ -72,5 +76,26 @@ public class UsersController(IUserService userService) : ControllerBase
     {
         await userService.DeleteByIdAsync(id);
         return NoContent();
+    }
+
+    [HttpGet]
+    [Route("ban/durations")]
+    [Authorize(Policy = nameof(Permissions.BanUser))]
+    public async Task<IActionResult> GetUserBanDurations()
+    {
+        return await Task.Run(() =>
+        {
+            var banDurations = userBanService.GetUserBanDurations();
+            return Ok(banDurations);
+        });
+    }
+
+    [HttpPost]
+    [Route("{userName}/ban")]
+    [Authorize(Policy = nameof(Permissions.BanUser))]
+    public async Task<IActionResult> BanUser([FromRoute] string userName, [FromBody] UserBanDuration duration)
+    {
+        await userBanService.BanUserAsync(userName, duration);
+        return Ok();
     }
 }

@@ -1,9 +1,9 @@
 using System.Text;
-using GameStore.Core.Enums;
-using GameStore.Core.Interfaces;
+using GameStore.Core.Auth;
 using GameStore.Infraestructure.Auth;
 using GameStore.Infraestructure.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +18,8 @@ public static class Dependences
     {
         services.AddDbContext<GameStoreDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
+
+        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
 
         services.AddAuthentication(opt =>
         {
@@ -58,9 +60,21 @@ public static class Dependences
             .AddPermissionPolicy(Permissions.ViewPublishers)
             .AddPermissionPolicy(Permissions.AddPublisher)
             .AddPermissionPolicy(Permissions.UpdatePublisher)
-            .AddPermissionPolicy(Permissions.DeletePublisher);
+            .AddPermissionPolicy(Permissions.DeletePublisher)
+
+            .AddPermissionPolicy(Permissions.DeleteComment)
+
+            .AddPolicy($"{Policy.NotBanned}", policy =>
+                policy.Requirements.Add(new BannedUserRequirement()));
 
         services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+        services.AddScoped<IAuthorizationHandler, BannedUserHandler>();
         services.AddScoped<ITokenValidator, TokenValidator>();
+    }
+
+    public static void InitializeDatabase(IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+        scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>().Initialize();
     }
 }

@@ -1,4 +1,4 @@
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.User;
 using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.AspNetCore.Identity;
 

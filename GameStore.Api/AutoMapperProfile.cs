@@ -1,6 +1,9 @@
 using AutoMapper;
 using GameStore.Api.Dtos.GameDtos;
-using GameStore.Core.Models;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
+using GameStore.Core.Platform;
+using GameStore.Core.Publisher;
 
 namespace GameStore.Api;
 

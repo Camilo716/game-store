@@ -5,7 +5,6 @@ namespace GameStore.Logging;
 public class FileLogger(string path) : ILogger
 {
     private static readonly object _lock = new();
-    private readonly string _path = path;
 
     public IDisposable? BeginScope<TState>(TState state)
         where TState : notnull
@@ -32,12 +31,12 @@ public class FileLogger(string path) : ILogger
 
         lock (_lock)
         {
-            if (!Directory.Exists(_path))
+            if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(_path);
+                Directory.CreateDirectory(path);
             }
 
-            string fullFilePath = Path.Combine(_path, $"{DateTime.Now:yyyy-MM-dd}_log.txt");
+            string fullFilePath = Path.Combine(path, $"{DateTime.Now:yyyy-MM-dd}_log.txt");
             string exc = string.Empty;
             var n = Environment.NewLine;
 
@@ -47,6 +46,12 @@ public class FileLogger(string path) : ILogger
             }
 
             string log = $"{logLevel}: {DateTime.Now} {formatter(state, exception)}{n}{exc}{n}";
+
+            if (!File.Exists(fullFilePath))
+            {
+                File.Create(fullFilePath);
+            }
+
             File.AppendAllText(fullFilePath, log);
         }
     }

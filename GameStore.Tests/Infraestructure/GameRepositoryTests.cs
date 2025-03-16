@@ -1,4 +1,6 @@
-using GameStore.Core.Models;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
+using GameStore.Core.Publisher;
 using GameStore.Infraestructure.Data;
 using GameStore.Tests.Seed;
 

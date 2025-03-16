@@ -1,9 +1,9 @@
-using GameStore.Auth.Core.Enums;
+using GameStore.Auth.Core.Config;
 using GameStore.Auth.Infraestructure.Entities;
 
 namespace GameStore.Auth.Infraestructure.Data.Seed;
 
-public class PrivilegeSeed
+public static class PrivilegeSeed
 {
     public static Privilege AddGame => new()
     {
@@ -149,6 +149,18 @@ public class PrivilegeSeed
         Key = nameof(Permissions.UpdatePublisher),
     };
 
+    public static Privilege BanUser => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000026"),
+        Key = nameof(Permissions.BanUser),
+    };
+
+    public static Privilege DeleteComment => new()
+    {
+        Id = Guid.Parse("00000000-0000-0000-0000-000000000027"),
+        Key = nameof(Permissions.DeleteComment),
+    };
+
     public static List<Privilege> GetPrivileges() =>
     [
         AddGame,
@@ -180,5 +192,9 @@ public class PrivilegeSeed
         AddPublisher,
         UpdatePublisher,
         DeletePublisher,
+
+        BanUser,
+
+        DeleteComment,
     ];
 }

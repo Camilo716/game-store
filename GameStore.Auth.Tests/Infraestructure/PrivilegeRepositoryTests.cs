@@ -1,4 +1,4 @@
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.Privilege;
 using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Tests.Seed;
 

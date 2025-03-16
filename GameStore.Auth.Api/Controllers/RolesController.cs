@@ -1,7 +1,6 @@
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Enums;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.Config;
+using GameStore.Auth.Core.Privilege;
+using GameStore.Auth.Core.Role;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

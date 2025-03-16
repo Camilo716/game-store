@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-using GameStore.Auth.Core.Enums;
+using GameStore.Auth.Core.Config;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -47,10 +47,11 @@ public class TestAuthHandler(
         AddPermissionClaim(claims, Permissions.AddUser);
         AddPermissionClaim(claims, Permissions.UpdateUser);
         AddPermissionClaim(claims, Permissions.DeleteUser);
+        AddPermissionClaim(claims, Permissions.BanUser);
     }
 
     private static void AddPermissionClaim(List<Claim> claim, Permissions permission)
     {
-        claim.Add(new($"{ClaimType.Permission}", $"{permission}"));
+        claim.Add(new($"{Policy.Permission}", $"{permission}"));
     }
 }

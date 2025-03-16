@@ -1,10 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using GameStore.Auth.Core.Dtos;
-using GameStore.Auth.Core.Enums;
-using GameStore.Auth.Core.Interfaces;
-using GameStore.Auth.Core.Models;
+using GameStore.Auth.Core.Config;
+using GameStore.Auth.Core.Date;
+using GameStore.Auth.Core.UnitOfWork;
+using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Login;
 using GameStore.Auth.Infraestructure.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -16,14 +17,15 @@ public class TokenGenerator(
     IConfiguration configuration,
     UserManager<User> userManager,
     RoleManager<Role> roleManager,
-    IUnitOfWork unitOfWork) : ITokenGenerator
+    IUnitOfWork unitOfWork,
+    IDateTimeProvider dateTimeProvider) : ITokenGenerator
 {
-    private readonly string _secretKey = configuration["Jwt:SecretKey"]!;
+    private string SecretKey => configuration["Jwt:SecretKey"]!;
 
     public async Task<AuthToken> GenerateTokenAsync(UserModel userModel)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_secretKey);
+        var key = Encoding.ASCII.GetBytes(SecretKey);
 
         List<Claim> claims =
         [
@@ -31,6 +33,7 @@ public class TokenGenerator(
         ];
 
         await AddUserPermissionsClaimsAsync(userModel, claims);
+        claims.Add(new(nameof(Policy.NotBanned), (userModel.BanExpirationDate <= dateTimeProvider.Now()).ToString()));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -49,7 +52,7 @@ public class TokenGenerator(
 
         foreach (string permission in permissions)
         {
-            claims.Add(new(nameof(ClaimType.Permission), permission));
+            claims.Add(new(nameof(Policy.Permission), permission));
         }
     }
 

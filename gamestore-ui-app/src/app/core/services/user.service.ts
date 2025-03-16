@@ -1,3 +1,4 @@
+import { UserBanDuration } from './../models/user-ban-duration';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from './config.service';
@@ -48,5 +49,13 @@ export class UserService {
 
   getUserRoles(id: string): Observable<any> {
     return this.http.get(this.config.getUserRolesApiUrl(id));
+  }
+
+  banUser(duration: UserBanDuration, userName: string): Observable<any> {
+    return this.http.post(this.config.banUserApiUrl(userName), duration);
+  }
+
+  getUserBanDurations(): Observable<any> {
+    return this.http.get(this.config.getUserBanDurationsApiUrl());
   }
 }

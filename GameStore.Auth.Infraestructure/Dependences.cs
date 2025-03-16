@@ -1,12 +1,16 @@
 using System.Text;
-using GameStore.Auth.Core.Enums;
-using GameStore.Auth.Core.Interfaces;
+using GameStore.Auth.Core.Config;
+using GameStore.Auth.Core.Role;
+using GameStore.Auth.Core.Token;
+using GameStore.Auth.Core.User;
+using GameStore.Auth.Core.User.Login;
 using GameStore.Auth.Infraestructure.Adapters;
 using GameStore.Auth.Infraestructure.Data;
 using GameStore.Auth.Infraestructure.Entities;
 using GameStore.Auth.Infraestructure.Handlers;
 using GameStore.Auth.Infraestructure.Token;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +26,8 @@ public static class Dependences
         services.AddDbContext<GameStoreAuthDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default"))
             .EnableSensitiveDataLogging());
+
+        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
 
         services.AddSingleton(_ => TimeProvider.System);
 
@@ -55,7 +61,8 @@ public static class Dependences
             .AddPermissionPolicy(Permissions.ViewUsers)
             .AddPermissionPolicy(Permissions.AddUser)
             .AddPermissionPolicy(Permissions.DeleteUser)
-            .AddPermissionPolicy(Permissions.UpdateUser);
+            .AddPermissionPolicy(Permissions.UpdateUser)
+            .AddPermissionPolicy(Permissions.BanUser);
 
         services.AddAuthorization();
 
@@ -72,5 +79,11 @@ public static class Dependences
         services.AddScoped<ISignInManager, SignInManagerIdentityAdapter>();
         services.AddScoped<ITokenGenerator, TokenGenerator>();
         services.AddScoped<ITokenValidator, TokenValidator>();
+    }
+
+    public static void InitializeDatabase(IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+        scope.ServiceProvider.GetRequiredService<IDatabaseInitializer>().Initialize();
     }
 }

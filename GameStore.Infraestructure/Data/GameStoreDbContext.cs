@@ -1,4 +1,8 @@
-using GameStore.Core.Models;
+using GameStore.Core.Comment;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
+using GameStore.Core.Platform;
+using GameStore.Core.Publisher;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Infraestructure.Data;
@@ -13,6 +17,8 @@ public class GameStoreDbContext(DbContextOptions options) : DbContext(options)
 
     public DbSet<Publisher> Publishers { get; set; }
 
+    public DbSet<Comment> Comments { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Game>()
@@ -26,6 +32,15 @@ public class GameStoreDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<Genre>()
             .HasIndex(g => g.Name)
             .IsUnique();
+
+        modelBuilder.Entity<Comment>()
+            .Property(c => c.Body).IsRequired();
+        modelBuilder.Entity<Comment>()
+            .Property(c => c.UserName).IsRequired();
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.ParentComment)
+            .WithMany(c => c.ChildrenComments)
+            .HasForeignKey(c => c.ParentCommentId);
 
         GenreSeeder.SeedGenres(modelBuilder);
         PlatformSeeder.SeedPlatforms(modelBuilder);

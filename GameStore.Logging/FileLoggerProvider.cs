@@ -4,15 +4,18 @@ namespace GameStore.Logging;
 
 public class FileLoggerProvider(string path) : ILoggerProvider
 {
-    private readonly string _path = path;
-
     public ILogger CreateLogger(string categoryName)
     {
-        return new FileLogger(_path);
+        return new FileLogger(path);
     }
 
     public void Dispose()
     {
+        Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
     }
 }

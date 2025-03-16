@@ -1,7 +1,11 @@
 using System.Net;
 using System.Net.Http.Json;
 using GameStore.Api.Dtos.GameDtos;
-using GameStore.Core.Models;
+using GameStore.Core.Comment;
+using GameStore.Core.Game;
+using GameStore.Core.Genre;
+using GameStore.Core.Platform;
+using GameStore.Core.Publisher;
 using GameStore.Tests.Api.ClassData;
 using GameStore.Tests.Seed;
 
@@ -70,6 +74,18 @@ public class GameIntegrationTests : BaseIntegrationTest
         var expectedPlatforms = DbContext.Platforms
             .Where(platform => platform.Games.Select(g => g.Key).Contains(gameKey));
         Assert.Equal(expectedPlatforms.Count(), platforms.Count());
+    }
+
+    [Fact]
+    public async Task GetCommentsByGameKey_GivenValidKey_ReturnsSuccess()
+    {
+        string gameKey = GameSeed.GearsOfWar.Key;
+
+        var response = await HttpClient.GetAsync($"api/games/{gameKey}/comments");
+
+        response.EnsureSuccessStatusCode();
+        var comments = await HttpHelper.GetModelFromHttpResponseAsync<IEnumerable<Comment>>(response);
+        Assert.NotNull(comments);
     }
 
     [Fact]

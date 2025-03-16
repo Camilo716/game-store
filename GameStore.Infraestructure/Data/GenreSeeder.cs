@@ -1,4 +1,4 @@
-using GameStore.Core.Models;
+using GameStore.Core.Genre;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Infraestructure.Data;
