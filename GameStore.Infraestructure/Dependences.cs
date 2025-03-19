@@ -19,7 +19,7 @@ public static class Dependences
         services.AddDbContext<GameStoreDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
 
-        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
+        services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
 
         services.AddAuthentication(opt =>
         {

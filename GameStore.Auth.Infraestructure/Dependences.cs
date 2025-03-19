@@ -27,7 +27,7 @@ public static class Dependences
             opt.UseSqlServer(configuration.GetConnectionString("Default"))
             .EnableSensitiveDataLogging());
 
-        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
+        services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
 
         services.AddSingleton(_ => TimeProvider.System);
 

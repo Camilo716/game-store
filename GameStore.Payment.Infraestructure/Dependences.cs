@@ -13,7 +13,7 @@ public static class Dependences
         services.AddDbContext<GameStorePaymentDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("Default")));
 
-        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
+        services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
     }
 
     public static void InitializeDatabase(IApplicationBuilder app)

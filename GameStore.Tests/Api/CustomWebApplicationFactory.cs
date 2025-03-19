@@ -34,7 +34,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             ?? throw new InvalidOperationException();
 
         services.Remove(dbInitializerDescriptor);
-        services.AddSingleton<IDatabaseInitializer, DummyDatabaseInitializer>();
+        services.AddScoped<IDatabaseInitializer, DummyDatabaseInitializer>();
     }
 
     private static void ByPassAuthentication(IServiceCollection services)

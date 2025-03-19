@@ -44,9 +44,6 @@ public class Startup(IConfiguration configuration)
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
     {
-        loggerFactory.AddFileLoggingProvider(
-            filePath: Path.Combine(Directory.GetCurrentDirectory(), "logs"));
-
         if (env.IsDevelopment())
         {
             app.UseSwagger();
@@ -55,6 +52,9 @@ public class Startup(IConfiguration configuration)
         }
         else
         {
+            loggerFactory.AddFileLoggingProvider(
+                filePath: Path.Combine(Directory.GetCurrentDirectory(), "logs"));
+
             app.UseMiddleware<ExceptionHandlerMiddleware>();
         }
 

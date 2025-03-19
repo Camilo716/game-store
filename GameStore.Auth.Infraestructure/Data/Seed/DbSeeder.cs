@@ -1,4 +1,5 @@
 using GameStore.Auth.Infraestructure.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Auth.Infraestructure.Data.Seed;
@@ -11,18 +12,13 @@ public static class DbSeeder
 
     public static void Seed(ModelBuilder modelBuilder)
     {
-        Privilege[] privileges =
-        [
-            .. PrivilegeSeed.GetPrivileges()
-        ];
-        Role[] roles =
-        [
-            .. RoleSeed.GetRoles()
-        ];
+        Privilege[] privileges = [.. PrivilegeSeed.GetPrivileges()];
+        Role[] roles = [.. RoleSeed.GetRoles()];
 
         modelBuilder.Entity<Privilege>().HasData(privileges);
         modelBuilder.Entity<Role>().HasData(roles);
         SeedPrivilegeRoleRelations(modelBuilder);
+        SeedDemoUser(modelBuilder);
     }
 
     private static void SeedPrivilegeRoleRelations(ModelBuilder modelBuilder)
@@ -58,6 +54,23 @@ public static class DbSeeder
                 GetRelationship(PrivilegeSeed.DeleteComment.Id, RoleSeed.Manager.Id),
                 GetRelationship(PrivilegeSeed.BanUser.Id, RoleSeed.Manager.Id),
                 GetRelationship(PrivilegeSeed.ViewGames.Id, RoleSeed.Guest.Id));
+    }
+
+    private static void SeedDemoUser(ModelBuilder modelBuilder)
+    {
+        bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+        if (isDevelopment)
+        {
+            modelBuilder.Entity<User>().HasData(UserSeed.GetUsers());
+
+            modelBuilder
+                .Entity<IdentityUserRole<string>>()
+                .HasData(new IdentityUserRole<string>()
+                {
+                    UserId = UserSeed.DemoAdmin.Id,
+                    RoleId = RoleSeed.Admin.Id,
+                });
+        }
     }
 
     private static Dictionary<string, object> GetRelationship(Guid privilegeId, string roleId)
